@@ -8,3 +8,4 @@ Instructions to start app:
 5. npm run dev
 
 You need to npm i in two seperate directories because the frontend and backend both have different dependencies
+You also will receive the .env file seperately because of security reasons and we only want it on your local device
