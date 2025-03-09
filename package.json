@@ -1,0 +1,36 @@
+{
+  "name": "aaivapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon backend/server.js",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm start\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Johnslee123/AAIVApp.git"
+  },
+  "author": "John Lee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Johnslee123/AAIVApp/issues"
+  },
+  "homepage": "https://github.com/Johnslee123/AAIVApp#readme",
+  "dependencies": {
+    "axios": "^1.8.1",
+    "bcryptjs": "^3.0.2",
+    "concurrently": "^9.1.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-async-handler": "^1.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.12.1",
+    "nodemon": "^3.1.9",
+    "react-redux": "^9.2.0",
+    "redux": "^5.0.1",
+    "redux-thunk": "^3.1.0"
+  }
+}
