@@ -1,8 +1,10 @@
 # AAIVApp
 
 Instructions to start app:
-There are two main level in directory 
-AAIVApp/frontend, AAIVApp/backend
+1. npm i
+2. cd frontend
+3. npm i
+4. cd ..
+5. npm run dev
 
-"npm i" in both AAIVApp and AAIVApp/frontend (You will already be in AAIVApp when you first clone the repo, for AAIVApp/frontend you just need to type "cd frontend" in terminal and then npm i
-"npm run dev" in the AAIVApp directory will run both the backend and frontend together and the app will open
+You need to npm i in two seperate directories because the frontend and backend both have different dependencies
