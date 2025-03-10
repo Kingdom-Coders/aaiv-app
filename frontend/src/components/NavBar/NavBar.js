@@ -14,6 +14,8 @@ const NavBar = () => {
     navigate(path);
   };
 
+
+  // random comment
   const userLogin = useSelector((state) => state.userLogin);
   // Destructures the relevant information
   const { loading, error, userInfo } = userLogin;
