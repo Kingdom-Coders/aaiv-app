@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CreatePost.css";
 import { useDispatch, useSelector } from "react-redux";
-import { createPostAction } from "../../actions/postActions";
+import { createPostAction } from "../../../actions/postActions";
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");

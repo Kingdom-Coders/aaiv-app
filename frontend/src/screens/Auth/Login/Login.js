@@ -1,9 +1,9 @@
 import "./Login.css";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ErrorMessage from "../../components/ErrorMessage";
+import ErrorMessage from "../../../components/ErrorMessage";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../actions/userActions";
+import { login } from "../../../actions/userActions";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -23,7 +23,7 @@ const Login = () => {
   
   useEffect(() => {
     if(userInfo) {
-        navigate("/posts");
+        navigate("/home");
     }
   }, [navigate, userInfo])
 

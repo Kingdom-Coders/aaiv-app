@@ -16,7 +16,7 @@ const registerUser = asyncHandler(async(req, res) => {
 
     // This is the creation of a user (.create is a MongoDB method)
     const user = await User.create({
-        firstName, lastName, email, password
+        firstName, lastName, email, password, isAdmin: false
     });
 
     if(user) {
@@ -27,6 +27,7 @@ const registerUser = asyncHandler(async(req, res) => {
             email: user.email,
             password: user.password,
             token: generateToken(user._id),
+            isAdmin: user.isAdmin
         })
     } else {
         res.status(400);
@@ -47,6 +48,7 @@ const authUser = asyncHandler(async(req, res) => {
             email: user.email,
             password: user.password,
             token: generateToken(user._id),
+            isAdmin: user.isAdmin
         });
     } else {
         res.status(400);

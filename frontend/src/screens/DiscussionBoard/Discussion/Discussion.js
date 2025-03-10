@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../../actions/userActions";
-import "./Posts.css";
-import { deletePostAction, listPosts } from "../../actions/postActions";
+import { logout } from "../../../actions/userActions";
+import "./Discussion.css";
+import { deletePostAction, listPosts } from "../../../actions/postActions";
 
-const Posts = () => {
+const Discussion = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -66,4 +66,4 @@ const Posts = () => {
   );
 };
 
-export default Posts;
+export default Discussion;

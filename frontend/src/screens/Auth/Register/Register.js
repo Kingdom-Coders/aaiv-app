@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import ErrorMessage from "../../components/ErrorMessage";
+import ErrorMessage from "../../../components/ErrorMessage";
 import "./Register.css";
 import { useDispatch, useSelector } from "react-redux";
-import { register } from "../../actions/userActions";
+import { register } from "../../../actions/userActions";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -23,9 +23,9 @@ const Register = () => {
 
   useEffect(() => {
     if(userInfo) {
-        navigate("/posts");
+        navigate("/home");
     }
-  }, [userInfo])
+  }, [userInfo, navigate])
 
   const onRegisterHandle = async () => {
     if(password !== confirmPassword) {

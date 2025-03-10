@@ -1,0 +1,35 @@
+.navbar {
+    position: fixed;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 75%;
+    background-color: white;
+    display: flex;
+    justify-content: space-around;
+    padding: 15px 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .navbar-list {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    justify-content: space-around;
+  }
+  
+  .navbar-item {
+    cursor: pointer;
+  }
+  
+  .navbar-icon {
+    color: black;
+    font-size: 24px;
+  }
+  
+  .navbar-item:hover .navbar-icon {
+    color: #279d94;
+  }
