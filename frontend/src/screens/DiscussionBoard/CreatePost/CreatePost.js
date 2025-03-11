@@ -26,6 +26,8 @@ const CreatePost = () => {
     navigate("/posts");
   };
 
+
+  
   return (
     <div className="addPostContainer">
       <h2>Create a New Post</h2>
