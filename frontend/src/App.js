@@ -23,8 +23,6 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-
-
         <Route path="/" element={<Login />} />
         <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
         <Route path="/register" element={<Register />} />
