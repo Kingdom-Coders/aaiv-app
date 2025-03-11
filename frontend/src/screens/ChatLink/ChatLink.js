@@ -9,13 +9,13 @@ const ChatLink = () => {
         <h1>Chat Link Screen</h1>
       </div>
       <div className="chatlink-SearchFilter">
-
+        <h1>Search Filter Section</h1>
       </div>
       <div className="chatlink-Edits">
-
+        <h1>Edits Section</h1>
       </div>
       <div classaName = "chatlink-links">
-        
+        <h1>Links Section</h1>
       </div>
     </div>
   );
