@@ -4,7 +4,7 @@ import './ChatLink.css';
 const ChatLink = () => {
   return (
     <div className="chatlink-screen">
-      <h1>Chat Link Screen</h1>
+      <h1>Chat Link</h1>
     </div>
   );
 };

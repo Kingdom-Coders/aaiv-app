@@ -14,7 +14,7 @@ const Home = () => {
 
   return (
     <div className="home-screen">
-      <h1>Home Screen</h1>
+      <h1>WELCOME TO AAIV APP</h1>
       <div className="signoutButton" onClick={() => { logoutHandler(); navigate('/'); }}>
         Sign Out
       </div>
