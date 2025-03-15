@@ -37,7 +37,7 @@ const Register = () => {
 
   return (
     <div className="container">
-      <h2>AAIV Register</h2> 
+      <h2>AAIV Register !1</h2> 
       <div className="formContainer">
       <input
           className="formInput"
