@@ -1,11 +1,13 @@
 import { legacy_createStore as createStore, combineReducers, applyMiddleware } from "redux";
 import { thunk } from "redux-thunk";
-import { userLoginReducer, userRegisterReducer } from "./reducers/userReducers";
+import { userDeleteReducer, userListReducer, userLoginReducer, userRegisterReducer } from "./reducers/userReducers";
 import { postCreateReducer, postDeleteReducer, postListReducer } from "./reducers/postsReducers";
 
 const reducer = combineReducers({
     userLogin: userLoginReducer,
     userRegister: userRegisterReducer,
+    userDelete: userDeleteReducer,
+    userList: userListReducer,
     postList: postListReducer,
     postCreate: postCreateReducer,
     postDelete: postDeleteReducer,
