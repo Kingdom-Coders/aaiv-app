@@ -48,7 +48,7 @@ const Discussion = () => {
             <div key={post._id} className="post">
                 <h3>{post.title}</h3>
                 <p>{post.body}</p>
-                <p className="date">Created On: {post.createdAt.substring(0, 10)}</p>
+                <p className="date">Created On: {post.createdAt ? post.createdAt.substring(0, 10) : "Unknown"}</p>
                 <div
                 className="deleteButton"
                 onClick={() => deleteHandler(post._id)}
