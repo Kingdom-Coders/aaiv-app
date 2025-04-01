@@ -8,12 +8,12 @@
 }
 
 .BibleVerse {
-  font-size: 20px; /* Makes the text larger */
+  font-size: 20px;   
   text-align: center; 
 }
 
 .blur-container {
-  cursor: pointer; /* Indicates it's clickable */
+  cursor: pointer; /*clickable */
 }
 
 .blur-text {
