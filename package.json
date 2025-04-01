@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Johnslee123/AAIVApp#readme",
   "dependencies": {
+    "@google-cloud/local-auth": "^2.1.0",
     "axios": "^1.8.1",
     "bcryptjs": "^3.0.2",
     "concurrently": "^9.1.2",
@@ -26,6 +27,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-async-handler": "^1.2.0",
+    "googleapis": "^105.0.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.12.1",
     "nodemon": "^3.1.9",
