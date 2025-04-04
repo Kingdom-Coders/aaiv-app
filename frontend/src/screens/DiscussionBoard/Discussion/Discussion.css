@@ -24,32 +24,45 @@ body {
 }
 
 .postsContainer {
-  margin-top: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 75%;
-  max-width: 600px;
+  width: 100%;
 }
 
 .post {
-  border: 1px solid #ccc;
   padding: 10px;
-  margin: 10px 0;
-  border-radius: 5px;
-  background: #f9f9f9;
+  background: white;
   width: 100%;
+  max-width: 600px;
   text-overflow: ellipsis;
 }
 
+.title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
+
+.title {
+  font-size: 1.3rem;
+}
+
+.date {
+  color: #999;
+  font-size: 0.9rem;
+  padding: 3px;
+}
+
 .content {
-  /* height: 140px; */
   color: black;
   display: flex;
   justify-content: left;
   flex-direction: column;
   text-align: left;
+  padding-left: 10px;
 }
 
 .error {
@@ -67,11 +80,11 @@ body {
 .button:hover {
   cursor: pointer;
   background-color: #ddd;
-  /* transform: scale(1.04); */
 }
 
 .buttons {
-  padding: 5px 0 0 0;
+  display: flex;
+  justify-content: flex-start;
 }
 
 .filler {
