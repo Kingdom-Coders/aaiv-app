@@ -47,12 +47,13 @@ body {
 }
 
 .title {
-  font-size: 1.3rem;
+  /* font-size: px; */
+  /* font-weight: 500; */
 }
 
 .date {
   color: #999;
-  font-size: 0.9rem;
+  font-size: 1rem;
   padding: 3px;
 }
 
