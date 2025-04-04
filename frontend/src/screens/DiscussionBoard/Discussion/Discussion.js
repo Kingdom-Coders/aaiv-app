@@ -36,6 +36,41 @@ const Discussion = () => {
     }
   };
 
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "June",
+    "July",
+    "Aug",
+    "Sept",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const dateFinder = (date) => {
+    const now = new Date();
+
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
+    const day = now.getDate();
+
+    let [postYear, postMonth, postDay] = date.split("-");
+    postYear = parseInt(postYear);
+    postMonth = parseInt(postMonth);
+    postDay = parseInt(postDay);
+    let result = "";
+    if (year === postYear && month === postMonth && day === postDay) {
+      result = "Today";
+    } else {
+      result = months[postMonth - 1] + " " + postDay;
+    }
+    return result;
+  };
+
   useEffect(() => {
     dispatch(listPosts());
   }, [dispatch, successCreate, navigate, successDelete]);
@@ -52,9 +87,6 @@ const Discussion = () => {
         >
           Create Post
         </div>
-        {/* <div className="signoutButton" onClick={() => { logoutHandler(); navigate('/'); }}>
-        Sign Out
-      </div> */}
         <Accordion.Root collapsible className="postsContainer">
           {posts?.length ? (
             posts.reverse().map((post, index) => (
@@ -63,7 +95,7 @@ const Discussion = () => {
                   <h1 className="title">
                     {post.title}{" "}
                     <span className="date">
-                      {post.createdAt.substring(0, 10)}
+                      {dateFinder(post.createdAt.substring(0, 10))}
                     </span>{" "}
                   </h1>
                   <Accordion.ItemIndicator />
