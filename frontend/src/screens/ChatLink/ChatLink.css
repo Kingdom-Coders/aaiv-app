@@ -5,9 +5,5 @@
     align-items: center;
     height: 100vh;
     background-color: white;
-  }
-  
-  h1 {
-    font-size: 24px;
-    color: #333;
+    gap: 10px;
   }
