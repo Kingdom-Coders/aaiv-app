@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../../../actions/userActions";
 import "./Discussion.css";
 import { deletePostAction, listPosts } from "../../../actions/postActions";
-import { BsTrash3 } from "react-icons/bs";
 import { GrMore } from "react-icons/gr";
 import { LuMessageSquareText } from "react-icons/lu";
 import { Button, Menu, Portal, Card, Accordion } from "@chakra-ui/react";
