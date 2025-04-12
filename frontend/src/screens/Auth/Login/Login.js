@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ErrorMessage from "../../../components/ErrorMessage";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../../actions/userActions";
+import { Button } from "@chakra-ui/react";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -53,9 +54,9 @@ const Login = () => {
       </div>
 
       <div className="buttonsContainer">
-        <div className="loginButton" onClick={() => {loginHandler()}}>
+        <Button size="lg" colorPalette={"purple"} rounded={"full"} onClick={() => loginHandler()}>
           Login
-        </div>
+        </Button>
         <div className="registerText">
           <span>Don't have an account?</span> 
           <span className="registerLink" onClick={() => navigate("/register")}> Register</span>
