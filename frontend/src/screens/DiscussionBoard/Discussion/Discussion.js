@@ -50,7 +50,7 @@ const Discussion = () => {
     "Dec",
   ];
 
-  const dateFinder = (date) => {
+  const dateFormatter = (date) => {
     const now = new Date();
 
     const year = now.getFullYear();
@@ -76,7 +76,7 @@ const Discussion = () => {
 
   return (
     <div className="container">
-      <h2>Posts</h2>
+      <h2 className="text">Posts</h2>
       <div className="buttonsContainer">
         <div
           className="signoutButton"
@@ -94,7 +94,7 @@ const Discussion = () => {
                   <h1 className="title">
                     {post.title}{" "}
                     <span className="date">
-                      {dateFinder(post.createdAt.substring(0, 10))}
+                      {dateFormatter(post.createdAt.substring(0, 10))}
                     </span>{" "}
                   </h1>
                   <Accordion.ItemIndicator />
@@ -105,8 +105,8 @@ const Discussion = () => {
                   </Accordion.ItemBody>
                   <div className="buttons">
                     <Button variant="ghost" size="md" className="button">
+                      Thread
                       <LuMessageSquareText />
-                      Reply
                     </Button>
                     <Menu.Root>
                       <Menu.Trigger asChild>
@@ -136,7 +136,7 @@ const Discussion = () => {
               </Accordion.Item>
             ))
           ) : (
-            <p>No posts found.</p>
+            <p className="text">No posts found.</p>
           )}
         </Accordion.Root>
       </div>

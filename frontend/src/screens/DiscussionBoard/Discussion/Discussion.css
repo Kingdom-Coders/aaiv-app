@@ -23,6 +23,10 @@ body {
   width: 75%;
 }
 
+.text {
+  color: black;
+}
+
 .postsContainer {
   display: flex;
   justify-content: center;
