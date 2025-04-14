@@ -1,4 +1,3 @@
-// hello world
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CreatePost.css";
@@ -21,7 +20,7 @@ const CreatePost = () => {
   }
 
   const submitHandler = () => {
-    if(!title || !body) return;
+    if(!title) return;
     dispatch(createPostAction(title, body));
     resetHandler();
     navigate("/discussion");
