@@ -1,15 +1,16 @@
 import React, { useState, useMemo } from "react";
 import './ChatLink.css';
-import { AbsoluteCenter, Checkbox, Input, Stack, Avatar, Badge, HStack, Accordion, Box, Button, Span, Dialog, Portal, CloseButton, useFileUploadContext, Float, FileUpload, Image, Em, DialogActionTrigger } from "@chakra-ui/react";
+import { Flex, AbsoluteCenter, Checkbox, Input, Stack, Avatar, Badge, HStack, Accordion, Box, Button, Span, Dialog, Portal, CloseButton, useFileUploadContext, Float, FileUpload, Image, Em, DialogActionTrigger } from "@chakra-ui/react";
 import { useSelector } from 'react-redux';
 import imgs from './settings.png'
 import search from './Search.png'
+
 
 const categories = [
   "Outdoorsy",
   "Studious", 
   "Social"
-]
+];
 
 const ChatLink = () => {
   const userLogin = useSelector((state) => state.userLogin);
@@ -27,34 +28,94 @@ const ChatLink = () => {
 
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
+  const [showAddGroupCard, setShowAddGroupCard] = useState(true);
+  
+  const handleAddGroup = () => {
+    setShowAddGroupCard(true);
+  };
+
+
   return (
     <div className="chatlink-screen">
-      <div className="chatlink-Title">
-        <p>chats</p>
-        <hr /> {}
-      </div>
-      <div className="chatlink-SearchFilter">
-        <div className = "chatlink-Search"> 
-          <img src={search} alt="Search Image" />
-          <div className="chatlink-SearchBar"> 
-            <Input placeholder="Search" style={{color: "#A0AEC0"}}/>
-          </div>
+     <div className="chatlink-Title">
+       <p>chats</p>
+       <hr /> {}
+     </div>
+     <div className="chatlink-SearchFilter">
+       <div className = "chatlink-Search">
+         <img src={search} alt="Search Image" />
+         <div className="chatlink-SearchBar">
+           <Input placeholder="Search" style={{color: "#A0AEC0"}}/>
+         </div>
+       </div>
+       <div className="chatlink-Checkboxes">
+         {categories.map((category) => (
+         <Stack align="center" flex="1" key={category}>
+           <Checkbox.Root defaultChecked colorPalette={"blue"} variant={"solid"}>
+             <Checkbox.HiddenInput />
+             <Checkbox.Control />
+             <Checkbox.Label style={{color: "black"}}>{category}</Checkbox.Label>
+           </Checkbox.Root>
+         </Stack>
+         ))}
+       </div>
+     </div>
+
+      
+      {/* Admin section with Add Group button */}
+      {isAdmin && (
+        <div className="chatlink-Edits">
+          <Dialog.Root placement="center" size="md" colorPalette>
+            <Dialog.Trigger asChild>
+              <Flex justify="center" mt={4} mb={4}>
+                <Button 
+                  colorPalette="blue" 
+                  onClick={() => handleAddGroup()}
+                  size="lg"
+                  width="200px"
+                  rounded="xl"
+                  >
+                    Add Group
+                </Button>
+              </Flex>
+            </Dialog.Trigger>
+                <Portal>
+                <Dialog.Backdrop />
+              <Dialog.Positioner>
+                <Dialog.Content p={4}>
+                  <Dialog.Header>
+                    <Dialog.Title>Add Group</Dialog.Title>
+                  </Dialog.Header>
+                  <Dialog.Body p={3} >
+                    <p>
+                      Please provide the name and the link
+                    </p>
+                  </Dialog.Body>
+                  <Dialog.Body p={2}>
+                    <Input placeholder="Title"></Input>
+                  </Dialog.Body>
+                  <Dialog.Body p={2}>
+                    <Input placeholder="Link"></Input>
+                  </Dialog.Body>
+
+                  <Dialog.Footer>
+                    <Dialog.ActionTrigger asChild>
+                      <Button variant="outline">Cancel</Button>
+                    </Dialog.ActionTrigger>
+                    <Button>Confirm</Button>
+                  </Dialog.Footer>
+                  <Dialog.CloseTrigger asChild>
+                    <CloseButton size="sm" />
+                  </Dialog.CloseTrigger>
+                </Dialog.Content>
+              </Dialog.Positioner>
+              </Portal>
+              
+            
+          </Dialog.Root>
         </div>
-        <div className="chatlink-Checkboxes">
-          {categories.map((category) => (
-          <Stack align="center" flex="1" key={category}>
-            <Checkbox.Root defaultChecked colorPalette={"blue"} variant={"solid"}>
-              <Checkbox.HiddenInput />
-              <Checkbox.Control />
-              <Checkbox.Label style={{color: "black"}}>{category}</Checkbox.Label>
-            </Checkbox.Root>
-          </Stack>
-          ))}
-        </div>
-      </div>
-      <div className="chatlink-Edits">
-        <h1>Edits Section</h1>
-      </div>
+      )}
+      
       <div className="chatlink-links">
         <Stack gap="8" width="85vw">
           <Accordion.Root spaceY="4" variant="plain" collapsible defaultValue={["a"]}>
