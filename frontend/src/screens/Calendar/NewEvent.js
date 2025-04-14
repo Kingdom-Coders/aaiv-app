@@ -30,7 +30,7 @@ const NewEvent = () => {
                         <Input placeholder="Location" variant="flushed" />
                         <div className='timeBox'>
                             <div className='innerTimeBox1'>
-                                <Text fontWeight="bold">All-day</Text>
+                                <Text fontWeight="bold" textStyle="sm">All-day</Text>
                                 <Switch.Root>
                                     <Switch.HiddenInput />
                                     <Switch.Control />
@@ -45,7 +45,7 @@ const NewEvent = () => {
                                 <Input placeholder="End (time)" variant="flushed" size="xs" />
                             </div>
                             <div className='innerTimeBox2' >
-                                <Text fontWeight="bold">Repeat</Text>
+                                <Text fontWeight="bold" textStyle="sm">Repeat</Text>
                                 <Select.Root collection={repeatOptions} size="xs" width="100px" variant="subtle">
                                     <Select.HiddenSelect />
                                     <Select.Label />
@@ -71,9 +71,9 @@ const NewEvent = () => {
                                 </Select.Root>
                             </div>
                         </div>
-                        <Separator marginTop="8px"/>
+                        <Separator marginTop="6px"/>
                         <div className='calendarBox'>
-                            <Text fontWeight="bold" mr="200px">Calendar</Text>   
+                            <Text fontWeight="bold" mr="200px" textStyle="sm">Calendar</Text>   
                             <Select.Root collection={calendarOptions} size="xs" width="100px" variant="subtle">
                                     <Select.HiddenSelect />
                                     <Select.Label />
