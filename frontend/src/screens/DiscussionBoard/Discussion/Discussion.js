@@ -81,7 +81,7 @@ const Discussion = () => {
         <div
           className="signoutButton"
           onClick={() => {
-            navigate("/createpost");
+            navigate("/create-post");
           }}
         >
           Create Post
