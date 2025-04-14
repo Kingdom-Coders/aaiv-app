@@ -1,20 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from "react";
 import './ChatLink.css';
-import search from './Search.png';
-import { 
-  Checkbox, 
-  Input, 
-  Stack, 
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  CardFooter,
-  Flex,
-  Text,
-  Heading,
-  Box
-} from "@chakra-ui/react";
+import { Flex, AbsoluteCenter, Checkbox, Input, Stack, Avatar, Badge, HStack, Accordion, Box, Button, Span, Dialog, Portal, CloseButton, useFileUploadContext, Float, FileUpload, Image, Em, DialogActionTrigger } from "@chakra-ui/react";
+import { useSelector } from 'react-redux';
+import imgs from './settings.png'
+import search from './Search.png'
+
 
 const categories = [
   "Outdoorsy",
@@ -26,6 +16,21 @@ const categories = [
 const isAdmin = true;
 
 const ChatLink = () => {
+  const userLogin = useSelector((state) => state.userLogin);
+  const { loading, error, userInfo } = userLogin;
+  console.log(userInfo);
+  // const isAdmin = userInfo?.isAdmin;
+  const isAdmin = true;
+
+  const [value, setValue] = useState(["a"])
+  const items = [
+    { value: "a", image: "", title: "Saturday Bible Study", link:"link1", text: "Chat Description 1" },
+    { value: "b", image: "", title: "Saturday Bible Study", link:"link2", text: "Chat Description 2" },
+    { value: "c", image: "", title: "Saturday Bible Study", link:"link3", text: "Chat Description 3` " },
+  ]  
+
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+
   const [showAddGroupCard, setShowAddGroupCard] = useState(false);
   const [showDeleteCard, setShowDeleteCard] = useState(false);
   const [editingGroup, setEditingGroup] = useState({ title: "AAIV Nerds", image: "book" });
@@ -112,8 +117,17 @@ const ChatLink = () => {
       <div className="chatlink-links">
         {/* This section will be implemented separately */}
       </div>
+      <Dialog.Root isOpen={deleteConfirmOpen} onClose={() => setDeleteConfirmOpen(false)}>
+          <Portal>
+            <Dialog.Backdrop />
+            <Dialog.Positioner>
+              <Dialog.Content>
+                <Dialog.Title>hi</Dialog.Title>
+              </Dialog.Content>
+            </Dialog.Positioner>
+          </Portal>
+        </Dialog.Root>
     </div>
   );
 };
-
 export default ChatLink;
