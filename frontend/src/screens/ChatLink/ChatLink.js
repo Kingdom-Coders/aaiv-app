@@ -1,10 +1,9 @@
 import React, { useState, useMemo } from "react";
 import './ChatLink.css';
-import { AbsoluteCenter, Avatar, Badge, HStack, Accordion, Stack, Box, Button, Span, Dialog, Portal, CloseButton, useFileUploadContext, Float, FileUpload, Image, Em, DialogActionTrigger } from "@chakra-ui/react";
+import { AbsoluteCenter, Checkbox, Input, Stack, Avatar, Badge, HStack, Accordion, Box, Button, Span, Dialog, Portal, CloseButton, useFileUploadContext, Float, FileUpload, Image, Em, DialogActionTrigger } from "@chakra-ui/react";
 import { useSelector } from 'react-redux';
 import imgs from './settings.png'
 import search from './Search.png'
-import { Checkbox, Input, Stack } from "@chakra-ui/react"
 
 const categories = [
   "Outdoorsy",
