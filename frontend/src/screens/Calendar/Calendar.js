@@ -1,5 +1,6 @@
 import React from 'react';
 import './Calendar.css';
+import NewEvent from './NewEvent.js';
 
 const Calendar = () => {
   return (
@@ -12,6 +13,7 @@ const Calendar = () => {
       </div>
       <div className="calendar-new-event">
         <h1>New Event Screen</h1>
+        < NewEvent />
       </div>
       <div className="calendar-week-view">
         <h1>Week View Screen</h1>
