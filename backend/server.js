@@ -6,6 +6,8 @@ const connectDB = require("./config/db");
 const notes = require('./data/notes');
 const userRoutes = require('./routes/userRoutes');
 const postRoutes = require("./routes/postRoutes");
+const announcementRoutes = require('./routes/announcementRoutes');
+
 const { notFound, errorHandler} = require('./middlewares/errorMiddleware');
 
 // create an object of imported express package
@@ -23,6 +25,7 @@ app.get('/', (req, res) => {
 // Tells express that all reqs to /api/users should be handled by userRoutes.js (in backend/routes)
 app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
+app.use('/api/announcements', announcementRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
