@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import './ChatLink.css';
-import { AbsoluteCenter, Avatar, Badge, HStack, Accordion, Stack, Box, Button, Span, Dialog, Portal, CloseButton, useFileUploadContext, Float, FileUpload, Image, Em } from "@chakra-ui/react";
+import { AbsoluteCenter, Avatar, Badge, HStack, Accordion, Stack, Box, Button, Span, Dialog, Portal, CloseButton, useFileUploadContext, Float, FileUpload, Image, Em, DialogActionTrigger } from "@chakra-ui/react";
 import { useSelector } from 'react-redux';
 import imgs from './settings.png'
 
@@ -17,6 +17,8 @@ const ChatLink = () => {
     { value: "b", image: "", title: "Saturday Bible Study", link:"link2", text: "Chat Description 2" },
     { value: "c", image: "", title: "Saturday Bible Study", link:"link3", text: "Chat Description 3` " },
   ]  
+
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
   return (
     <div className="chatlink-screen">
@@ -71,22 +73,26 @@ const ChatLink = () => {
                           <Dialog.Backdrop />
                           <Dialog.Positioner>
                             <Dialog.Content flex="1" justifyContent="center" alignItems="center" margin="10%" bg="white">
-                              <Dialog.CloseTrigger asChild>
-                                <CloseButton size="sm"/>
-                              </Dialog.CloseTrigger>
-                              <Dialog.Header>
-                                <Dialog.Title color="black">Edit Image</Dialog.Title>
-                              </Dialog.Header>
-                              <Dialog.Body>
+                              <Box display="flex" justifyContent="space-between" width="full" padding="2">
+                                <Dialog.CloseTrigger asChild>
+                                  <Button size="sm">Cancel</Button>
+                                  {/* <CloseButton size="sm"/> */}
+                                </Dialog.CloseTrigger>
+                                <Dialog.ActionTrigger asChild>
+                                  <Button size="sm">Update</Button>
+                                </Dialog.ActionTrigger>
+                              </Box>
+                              <Dialog.Body display="flex" flexDirection="column" alignItems="center" justifyContent="center">
                                 <Avatar.Root borderRadius="10px" height="150px" width="150px">
                                   <Avatar.Image src={item.image} />
                                   <Avatar.Fallback name={item.title} />
                                 </Avatar.Root>
+                                <Dialog.Title paddingTop="2" color="black" >Change Image</Dialog.Title>
                               </Dialog.Body>
-                              <Dialog.Title color="black" textDecoration="underline" padding="10px">
+                              <Dialog.Title color="black" textDecoration="underline" padding="2">
                                 {item.title}
                               </Dialog.Title>
-                              <Dialog.Footer>
+                              <Dialog.Footer justifyContent="space-between" width="full">
                                 <Button colorPalette="gray" variant="subtle" borderRadius="20px">Edit Link</Button>
                                 <Dialog.ActionTrigger asChild>
                                   <Button colorPalette="red" borderRadius="20px">Delete</Button>
@@ -114,6 +120,16 @@ const ChatLink = () => {
           </Accordion.Root>
         </Stack>
       </div>
+      <Dialog.Root isOpen={deleteConfirmOpen} onClose={() => setDeleteConfirmOpen(false)}>
+          <Portal>
+            <Dialog.Backdrop />
+            <Dialog.Positioner>
+              <Dialog.Content>
+                <Dialog.Title>hi</Dialog.Title>
+              </Dialog.Content>
+            </Dialog.Positioner>
+          </Portal>
+        </Dialog.Root>
     </div>
   );
 };
