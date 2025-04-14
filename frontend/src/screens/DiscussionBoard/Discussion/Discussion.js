@@ -104,7 +104,15 @@ const Discussion = () => {
                     <p>{post.body}</p>
                   </Accordion.ItemBody>
                   <div className="buttons">
-                    <Button variant="ghost" size="md" className="button">
+                    <Button
+                      variant="ghost"
+                      size="md"
+                      className="button"
+                      onClick={() => {
+                        // navigate("/thread-" + post._id);
+                        navigate("/thread");
+                      }}
+                    >
                       Thread
                       <LuMessageSquareText />
                     </Button>
@@ -136,7 +144,7 @@ const Discussion = () => {
               </Accordion.Item>
             ))
           ) : (
-            <p className="text">No posts found.</p>
+            <p className="text postsContainer">No posts found.</p>
           )}
         </Accordion.Root>
       </div>
