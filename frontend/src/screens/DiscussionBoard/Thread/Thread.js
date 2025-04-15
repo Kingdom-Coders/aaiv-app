@@ -44,7 +44,7 @@ const Thread = () => {
   const threads = [
     {
       "thread-id": 1,
-      author: "ken",
+      author: "Insert Body",
       body: "thread start",
       timestamp: "2025-04-12T08:09PM",
       replies: [
@@ -88,7 +88,7 @@ const Thread = () => {
         >
           <MdArrowBackIos />
         </Button>
-        <div className="title">POST TITLE GOES HERE</div>
+        <div className="title">Post Title</div>
       </div>
       <Stack className="thread-container">
         {/* Post goes here */}

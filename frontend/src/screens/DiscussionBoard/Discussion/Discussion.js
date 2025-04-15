@@ -76,10 +76,10 @@ const Discussion = () => {
 
   return (
     <div className="container">
-      <h2 className="text">Posts</h2>
+      <h2 className="pageTitle">Discussion Board</h2>
       <div className="buttonsContainer">
         <div
-          className="signoutButton"
+          className="postButton"
           onClick={() => {
             navigate("/create-post");
           }}
