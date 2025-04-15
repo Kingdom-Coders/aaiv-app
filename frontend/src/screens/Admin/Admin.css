@@ -1,12 +1,35 @@
 .admin-screen {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background-color: white;
+    overflow-y: scroll;
+    margin-bottom: 50%;
+    width: 100%;
   }
   
   h1 {
-    font-size: 24px;
+    font-size: 36px;
     color: #333;
+    margin-bottom: 5%;
+    margin-top: 20%
   }
+
+  h2 {
+    justify-content: flex-start;
+  }
+
+
+.announcement-title {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  overflow-y: scroll;
+  justify-content: flex-start;
+}
+
+.button {
+  display: flex;
+  justify-content: flex-end;
+}
+

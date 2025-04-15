@@ -7,10 +7,10 @@ import "./UserList.css"
 function UserList() {
     const dispatch = useDispatch();
 
-    const userList = useSelector((state) => state.userList);
+    const userList = useSelector((state) => state.userList  || {});
     const {loading, users, error} = userList;
 
-    const userDelete = useSelector((state) => state.userDelete);
+    const userDelete = useSelector((state) => state.userDelete  || {});
     const { loading: loadingDelete, error: errorDelete, success: successDelete } = userDelete;
 
     const handleDelete = (id) => {
