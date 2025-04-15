@@ -88,7 +88,7 @@ const Discussion = () => {
         </div>
         <Accordion.Root collapsible className="postsContainer">
           {posts?.length ? (
-            posts.reverse().map((post, index) => (
+            posts.slice().reverse().map((post, index) => (
               <Accordion.Item key={index} value={index} className="post">
                 <Accordion.ItemTrigger className="title-container">
                   <h1 className="title">
