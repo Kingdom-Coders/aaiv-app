@@ -1,4 +1,5 @@
 import React from 'react';
+import UserList from '../../components/UserList';
 import './Admin.css';
 import { Button, ButtonGroup } from "@chakra-ui/react"
 import { Heading } from "@chakra-ui/react"
@@ -10,6 +11,7 @@ const Admin = () => {
     <div className="admin-screen">
 <<<<<<< Updated upstream
       <h1>Admin Screen</h1>
+      <UserList />
     </div>
 =======
       <h1 className="titleText">Admin Screen</h1>

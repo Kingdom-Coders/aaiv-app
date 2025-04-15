@@ -1,12 +1,29 @@
 .calendar-screen {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
     background-color: white;
   }
+
+.calendar-month-view {
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+  }
+
+.calendar-new-event {
+    display: flex;
+    flex-direction: column;
+    
+  }
+
+.calendar-week-view {
+    display: flex;
+  }
   
-  h1 {
+h1 {
     font-size: 24px;
     color: #333;
   }
