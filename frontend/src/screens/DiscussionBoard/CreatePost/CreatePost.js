@@ -20,7 +20,7 @@ const CreatePost = () => {
   }
 
   const submitHandler = () => {
-    if(!title || !body) return;
+    if(!title) return;
     dispatch(createPostAction(title, body));
     resetHandler();
     navigate("/discussion");
@@ -28,7 +28,10 @@ const CreatePost = () => {
 
   return (
     <div className="addPostContainer">
-      <h2>Create a New Post</h2>
+      <h2
+        style={{margin: "24px 0", fontSize: "28px"}}
+      >Create a New Post</h2>
+      
       <div className="formContainer">
         <input
           className="formInput"
@@ -37,12 +40,13 @@ const CreatePost = () => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-        <input
+        <textarea
           className="formInput"
           type="text"
-          placeholder="Body"
+          placeholder="Post"
           value={body}
           onChange={(e) => setBody(e.target.value)}
+          rows={4}
         />
       </div>
 
@@ -51,7 +55,7 @@ const CreatePost = () => {
           Submit
         </div>
         <div className="backLink">
-          <span onClick={() => navigate("/posts")}>Back</span>
+          <span onClick={() => navigate("/discussion")}>Back</span>
         </div>
       </div>
     </div>
