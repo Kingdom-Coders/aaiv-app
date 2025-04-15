@@ -1,11 +1,16 @@
 import React from 'react';
 import './Calendar.css';
+import GoogleLogin from '../../components/GoogleLogin';
+import { ChakraProvider } from '@chakra-ui/react';
 
 const Calendar = () => {
   return (
     <div className="calendar-screen">
       <div className="calendar-title">
         <h1>Calendar Screen</h1>
+      </div>
+      <div className="calendar-google-login">
+        <GoogleLogin />
       </div>
       <div className="calendar-month-view">
         <h1>Month View Screen</h1>
