@@ -9,11 +9,6 @@ import { Textarea } from "@chakra-ui/react"
 const Admin = () => {
   return (
     <div className="admin-screen">
-<<<<<<< Updated upstream
-      <h1>Admin Screen</h1>
-      <UserList />
-    </div>
-=======
       <h1 className="titleText">Admin Screen</h1>
       <UserList />
       <div className="announcement-post">
@@ -36,7 +31,6 @@ const Admin = () => {
         </div>
 
         </div>
->>>>>>> Stashed changes
   );
 };
 
