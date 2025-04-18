@@ -6,15 +6,15 @@ const {
     updateAnnouncement,
     deleteAnnouncement
 } = require("../controllers/announcementController");
-const { protect } = require("../middlewares/authMiddleware");
+const { protect, admin } = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
 router.route('/').get(protect, getAnnouncements);
-router.route('/create').post(protect, createAnnouncement);
+router.route('/create').post(protect, admin, createAnnouncement);
 router.route('/:id')
     .get(getAnnouncementById)
-    .put(protect, updateAnnouncement)
-    .delete(protect, deleteAnnouncement);
+    .put(protect, admin, updateAnnouncement)
+    .delete(protect, admin, deleteAnnouncement); 
 
 module.exports = router;
