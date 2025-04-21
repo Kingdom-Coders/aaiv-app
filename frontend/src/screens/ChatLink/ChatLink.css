@@ -4,6 +4,8 @@
     justify-content: flex-start;
     align-items: center;
     height: 100vh;
+    background-color: white;
+    gap: 10px;
     background-color: #DBE4EE;
   }
 
