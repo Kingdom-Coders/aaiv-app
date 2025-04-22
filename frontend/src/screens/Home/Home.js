@@ -4,6 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../../actions/userActions";
 import './Home.css';
 
+function toggleBlur() {
+  const blurredText = document.querySelector('.blur-text');
+  
+  blurredText.classList.toggle('revealed');
+}
+
 const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -15,9 +21,19 @@ const Home = () => {
   return (
     <div className="home-screen">
       <h1>Home Screen</h1>
-      <div className="dailybibleverse-tab">
-        <h4>Daily Bible Verse</h4>
-      </div>
+       <div className="BibleVerse">
+        <p>
+          <span style={{ fontWeight: 'bold' }}>daily bible verse:</span>
+        </p>
+
+        <div className="blur-container" onClick={toggleBlur}>
+          <p className="blur-text">
+            Why did I not perish at birth, <br />
+            and die as I came from the womb?<br />
+            Job 3:11
+          </p>
+        </div>
+   </div>
       <div className="upcomingevents-tab">
         <h3>Upcoming Events</h3>
       </div>
@@ -37,6 +53,7 @@ const Home = () => {
       </div>
 
     </div>
+    
   );
 };
 
