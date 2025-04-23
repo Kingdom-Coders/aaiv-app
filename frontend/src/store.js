@@ -2,6 +2,13 @@ import { legacy_createStore as createStore, combineReducers, applyMiddleware } f
 import { thunk } from "redux-thunk";
 import { userDeleteReducer, userListReducer, userLoginReducer, userRegisterReducer } from "./reducers/userReducers";
 import { postCreateReducer, postDeleteReducer, postListReducer } from "./reducers/postsReducers";
+import { 
+    announcementListReducer,
+    announcementCreateReducer,
+    announcementDetailsReducer,
+    announcementUpdateReducer,
+    announcementDeleteReducer 
+} from "./reducers/announcementsReducers";
 
 const reducer = combineReducers({
     userLogin: userLoginReducer,
@@ -11,6 +18,11 @@ const reducer = combineReducers({
     postList: postListReducer,
     postCreate: postCreateReducer,
     postDelete: postDeleteReducer,
+    announcementList: announcementListReducer,
+    announcementCreate: announcementCreateReducer,
+    announcementDetails: announcementDetailsReducer,
+    announcementUpdate: announcementUpdateReducer,
+    announcementDelete: announcementDeleteReducer,
 })
 
 const userInfoFromStorage = localStorage.getItem('userInfo')
