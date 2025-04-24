@@ -1,11 +1,52 @@
 .home-screen {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: white;
-  flex-direction: column;
-}
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* background-color: blue; */
+    flex-direction: column;
+    gap: 10%;
+   display: flex;
+    height: 100vh;
+    background-color: white;
+  }
+
+  h1 {
+    font-size: 24px;
+    color: #333;
+  }
+
+  .dailybibleverse-tab {
+    width: 90%;
+    /* background-color: orange; */
+  }
+
+  .upcomingevents-tab {
+    width: 90%;
+    /* background-color: purple; */
+  }
+
+  h3 {
+    text-align: left;
+  }
+
+  .more-tab {
+    width: 90%;
+    text-align: left;
+    /* background-color: green; */
+  }
+
+  h2 {
+    text-align: left;
+  }
+
+  .insta {
+    text-align: left;
+  }
+
+  .markcamp {
+    text-align: left;
+  }
 
 .BibleVerse {
   font-size: 20px;   
