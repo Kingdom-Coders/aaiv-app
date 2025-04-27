@@ -109,8 +109,8 @@ const Discussion = () => {
                       size="md"
                       className="button"
                       onClick={() => {
-                        // navigate("/thread-" + post._id);
-                        navigate("/thread");
+                        navigate("/thread-" + post._id);
+                        //navigate("/thread");
                       }}
                     >
                       Thread
