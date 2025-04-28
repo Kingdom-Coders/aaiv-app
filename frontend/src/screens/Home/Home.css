@@ -1,28 +1,85 @@
 .home-screen {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: white;
-    flex-direction: column;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: white;
+  flex-direction: column;
+}
 
-  .signoutButton {
-    padding: 10px;
-    width: 250px;
-    border-radius: 5px;
-    border: 1px solid gray;
-    font-size: 16px;
-    text-align: center;
-    color: black;
-  }
-  
-  .signoutButton:hover {
-    cursor: pointer;
-    transform: scale(1.02);
-  }
-  
-  h1 {
-    font-size: 24px;
-    color: #333;
-  }
+.signoutButton {
+  padding: 10px;
+  width: 250px;
+  border-radius: 5px;
+  border: 1px solid gray;
+  font-size: 16px;
+  text-align: center;
+  color: black;
+}
+
+.signoutButton:hover {
+  cursor: pointer;
+  transform: scale(1.02);
+}
+
+h1 {
+  font-size: 24px;
+  color: #333;
+}
+
+.wrapper {
+  position: relative;
+  overflow: hidden;
+  margin-top: 30px;
+  width: 100%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.carousel {
+  display: flex;
+  transition: all 0.3s ease;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 20px 0;
+}
+
+.card {
+  min-width: 250px;
+  margin-right: 16px;
+  padding: 20px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 24px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  user-select: none;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.arrow.left {
+  left: 10px;
+}
+
+.arrow.right {
+  right: 10px;
+}
+
+.dragging {
+  cursor: grabbing;
+}
