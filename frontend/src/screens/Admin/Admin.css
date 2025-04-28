@@ -2,11 +2,13 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  color: black;
 }
 
 .titleText {
   font-size: 2rem;
   margin-bottom: 20px;
+  color: black;
 }
 
 /* Alert styles */
@@ -16,23 +18,24 @@
   margin-bottom: 20px;
   display: flex;
   align-items: center;
+  color: black;
 }
 
 .alert-success {
   background-color: #d4edda;
-  color: #155724;
+  color: black;
   border: 1px solid #c3e6cb;
 }
 
 .alert-error {
   background-color: #f8d7da;
-  color: #721c24;
+  color: black;
   border: 1px solid #f5c6cb;
 }
 
 .alert-warning {
   background-color: #fff3cd;
-  color: #856404;
+  color: black;
   border: 1px solid #ffeeba;
 }
 
@@ -40,11 +43,13 @@
 .announcements-list {
   margin-top: 30px;
   margin-bottom: 30px;
+  color: black;
 }
 
 .section-heading {
   font-size: 1.5rem;
   margin-bottom: 20px;
+  color: black;
 }
 
 .loading-spinner {
@@ -66,7 +71,7 @@
 }
 
 .error-message {
-  color: #e53e3e;
+  color: black;
 }
 
 .announcement-item {
@@ -75,16 +80,19 @@
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  color: black;
 }
 
 .announcement-title {
   font-size: 1.2rem;
   font-weight: 600;
+  color: black;
 }
 
 .announcement-body {
   margin-top: 8px;
   margin-bottom: 8px;
+  color: black;
 }
 
 /* Form elements */
@@ -95,25 +103,29 @@
   border-radius: 4px;
   margin-bottom: 20px;
   font-size: 1rem;
+  color: black;
 }
 
 .textarea-input {
   min-height: 120px;
   resize: vertical;
+  color: black;
 }
 
 .text-input:focus, .textarea-input:focus {
   outline: none;
   border-color: #3182ce;
   box-shadow: 0 0 0 1px #3182ce;
+  color: black;
 }
 
 .button {
   margin-top: 10px;
+  color: black;
 }
 
 .submit-button {
-  background-color: #3182ce;
+  background-color: black;
   color: white;
   border: none;
   border-radius: 4px;
@@ -124,11 +136,11 @@
 }
 
 .submit-button:hover {
-  background-color: #2b6cb0;
+  background-color: #333;
 }
 
 .submit-button:disabled {
-  background-color: #90cdf4;
+  background-color: #666;
   cursor: not-allowed;
 }
 
@@ -152,21 +164,28 @@
   cursor: not-allowed;
 }
 
+/* Polished announcement post section */
 .announcement-post {
   margin-top: 30px;
   margin-bottom: 100px;
-  padding: 20px;
-  border: 1px solid #e2e8f0;
+  padding: 24px;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  background-color: #f7fafc;
+  background-color: white;
+  color: black;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .announcement-post h1 {
   font-size: 1.5rem;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+  color: black;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
 }
 
 .announcement-post h2 {
   font-size: 1.1rem;
   margin-bottom: 10px;
+  color: black;
 }

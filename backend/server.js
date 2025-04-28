@@ -7,6 +7,7 @@ const notes = require('./data/notes');
 const userRoutes = require('./routes/userRoutes');
 const postRoutes = require("./routes/postRoutes");
 const announcementRoutes = require('./routes/announcementRoutes');
+const discussionRoutes = require('./routes/discussionRoutes');
 
 const { notFound, errorHandler} = require('./middlewares/errorMiddleware');
 
@@ -26,6 +27,7 @@ app.get('/', (req, res) => {
 app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/announcements', announcementRoutes);
+app.use('/api/discussions', discussionRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
