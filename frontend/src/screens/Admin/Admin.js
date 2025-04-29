@@ -7,6 +7,8 @@ import {
   listAnnouncements, 
   deleteAnnouncementAction 
 } from '../../actions/announcementActions';
+import { Tabs } from '@chakra-ui/react';
+import { LuMegaphone, LuUser } from 'react-icons/lu';
 
 const Admin = () => {
   const [title, setTitle] = useState('');
@@ -82,17 +84,28 @@ const Admin = () => {
   };
 
   return (
+    <Tabs.Root defaultValue="members">
     <div className="admin-screen">
       <h1 className="titleText">Admin Screen</h1>
-      <UserList />
-      
+      <Tabs.List>
+        <Tabs.Trigger value="members">
+          <LuUser />
+          Members
+        </Tabs.Trigger>
+        <Tabs.Trigger value="announcements">
+          <LuMegaphone />
+          Announcements
+        </Tabs.Trigger>
+      </Tabs.List>
+      <Tabs.Content value="members"><UserList /></Tabs.Content>
+      <Tabs.Content value="announcements">
       {/* Status Alert */}
       {statusMessage && (
         <div className={`alert alert-${statusMessage.type}`}>
           {statusMessage.text}
         </div>
       )}
-      
+
       {/* Announcements List */}
       <div className="announcements-list">
         <h2 className="section-heading">Current Announcements</h2>
@@ -161,9 +174,12 @@ const Admin = () => {
               {createLoading ? 'Posting...' : 'Post Announcement'}
             </button>
           </div>
-        </form>
+        </form> 
+        
       </div>
+      </Tabs.Content>
     </div>
+    </Tabs.Root>
   );
 };
 
