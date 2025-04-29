@@ -35,7 +35,7 @@ const ChatLink = () => {
 
   const checkBoxes = (groups, checkedItems) => {
     for (let i = 0; i < groups.length; i++) {
-      if (checkedItems[groups[i]]) {
+      if (checkedItems[categories.indexOf(groups[i])]) {
         return true;
       }
     }
@@ -44,10 +44,10 @@ const ChatLink = () => {
 
   const [value, setValue] = useState(["a"])
   const items = [
-    { value: "a", image: "", title: "Saturday Bible Study", link:"link1", text: "Chat Description 1", groups: [2] },
-    { value: "b", image: "", title: "Tennis", link:"link2", text: "Chat Description 2", groups: [0, 2] },
-    { value: "c", image: "", title: "Basketball", link:"link3", text: "Chat Description 3` ", groups: [0, 2] },
-  ]  //decided to just handle groups by index for now to make it easier
+    { value: "a", image: "", title: "Saturday Bible Study", link:"link1", text: "Chat Description 1", groups: ["Social"] },
+    { value: "b", image: "", title: "Tennis", link:"link2", text: "Chat Description 2", groups: ["Outdoorsy", "Social"] },
+    { value: "c", image: "", title: "Basketball", link:"link3", text: "Chat Description 3` ", groups: ["Outdoorsy", "Social"] },
+  ] 
 
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
@@ -86,8 +86,6 @@ const ChatLink = () => {
            </Checkbox.Root>
          </Stack>
          ))}
-         {checkedItems.toString()}
-        
        </div>
      </div>
 
