@@ -1,0 +1,72 @@
+.welcome-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  }
+  
+  .welcome-content {
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 90%;
+  }
+  
+  .welcome-content h1 {
+    color: #333;
+    margin-bottom: 1rem;
+  }
+  
+  .welcome-content p {
+    color: #666;
+    margin-bottom: 2rem;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .welcome-button {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  
+  .login-button {
+    background-color: #4a6fa5;
+    color: white;
+  }
+  
+  .login-button:hover {
+    background-color: #3a5a8f;
+  }
+  
+  .register-button {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .register-button:hover {
+    background-color: #3e8e41;
+  }
+  
+  @media (max-width: 480px) {
+    .button-group {
+      flex-direction: column;
+    }
+    
+    .welcome-button {
+      width: 100%;
+    }
+  }
