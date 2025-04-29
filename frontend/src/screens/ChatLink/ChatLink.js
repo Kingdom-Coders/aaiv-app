@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import './ChatLink.css';
-import { Flex, AbsoluteCenter, Checkbox, Input, Stack, Avatar, Badge, HStack, Accordion, Box, Button, Span, Dialog, Portal, CloseButton, useFileUploadContext, Float, FileUpload, Image, Em, DialogActionTrigger } from "@chakra-ui/react";
+import { Flex, AbsoluteCenter, Checkbox, Input, Stack, Avatar, Badge, HStack, Accordion, Box, Button, Span, Dialog, Portal, CloseButton, useFileUploadContext, Float, FileUpload, Image, Em, DialogActionTrigger} from "@chakra-ui/react";
 import { useSelector } from 'react-redux';
 import imgs from './settings.png'
 import search from './Search.png'
@@ -19,11 +19,17 @@ const ChatLink = () => {
   // const isAdmin = userInfo?.isAdmin;
   const isAdmin = true;
 
+  const [inputValue, setInputValue] = useState("");
+
+const handleChange = (e) => {
+  setInputValue(e.target.value);
+};
+
   const [value, setValue] = useState(["a"])
   const items = [
     { value: "a", image: "", title: "Saturday Bible Study", link:"link1", text: "Chat Description 1" },
-    { value: "b", image: "", title: "Saturday Bible Study", link:"link2", text: "Chat Description 2" },
-    { value: "c", image: "", title: "Saturday Bible Study", link:"link3", text: "Chat Description 3` " },
+    { value: "b", image: "", title: "Tennis", link:"link2", text: "Chat Description 2" },
+    { value: "c", image: "", title: "Basketball", link:"link3", text: "Chat Description 3` " },
   ]  
 
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
@@ -45,7 +51,12 @@ const ChatLink = () => {
        <div className = "chatlink-Search">
          <img src={search} alt="Search Image" />
          <div className="chatlink-SearchBar">
-           <Input placeholder="Search" style={{color: "#A0AEC0"}}/>
+            <Input
+              placeholder="Search"
+              value={inputValue}
+              onChange={handleChange}
+              style={{color: "#A0AEC0"}}
+            />
          </div>
        </div>
        <div className="chatlink-Checkboxes">
@@ -119,8 +130,8 @@ const ChatLink = () => {
       <div className="chatlink-links">
         <Stack gap="8" width="85vw">
           <Accordion.Root spaceY="4" variant="plain" collapsible defaultValue={["a"]}>
-            {items.map((item, index) => (
-              <Accordion.Item 
+            {items.map((item, index) => item.title.toLowerCase().includes(inputValue.toLowerCase()) && (
+                <Accordion.Item 
                 key={index} 
                 value={item.value}
                 css={{
@@ -139,6 +150,7 @@ const ChatLink = () => {
                     justifyContent: "space-between",
                     width: "100%"
                   }}
+                  
                 >
                   <HStack width="100%" spacing="4" align="center">
                     <Avatar.Root borderRadius="10px">
@@ -190,6 +202,7 @@ const ChatLink = () => {
                     )}
                   </HStack>
                 </Accordion.ItemTrigger>
+                
                 <Accordion.ItemContent>
                   <Box p="4" bg="gray.50" borderRadius="0 0 10px 10px">
                     <Box mb="2" fontWeight="medium" color="black">Description:</Box>
