@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../../../actions/userActions";
 import "./Discussion.css";
 import { deletePostAction, listPosts } from "../../../actions/postActions";
-import { BsTrash3 } from "react-icons/bs";
 import { GrMore } from "react-icons/gr";
 import { LuMessageSquareText } from "react-icons/lu";
 import { Button, Menu, Portal, Card, Accordion } from "@chakra-ui/react";
@@ -51,7 +50,7 @@ const Discussion = () => {
     "Dec",
   ];
 
-  const dateFinder = (date) => {
+  const dateFormatter = (date) => {
     const now = new Date();
 
     const year = now.getFullYear();
@@ -77,10 +76,10 @@ const Discussion = () => {
 
   return (
     <div className="container">
-      <h2>Posts</h2>
+      <h2 className="pageTitle">Discussion Board</h2>
       <div className="buttonsContainer">
         <div
-          className="signoutButton"
+          className="postButton"
           onClick={() => {
             navigate("/create-post");
           }}
@@ -89,13 +88,13 @@ const Discussion = () => {
         </div>
         <Accordion.Root collapsible className="postsContainer">
           {posts?.length ? (
-            posts.reverse().map((post, index) => (
+            posts.slice().reverse().map((post, index) => (
               <Accordion.Item key={index} value={index} className="post">
                 <Accordion.ItemTrigger className="title-container">
                   <h1 className="title">
                     {post.title}{" "}
                     <span className="date">
-                      {dateFinder(post.createdAt.substring(0, 10))}
+                      {dateFormatter(post.createdAt.substring(0, 10))}
                     </span>{" "}
                   </h1>
                   <Accordion.ItemIndicator />
@@ -105,9 +104,17 @@ const Discussion = () => {
                     <p>{post.body}</p>
                   </Accordion.ItemBody>
                   <div className="buttons">
-                    <Button variant="ghost" size="md" className="button">
+                    <Button
+                      variant="ghost"
+                      size="md"
+                      className="button"
+                      onClick={() => {
+                        navigate("/thread-" + post._id);
+                        //navigate("/thread");
+                      }}
+                    >
+                      Thread
                       <LuMessageSquareText />
-                      Reply
                     </Button>
                     <Menu.Root>
                       <Menu.Trigger asChild>
@@ -137,7 +144,7 @@ const Discussion = () => {
               </Accordion.Item>
             ))
           ) : (
-            <p>No posts found.</p>
+            <p className="text postsContainer">No posts found.</p>
           )}
         </Accordion.Root>
       </div>
