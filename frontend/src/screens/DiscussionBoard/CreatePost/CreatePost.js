@@ -28,9 +28,7 @@ const CreatePost = () => {
 
   return (
     <div className="addPostContainer">
-      <h2
-        style={{margin: "24px 0", fontSize: "28px"}}
-      >Create a New Post</h2>
+      <h2 className="createPostTitle">Create a New Post</h2>
       
       <div className="formContainer">
         <input

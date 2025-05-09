@@ -26,6 +26,12 @@
   color: black;
 }
 
+.postTitle {
+  color: black;
+  font-weight: bold;
+  font-size: 20px;
+}
+
 .thread-container {
   padding-top: 2rem;
   width: 75%;

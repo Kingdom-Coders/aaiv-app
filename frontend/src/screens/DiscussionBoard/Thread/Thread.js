@@ -88,7 +88,7 @@ const Thread = () => {
         >
           <MdArrowBackIos />
         </Button>
-        <div className="title">Post Title</div>
+        <h2 className="postTitle">Post Title</h2>
       </div>
       <Stack className="thread-container">
         {/* Post goes here */}
