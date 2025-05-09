@@ -281,20 +281,70 @@ const ChatLink = () => {
                         </Menu.Trigger>
                         <Portal>
                           <Menu.Positioner>
-                            <Menu.Content>
+                            <Menu.Content
+                              margin="10%"
+                              backgroundColor="rgba(18, 18, 18, 0.98)"
+                            >
                               <Menu.Item value="rename">Rename</Menu.Item>
                               <Menu.Item value="image">Change Image</Menu.Item>
-                              <Menu.Item
-                                value="delete"
-                                color="fg.error"
-                                _hover={{
-                                  bg: "bg.error",
-                                  color: "fg.error",
-                                }}
+                              <Dialog.Root
+                                role="alertdialog"
+                                placement="center"
                               >
-                                Delete
-                                <Menu.Trigger></Menu.Trigger>
-                              </Menu.Item>
+                                <Dialog.Trigger asChild>
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    padding="2"
+                                    color="red"
+                                  >
+                                    Delete
+                                  </Button>
+                                </Dialog.Trigger>
+                                <Portal>
+                                  <Dialog.Backdrop />
+                                  <Dialog.Positioner>
+                                    <Dialog.Content
+                                      flex="1"
+                                      justifyContent="center"
+                                      alignItems="center"
+                                      margin="10%"
+                                      bg="white"
+                                    >
+                                      <Dialog.Header>
+                                        <Dialog.Title color="black">
+                                          Are you sure?
+                                        </Dialog.Title>
+                                      </Dialog.Header>
+                                      <Dialog.Body>
+                                        <p>
+                                          This action cannot be undone. This
+                                          will permanently remove this chat data
+                                          from our systems.
+                                        </p>
+                                      </Dialog.Body>
+                                      <Dialog.Footer>
+                                        <Dialog.ActionTrigger asChild>
+                                          <Button
+                                            variant="outline"
+                                            color="black"
+                                          >
+                                            Cancel
+                                          </Button>
+                                        </Dialog.ActionTrigger>
+                                        <Button colorPalette="red">
+                                          Delete
+                                        </Button>
+                                      </Dialog.Footer>
+                                      <Dialog.CloseTrigger asChild>
+                                        <CloseButton size="sm" />
+                                      </Dialog.CloseTrigger>
+                                    </Dialog.Content>
+                                  </Dialog.Positioner>
+                                </Portal>
+                              </Dialog.Root>
+                              {/* <Menu.Trigger></Menu.Trigger> */}
+                              {/* </Menu.Item> */}
                             </Menu.Content>
                           </Menu.Positioner>
                         </Portal>
