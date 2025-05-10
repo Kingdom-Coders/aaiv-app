@@ -34,7 +34,34 @@
 
 .thread-container {
   padding-top: 2rem;
-  width: 75%;
+  width: 80%;
   max-width: 600px;
   color: black;
+}
+
+.thread {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-bottom: 1rem;
+}
+
+.thread-head {
+  text-align: left;
+}
+
+.author {
+  font-weight: 600;
+}
+
+.body {
+}
+
+.thread-button {
+  padding-left: 0;
+}
+
+.reply {
+  text-align: left;
+  padding-left: 7%;
 }
