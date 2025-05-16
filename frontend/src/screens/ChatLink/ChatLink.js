@@ -1,9 +1,10 @@
 import React, { useState, useMemo } from "react";
 import './ChatLink.css';
-import { Flex, AbsoluteCenter, Checkbox, Input, Stack, Avatar, Badge, HStack, Accordion, Box, Button, Span, Dialog, Portal, CloseButton, useFileUploadContext, Float, FileUpload, Image, Em, DialogActionTrigger} from "@chakra-ui/react";
+import { Flex, AbsoluteCenter, Checkbox, Input, Stack, Avatar, Badge, HStack, Accordion, Box, Button, Span, Dialog, Portal, CloseButton, useFileUploadContext, Float, FileUpload, Image, Em, DialogActionTrigger, Select, createListCollection} from "@chakra-ui/react";
 import { useSelector } from 'react-redux';
 import imgs from './settings.png'
 import search from './Search.png'
+import { useRef } from "react"
 
 
 const categories = [
@@ -12,6 +13,8 @@ const categories = [
   "Social"
 ];
 
+
+
 const ChatLink = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, error, userInfo } = userLogin;
@@ -19,17 +22,19 @@ const ChatLink = () => {
   // const isAdmin = userInfo?.isAdmin;
   const isAdmin = true;
 
-  const [inputValue, setInputValue] = useState("");
-
-const handleChange = (e) => {
-  setInputValue(e.target.value);
-};
-
+  const [value2, setValue2] = useState(["a"]);
+  const frameworks = createListCollection({
+    items: [
+      { label: "Outdoorsy", value2: "outdoorsy"},
+      { label: "Studious", value2: "studious"},
+      { label: "Social", value2: "social"},
+    ],
+  });
   const [value, setValue] = useState(["a"])
   const items = [
     { value: "a", image: "", title: "Saturday Bible Study", link:"link1", text: "Chat Description 1" },
-    { value: "b", image: "", title: "Tennis", link:"link2", text: "Chat Description 2" },
-    { value: "c", image: "", title: "Basketball", link:"link3", text: "Chat Description 3` " },
+    { value: "b", image: "", title: "Saturday Bible Study", link:"link2", text: "Chat Description 2" },
+    { value: "c", image: "", title: "Saturday Bible Study", link:"link3", text: "Chat Description 3` " },
   ]  
 
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
@@ -40,6 +45,28 @@ const handleChange = (e) => {
     setShowAddGroupCard(true);
   };
 
+  const [newTitle, setNewTitle] = useState("");
+  const [newLink, setNewLink] = useState("");
+  const [newDesc, setNewDesc] = useState("");
+
+  const handleConfirmAddGroup = () => {
+    const newItem = {
+      value: Date.now().toString(),
+      title: newTitle,
+      link: newLink,
+      text: newDesc,
+    };
+    setValue((prevItems) => [...prevItems, newItem]);
+    setNewTitle("");
+    setNewLink("");
+    setNewDesc("");
+
+    setShowAddGroupCard(false);
+  };
+
+  
+
+  
 
   return (
     <div className="chatlink-screen">
@@ -51,12 +78,7 @@ const handleChange = (e) => {
        <div className = "chatlink-Search">
          <img src={search} alt="Search Image" />
          <div className="chatlink-SearchBar">
-            <Input
-              placeholder="Search"
-              value={inputValue}
-              onChange={handleChange}
-              style={{color: "#A0AEC0"}}
-            />
+           <Input placeholder="Search" style={{color: "#A0AEC0"}}/>
          </div>
        </div>
        <div className="chatlink-Checkboxes">
@@ -99,21 +121,48 @@ const handleChange = (e) => {
                   </Dialog.Header>
                   <Dialog.Body p={3} >
                     <p>
-                      Please provide the name and the link
+                      Please provide the name, link, and description
                     </p>
                   </Dialog.Body>
                   <Dialog.Body p={2}>
-                    <Input placeholder="Title"></Input>
+                    <Input placeholder="Title" value={newTitle} onChange={(e) => setNewTitle(e.target.value)}></Input>
                   </Dialog.Body>
                   <Dialog.Body p={2}>
-                    <Input placeholder="Link"></Input>
+                    <Input placeholder="Link" value={newLink} onChange={(e) => setNewLink(e.target.value)}></Input>
                   </Dialog.Body>
-
+                  <Dialog.Body p={2}>
+                    <Input placeholder="Description" value={newDesc} onChange={(e) => setNewDesc(e.target.value)}></Input>
+                  </Dialog.Body>
+                  <Dialog.Body>
+                    <Select.Root collection={frameworks} size="sm"value={value2}>
+                      <Select.HiddenSelect />
+                      <Select.Label>Filters</Select.Label>
+                      <Select.Control>
+                        <Select.Trigger>
+                          <Select.ValueText placeholder="Select filter(s)" />
+                        </Select.Trigger>
+                        <Select.IndicatorGroup>
+                          <Select.Indicator />
+                        </Select.IndicatorGroup>
+                      </Select.Control>
+                      <Portal>
+                        <Select.Positioner>
+                          <Select.Content>
+                            {frameworks.items.map((framework) => (
+                              <Select.Item item={framework} key = {framework.value}>
+                                {framework.label}
+                              </Select.Item>
+                            ))}
+                          </Select.Content>
+                        </Select.Positioner>
+                      </Portal>
+                    </Select.Root>
+                  </Dialog.Body>
                   <Dialog.Footer>
                     <Dialog.ActionTrigger asChild>
                       <Button variant="outline">Cancel</Button>
                     </Dialog.ActionTrigger>
-                    <Button>Confirm</Button>
+                    <Button onClick={handleConfirmAddGroup}>Confirm</Button>
                   </Dialog.Footer>
                   <Dialog.CloseTrigger asChild>
                     <CloseButton size="sm" />
@@ -121,17 +170,68 @@ const handleChange = (e) => {
                 </Dialog.Content>
               </Dialog.Positioner>
               </Portal>
-              
-            
           </Dialog.Root>
         </div>
+
+                          
+                            
+      )
+
+      }
+
+      {isAdmin && (
+        <div className="filters">
+          <Dialog.Root placement="center" size="md" colorPalette>
+            <Dialog.Trigger asChild>
+              <Flex justify="center" mt={4} mb={4}>
+                <Button 
+                  colorPalette="blue" 
+                  onClick={() => handleAddGroup()}
+                  size="lg"
+                  width="200px"
+                  rounded="xl"
+                  >
+                    Add Filter
+                </Button>
+              </Flex>
+            </Dialog.Trigger>
+          <Portal>
+            <Dialog.Backdrop />
+            <Dialog.Positioner>
+              <Dialog.Content>
+                <Dialog.Header>
+                  <Dialog.Title>Add Filter</Dialog.Title>
+                </Dialog.Header>
+                <Dialog.Body p={3} >
+                    <p>
+                      Please provide the name of the filter
+                    </p>
+                  </Dialog.Body>
+                  <Dialog.Body p={2}>
+                    <Input placeholder="Filter"></Input>
+                  </Dialog.Body>
+                  <Dialog.Footer>
+                    <Dialog.ActionTrigger asChild>
+                      <Button variant="outline">Cancel</Button>
+                    </Dialog.ActionTrigger>
+                    <Button>Save</Button>
+                  </Dialog.Footer>
+                  <Dialog.CloseTrigger asChild>
+                    <CloseButton size="sm" />
+                  </Dialog.CloseTrigger>
+              </Dialog.Content>
+            </Dialog.Positioner>
+          </Portal>
+        </Dialog.Root>  
+      </div>
       )}
       
+
       <div className="chatlink-links">
         <Stack gap="8" width="85vw">
           <Accordion.Root spaceY="4" variant="plain" collapsible defaultValue={["a"]}>
-            {items.map((item, index) => item.title.toLowerCase().includes(inputValue.toLowerCase()) && (
-                <Accordion.Item 
+            {items.map((item, index) => (
+              <Accordion.Item 
                 key={index} 
                 value={item.value}
                 css={{
@@ -150,7 +250,6 @@ const handleChange = (e) => {
                     justifyContent: "space-between",
                     width: "100%"
                   }}
-                  
                 >
                   <HStack width="100%" spacing="4" align="center">
                     <Avatar.Root borderRadius="10px">
@@ -202,7 +301,6 @@ const handleChange = (e) => {
                     )}
                   </HStack>
                 </Accordion.ItemTrigger>
-                
                 <Accordion.ItemContent>
                   <Box p="4" bg="gray.50" borderRadius="0 0 10px 10px">
                     <Box mb="2" fontWeight="medium" color="black">Description:</Box>
