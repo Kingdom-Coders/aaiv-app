@@ -3,26 +3,82 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: white;
+    /* background-color: blue; */
     flex-direction: column;
+    gap: 10%;
+   display: flex;
+    height: 100vh;
+    background-color: white;
   }
 
-  .signoutButton {
-    padding: 10px;
-    width: 250px;
-    border-radius: 5px;
-    border: 1px solid gray;
-    font-size: 16px;
-    text-align: center;
-    color: black;
-  }
-  
-  .signoutButton:hover {
-    cursor: pointer;
-    transform: scale(1.02);
-  }
-  
   h1 {
     font-size: 24px;
     color: #333;
   }
+
+  .dailybibleverse-tab {
+    width: 90%;
+    /* background-color: orange; */
+  }
+
+  .upcomingevents-tab {
+    width: 90%;
+    /* background-color: purple; */
+  }
+
+  h3 {
+    text-align: left;
+  }
+
+  .more-tab {
+    width: 90%;
+    text-align: left;
+    /* background-color: green; */
+  }
+
+  h2 {
+    text-align: left;
+  }
+
+  .insta {
+    text-align: left;
+  }
+
+  .markcamp {
+    text-align: left;
+  }
+
+.BibleVerse {
+  font-size: 20px;   
+  text-align: center; 
+}
+
+.blur-container {
+  cursor: pointer; /*clickable */
+}
+
+.blur-text {
+  filter: blur(5px); /* Initial blur effect */
+  transition: filter 0.3s ease; 
+}
+
+.blur-text.revealed {
+  filter: blur(0); /* Removes blur when revealed */
+}
+
+.signoutButton {
+  padding: 10px;
+  width: 250px;
+  border-radius: 5px;
+  border: 1px solid gray;
+  font-size: 16px;
+  text-align: center;
+  color: black;
+  position: relative;
+  top: 28px; /* Move down by 50px */
+}
+
+.signoutButton:hover {
+  cursor: pointer;
+  transform: scale(1.02);
+}

@@ -23,7 +23,7 @@ const CreatePost = () => {
     if(!title || !body) return;
     dispatch(createPostAction(title, body));
     resetHandler();
-    navigate("/posts");
+    navigate("/discussion");
   };
 
   return (
