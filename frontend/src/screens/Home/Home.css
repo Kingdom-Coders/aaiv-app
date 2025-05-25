@@ -5,6 +5,40 @@
   height: 100vh;
   background-color: white;
   flex-direction: column;
+  gap: 10%;
+}
+
+h1 {
+  font-size: 24px;
+  color: #333;
+}
+
+.dailybibleverse-tab,
+.upcomingevents-tab,
+.more-tab {
+  width: 90%;
+}
+
+h2, h3, .insta, .markcamp {
+  text-align: left;
+}
+
+.BibleVerse {
+  font-size: 20px;
+  text-align: center;
+}
+
+.blur-container {
+  cursor: pointer;
+}
+
+.blur-text {
+  filter: blur(5px);
+  transition: filter 0.3s ease;
+}
+
+.blur-text.revealed {
+  filter: blur(0);
 }
 
 .signoutButton {
@@ -15,16 +49,13 @@
   font-size: 16px;
   text-align: center;
   color: black;
+  position: relative;
+  top: 28px;
 }
 
 .signoutButton:hover {
   cursor: pointer;
   transform: scale(1.02);
-}
-
-h1 {
-  font-size: 24px;
-  color: #333;
 }
 
 .wrapper {

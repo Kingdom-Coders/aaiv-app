@@ -4,6 +4,7 @@ import ErrorMessage from "../../../components/ErrorMessage";
 import "./Register.css";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../../actions/userActions";
+import { Button, Stack, Text } from "@chakra-ui/react";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -37,7 +38,10 @@ const Register = () => {
 
   return (
     <div className="container">
-      <h2>AAIV</h2> 
+      <Stack>
+        <Text textStyle="2xl" fontWeight="bold" fontFamily="Lato">Create an Account</Text> 
+        <Text> </Text>
+      </Stack> 
       <div className="formContainer">
       <input
           className="formInput"
@@ -77,12 +81,12 @@ const Register = () => {
       </div>
 
       <div className="buttonsContainer">
-        <div className="registerButton" onClick={() => onRegisterHandle()}>
+        <Button size="lg" width="250px" colorPalette={"purple"} rounded={"full"} onClick={() => onRegisterHandle()}>
           Register
-        </div>
+        </Button>      
         <div className="loginText">
-          <span>Have an account?</span> 
-          <span className="loginLink" onClick={() => navigate("/")}> Log In </span>
+          <span fontFamily="Lato">Have an account? </span> 
+          <span fontFamily="Lato" className="loginLink" onClick={() => navigate("/")}>Log In </span>
         </div>
         {message && <ErrorMessage> {message} </ErrorMessage>}
       </div>

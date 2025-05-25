@@ -1,0 +1,89 @@
+.admin-container {
+    max-width: 100%;
+    margin: 10px auto;
+    padding: 15px;
+    padding-bottom: 150px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Title */
+.admin-title {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Table Container for Responsive Design */
+.table-container {
+    width: 100%;
+    overflow-x: auto; /* Enables horizontal scrolling on small screens */
+}
+
+/* Table */
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    font-size: 14px;
+}
+
+/* Table Header */
+.user-table thead {
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+}
+
+.user-table th, 
+.user-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+    white-space: nowrap; /* Prevents text wrapping */
+}
+
+/* Zebra Striping */
+.user-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.user-table tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .admin-container {
+        padding: 10px;
+        padding-bottom: 150px;
+    }
+
+    .admin-title {
+        font-size: 18px;
+    }
+
+    .user-table {
+        font-size: 12px;
+    }
+
+    .user-table th, 
+    .user-table td {
+        padding: 8px;
+    }
+}
+
+/* Loading & Error Messages */
+.error-message {
+    color: red;
+    text-align: center;
+    font-weight: bold;
+}
+
+.loading-message {
+    text-align: center;
+    font-weight: bold;
+    color: #007bff;
+}

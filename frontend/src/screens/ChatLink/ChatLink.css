@@ -1,12 +1,58 @@
 .chatlink-screen {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
     height: 100vh;
     background-color: white;
+    gap: 10px;
+    background-color: #DBE4EE;
+  }
+
+  .chatlink-Title {
+    margin-top: 5vh;
+    height: 5vh;
+    width: 90vw;
   }
   
+  .chatlink-SearchFilter {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 15vh;
+    width: 90vw;
+  }
+  
+  .chatlink-Search {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center; 
+    height: 5vh;
+    width: 90vw;
+  }
+
+  .chatlink-SearchBar {
+    width: 80vw;
+  }
+
+  .chatlink-Checkboxes {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 90vw;
+  }
+
   h1 {
     font-size: 24px;
     color: #333;
+    text-align: left;
+  }
+
+  p {
+    font-size: 18px;
+    color: #333;
+    text-align: left;
   }

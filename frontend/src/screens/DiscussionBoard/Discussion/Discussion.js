@@ -1,67 +1,63 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { logout } from "../../../actions/userActions";
-import "./Discussion.css";
-import { deletePostAction, listPosts } from "../../../actions/postActions";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Accordion, Button } from '@chakra-ui/react';
+import { MdOutlineArrowForwardIos } from 'react-icons/md';
+import discussions from './DiscussionData';
+import './Discussion.css';
 
 const Discussion = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const postList = useSelector(state => state.postList);
-  const { loading, posts, error } = postList;
-
-  const postCreate = useSelector((state) => state.postCreate);
-  const { success: successCreate } = postCreate;
-
-  const postDelete = useSelector((state) => state.postDelete);
-  const { loading: loadingDelete, error: errorDelete, success: successDelete } = postDelete
-
-  const logoutHandler = () => {
-    dispatch(logout());
-  }
-
-  const deleteHandler = (id) => {
-    if(window.confirm("Are you sure?")) {
-        dispatch(deletePostAction(id));
-    }
-  }
-
-  useEffect(() => {
-    dispatch(listPosts());
-  }, [dispatch, successCreate, navigate, successDelete])
 
   return (
     <div className="container">
-      <h2>Posts</h2>
+      <h2 className="pageTitle">Discussion Board</h2>
+
       <div className="buttonsContainer">
-      <div className="signoutButton" onClick={() => {navigate('/createpost')}}>
-        Create Post
+        <div
+          className="signoutButton"
+          onClick={() => {
+            navigate("/create-post");
+          }}
+        >
+          Create Post
+        </div>
+        <Accordion.Root collapsible className="postsContainer">
+          {discussions.map((item, idx) => (
+            <Accordion.Item key={idx} value={idx} className="post">
+              {/* ───────── header row ───────── */}
+              <Accordion.ItemTrigger className="title-container">
+                <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
+                  <h1 className="title">
+                    {item.verses}{' '}
+                    <span className="date">{item.date}</span>
+                  </h1>
+                  <p className="subtitle" style={{ color: '#555', fontSize: '0.95rem' }}>
+                    {item.title}
+                  </p>
+                </div>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="button"
+                  onClick={e => {
+                    e.stopPropagation();
+                    navigate('/thread');
+                  }}
+                >
+                  <MdOutlineArrowForwardIos />
+                </Button>
+              </Accordion.ItemTrigger>
+              <Accordion.ItemContent>
+                <Accordion.ItemBody className="content">
+                  {item.applicationQuestions.map((q, i) => (
+                    <p key={i}>• {q}</p>
+                  ))}
+                </Accordion.ItemBody>
+              </Accordion.ItemContent>
+            </Accordion.Item>
+          ))}
+        </Accordion.Root>
       </div>
-      <div className="signoutButton" onClick={() => { logoutHandler(); navigate('/'); }}>
-        Sign Out
-      </div>
-      <div className="postsContainer">
-        {posts?.length ? (
-            posts.reverse().map((post) => (
-            <div key={post._id} className="post">
-                <h3>{post.title}</h3>
-                <p>{post.body}</p>
-                <p className="date">Created On: {post.createdAt.substring(0, 10)}</p>
-                <div
-                className="deleteButton"
-                onClick={() => deleteHandler(post._id)}
-              >
-                X
-              </div>
-            </div>
-            ))
-        ) : (
-            <p>No posts found.</p>
-        )}
-       </div>
-    </div>
     </div>
   );
 };

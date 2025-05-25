@@ -57,4 +57,26 @@ const authUser = asyncHandler(async(req, res) => {
     
 })
 
-module.exports={registerUser, authUser};
+const deleteUser = asyncHandler(async(req, res) => {
+    const user = await User.findById(req.params.id);
+
+    if (!req.user || req.user.isAdmin != true) {
+        res.status(403);
+        throw new Error("You do not have permission");
+    }
+
+    if (user) {
+        await user.deleteOne();
+        res.json({ message: "User Removed"});
+    } else {
+        res.status(404);
+        throw new Error("User not found");
+    }
+})
+
+const getUsers = asyncHandler(async (req, res) => {
+    const users = await User.find()
+    res.json(users);
+});
+
+module.exports={registerUser, authUser, deleteUser, getUsers};

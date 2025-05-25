@@ -1,0 +1,52 @@
+.new-event-screen {
+    display: flex;
+    flex-direction: column;
+  }
+
+.new-event-header {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.timeBox {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 3%;
+}
+
+.innerTimeBox1 {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 1%;
+}
+
+.innerTimeBox2 {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2%;
+}
+
+.calendarBox {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2%;
+}
+
+.actionButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 3%;
+}
+

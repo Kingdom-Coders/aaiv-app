@@ -1,4 +1,4 @@
-/*! Axios v1.8.1 Copyright (c) 2025 Matt Zabriskie and contributors */
+/*! Axios v1.8.4 Copyright (c) 2025 Matt Zabriskie and contributors */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
@@ -2703,7 +2703,7 @@
    */
   function buildFullPath(baseURL, requestedURL, allowAbsoluteUrls) {
     var isRelativeUrl = !isAbsoluteURL(requestedURL);
-    if (baseURL && isRelativeUrl || allowAbsoluteUrls == false) {
+    if (baseURL && (isRelativeUrl || allowAbsoluteUrls == false)) {
       return combineURLs(baseURL, requestedURL);
     }
     return requestedURL;
@@ -2822,7 +2822,7 @@
       headers = newConfig.headers,
       auth = newConfig.auth;
     newConfig.headers = headers = AxiosHeaders$1.from(headers);
-    newConfig.url = buildURL(buildFullPath(newConfig.baseURL, newConfig.url), config.params, config.paramsSerializer);
+    newConfig.url = buildURL(buildFullPath(newConfig.baseURL, newConfig.url, newConfig.allowAbsoluteUrls), config.params, config.paramsSerializer);
 
     // HTTP basic authentication
     if (auth) {
@@ -3658,7 +3658,7 @@
     });
   }
 
-  var VERSION = "1.8.1";
+  var VERSION = "1.8.4";
 
   var validators$1 = {};
 

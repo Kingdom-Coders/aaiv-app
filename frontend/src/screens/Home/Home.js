@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../actions/userActions";
-import './Home.css'; 
+import './Home.css';
 
 const events = [
   {
@@ -26,6 +26,11 @@ const events = [
     time: "3:30pm - 5:30pm"
   },
 ];
+
+function toggleBlur() {
+  const blurredText = document.querySelector('.blur-text');
+  blurredText.classList.toggle('revealed');
+}
 
 const Home = () => {
   const navigate = useNavigate();
@@ -108,7 +113,6 @@ const Home = () => {
       carousel.removeEventListener("mousemove", dragging);
       document.removeEventListener("mouseup", dragStop);
       wrapper.removeEventListener("mouseenter", () => clearTimeout(timeoutIdRef.current));
-      //wrapper.removeEventListener("mouseleave", autoPlay);
       arrowBtns?.forEach(btn => {
         btn.removeEventListener("click", () => {});
       });
@@ -120,11 +124,21 @@ const Home = () => {
     <div className="home-screen">
       <h1>Home Screen</h1>
 
-      <div>
-        <h3>Upcoming Events: </h3>
+      <div className="BibleVerse">
+        <p><strong>daily bible verse:</strong></p>
+        <div className="blur-container" onClick={toggleBlur}>
+          <p className="blur-text">
+            Why did I not perish at birth, <br />
+            and die as I came from the womb?<br />
+            Job 3:11
+          </p>
+        </div>
       </div>
-      
-      {/* Carousel */}
+
+      <div className="upcomingevents-tab">
+        <h3>Upcoming Events:</h3>
+      </div>
+
       <div className="wrapper" ref={wrapperRef}>
         <i id="left" className="arrow left">←</i>
         <div className="carousel" ref={carouselRef}>
@@ -138,6 +152,15 @@ const Home = () => {
         </div>
         <i id="right" className="arrow right">→</i>
       </div>
+
+      <div className="more-tab">
+        <h2>More</h2>
+        <div className="links">
+          <div className="insta">AAIV Instagram</div>
+          <div className="markcamp">Sign up for Mark Camp</div>
+        </div>
+      </div>
+
       <div className="signoutButton" onClick={logoutHandler}>
         Sign Out
       </div>
