@@ -9,6 +9,7 @@ const postRoutes = require("./routes/postRoutes");
 const googleRoutes = require("./routes/calendarRoutes");
 const {google} = require('googleapis');
 const session = require('express-session');
+const announcementRoutes = require('./routes/announcementRoutes');
 const { notFound, errorHandler} = require('./middlewares/errorMiddleware');
 
 // create an object of imported express package
@@ -38,7 +39,7 @@ app.use(session({
 app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/google', googleRoutes);
-
+app.use('/api/announcements', announcementRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

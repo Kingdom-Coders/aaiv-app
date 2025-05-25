@@ -4,23 +4,35 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
+    padding-bottom: 12vh;
     background-color: white;
   }
 
-.calendar-month-view {
+.embedded-calendar {
     display: flex;
-  }
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 80%;
+    
+}
+
+/* .calendar-month-view {
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+  } */
 
 .calendar-new-event {
     display: flex;
-    
+    /* flex-direction: column; */
+    justify-content: center;
   }
 
-.calendar-week-view {
+/* .calendar-week-view {
     display: flex;
-  }
-
-
+  } */
+  
 h1 {
     font-size: 24px;
     color: #333;
