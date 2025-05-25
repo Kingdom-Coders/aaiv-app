@@ -4,6 +4,7 @@ import { Flex, AbsoluteCenter, Checkbox, Input, Stack, Avatar, Badge, HStack, Ac
 import { useSelector } from 'react-redux';
 import imgs from './settings.png'
 import search from './Search.png'
+import e from "cors";
 
 
 const categories = [
@@ -20,17 +21,33 @@ const ChatLink = () => {
   const isAdmin = true;
 
   const [inputValue, setInputValue] = useState("");
+  const [checkedItems, setCheckedItems] = useState([true, true, true]);
 
-const handleChange = (e) => {
-  setInputValue(e.target.value);
-};
+  const handleSearchChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleCheckboxChange = (index) => (event) => {
+    const updatedItems = [...checkedItems];
+    updatedItems[index] = event.target.checked;
+    setCheckedItems(updatedItems);
+  }
+
+  const checkBoxes = (groups, checkedItems) => {
+    for (let i = 0; i < groups.length; i++) {
+      if (checkedItems[categories.indexOf(groups[i])]) {
+        return true;
+      }
+    }
+    return false;
+  };
 
   const [value, setValue] = useState(["a"])
   const items = [
-    { value: "a", image: "", title: "Saturday Bible Study", link:"link1", text: "Chat Description 1" },
-    { value: "b", image: "", title: "Tennis", link:"link2", text: "Chat Description 2" },
-    { value: "c", image: "", title: "Basketball", link:"link3", text: "Chat Description 3` " },
-  ]  
+    { value: "a", image: "", title: "Saturday Bible Study", link:"link1", text: "Chat Description 1", groups: ["Social"] },
+    { value: "b", image: "", title: "Tennis", link:"link2", text: "Chat Description 2", groups: ["Outdoorsy", "Social"] },
+    { value: "c", image: "", title: "Basketball", link:"link3", text: "Chat Description 3` ", groups: ["Outdoorsy", "Social"] },
+  ] 
 
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
@@ -54,15 +71,15 @@ const handleChange = (e) => {
             <Input
               placeholder="Search"
               value={inputValue}
-              onChange={handleChange}
+              onChange={handleSearchChange}
               style={{color: "#A0AEC0"}}
             />
          </div>
        </div>
        <div className="chatlink-Checkboxes">
-         {categories.map((category) => (
+         {categories.map((category, index) => (
          <Stack align="center" flex="1" key={category}>
-           <Checkbox.Root defaultChecked colorPalette={"blue"} variant={"solid"}>
+           <Checkbox.Root defaultChecked colorPalette={"blue"} variant={"solid"} isChecked={checkedItems[index]} onChange={handleCheckboxChange(index)}>
              <Checkbox.HiddenInput />
              <Checkbox.Control />
              <Checkbox.Label style={{color: "black"}}>{category}</Checkbox.Label>
@@ -130,7 +147,7 @@ const handleChange = (e) => {
       <div className="chatlink-links">
         <Stack gap="8" width="85vw">
           <Accordion.Root spaceY="4" variant="plain" collapsible defaultValue={["a"]}>
-            {items.map((item, index) => item.title.toLowerCase().includes(inputValue.toLowerCase()) && (
+            {items.map((item, index) => (item.title.toLowerCase().includes(inputValue.toLowerCase()) && checkBoxes(item.groups, checkedItems)) && (
                 <Accordion.Item 
                 key={index} 
                 value={item.value}
@@ -231,4 +248,13 @@ const handleChange = (e) => {
     </div>
   );
 };
+
+// function checkBoxes(groups, checkedItems) {
+//   for(let i = 0; i < groups.length; i++) {
+//     if (checkedItems(groups[i]) == true) {
+//       return true;
+//     }
+//   }
+//   return false;
+// }
 export default ChatLink;
