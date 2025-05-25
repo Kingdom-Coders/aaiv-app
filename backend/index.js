@@ -1,22 +1,25 @@
+require('dotenv').config();
+const express = require('express');
 const fs = require('fs').promises;
 const path = require('path');
 const process = require('process');
-const {authenticate} = require('@google-cloud/local-auth');
-const {google} = require('googleapis');
+const { authenticate } = require('@google-cloud/local-auth');
+const { google } = require('googleapis');
+
+const app = express();
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
-// The file token.json stores the user's access and refresh tokens, and is
-// created automatically when the authorization flow completes for the first
-// time.
 const TOKEN_PATH = path.join(process.cwd(), 'backend', 'tokens', 'token.json');
 const CREDENTIALS_PATH = path.join(process.cwd(), 'backend', 'credentials', 'credentials.json');
 
-/**
- * Reads previously authorized credentials from the save file.
- *
- * @return {Promise<OAuth2Client|null>}
- */
+const oauth2Client = new google.auth.OAuth2(
+  process.env.CLIENT_ID,
+  process.env.SECRET_ID,
+  process.env.REDIRECT
+);
+
+// Load previously authorized credentials
 async function loadSavedCredentialsIfExist() {
   try {
     const content = await fs.readFile(TOKEN_PATH);
@@ -27,12 +30,7 @@ async function loadSavedCredentialsIfExist() {
   }
 }
 
-/**
- * Serializes credentials to a file compatible with GoogleAuth.fromJSON.
- *
- * @param {OAuth2Client} client
- * @return {Promise<void>}
- */
+// Save new credentials
 async function saveCredentials(client) {
   const content = await fs.readFile(CREDENTIALS_PATH);
   const keys = JSON.parse(content);
@@ -46,48 +44,57 @@ async function saveCredentials(client) {
   await fs.writeFile(TOKEN_PATH, payload);
 }
 
-/**
- * Load or request or authorization to call APIs.
- *
- */
-async function authorize() {
-  let client = await loadSavedCredentialsIfExist();
-  if (client) {
-    return client;
-  }
-  client = await authenticate({
-    scopes: SCOPES,
-    keyfilePath: CREDENTIALS_PATH,
-  });
-  if (client.credentials) {
-    await saveCredentials(client);
-  }
-  return client;
-}
-
-/**
- * Lists the next 10 events on the user's primary calendar.
- * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
- */
-async function listEvents(auth) {
-  const calendar = google.calendar({version: 'v3', auth});
-  const res = await calendar.events.list({
+// List upcoming 10 events
+async function listEvents(auth, res) {
+  const calendar = google.calendar({ version: 'v3', auth });
+  const result = await calendar.events.list({
     calendarId: 'primary',
     timeMin: new Date().toISOString(),
     maxResults: 10,
     singleEvents: true,
     orderBy: 'startTime',
   });
-  const events = res.data.items;
+
+  const events = result.data.items;
   if (!events || events.length === 0) {
-    console.log('No upcoming events found.');
+    res.send('No upcoming events found.');
     return;
   }
-  console.log('Upcoming 10 events:');
-  events.map((event, i) => {
+
+  const output = events.map(event => {
     const start = event.start.dateTime || event.start.date;
-    console.log(`${start} - ${event.summary}`);
+    return `${start} - ${event.summary}`;
   });
+
+  res.send(`<pre>${output.join('\n')}</pre>`);
 }
 
-authorize().then(listEvents).catch(console.error);
+// Start OAuth flow
+app.get('/', (req, res) => {
+  const url = oauth2Client.generateAuthUrl({
+    access_type: 'offline',
+    scope: SCOPES,
+  });
+  res.redirect(url);
+});
+
+// Handle OAuth redirect
+app.get('/api/calendar/redirect', async (req, res) => {
+  const code = req.query.code;
+  if (!code) return res.send('Missing code param');
+
+  try {
+    const { tokens } = await oauth2Client.getToken(code);
+    oauth2Client.setCredentials(tokens);
+    await saveCredentials(oauth2Client);
+    await listEvents(oauth2Client, res);
+  } catch (err) {
+    console.error('Error retrieving access token', err);
+    res.status(500).send('Error retrieving access token');
+  }
+});
+
+// Start server
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
+});
