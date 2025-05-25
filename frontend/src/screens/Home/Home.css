@@ -1,69 +1,44 @@
 .home-screen {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    /* background-color: blue; */
-    flex-direction: column;
-    gap: 10%;
-   display: flex;
-    height: 100vh;
-    background-color: white;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: white;
+  flex-direction: column;
+  gap: 10%;
+}
 
-  h1 {
-    font-size: 24px;
-    color: #333;
-  }
+h1 {
+  font-size: 24px;
+  color: #333;
+}
 
-  .dailybibleverse-tab {
-    width: 90%;
-    /* background-color: orange; */
-  }
+.dailybibleverse-tab,
+.upcomingevents-tab,
+.more-tab {
+  width: 90%;
+}
 
-  .upcomingevents-tab {
-    width: 90%;
-    /* background-color: purple; */
-  }
-
-  h3 {
-    text-align: left;
-  }
-
-  .more-tab {
-    width: 90%;
-    text-align: left;
-    /* background-color: green; */
-  }
-
-  h2 {
-    text-align: left;
-  }
-
-  .insta {
-    text-align: left;
-  }
-
-  .markcamp {
-    text-align: left;
-  }
+h2, h3, .insta, .markcamp {
+  text-align: left;
+}
 
 .BibleVerse {
-  font-size: 20px;   
-  text-align: center; 
+  font-size: 20px;
+  text-align: center;
 }
 
 .blur-container {
-  cursor: pointer; /*clickable */
+  cursor: pointer;
 }
 
 .blur-text {
-  filter: blur(5px); /* Initial blur effect */
-  transition: filter 0.3s ease; 
+  filter: blur(5px);
+  transition: filter 0.3s ease;
 }
 
 .blur-text.revealed {
-  filter: blur(0); /* Removes blur when revealed */
+  filter: blur(0);
 }
 
 .signoutButton {
@@ -75,10 +50,67 @@
   text-align: center;
   color: black;
   position: relative;
-  top: 28px; /* Move down by 50px */
+  top: 28px;
 }
 
 .signoutButton:hover {
   cursor: pointer;
   transform: scale(1.02);
+}
+
+.wrapper {
+  position: relative;
+  overflow: hidden;
+  margin-top: 30px;
+  width: 100%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.carousel {
+  display: flex;
+  transition: all 0.3s ease;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 20px 0;
+}
+
+.card {
+  min-width: 250px;
+  margin-right: 16px;
+  padding: 20px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 24px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  user-select: none;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.arrow.left {
+  left: 10px;
+}
+
+.arrow.right {
+  right: 10px;
+}
+
+.dragging {
+  cursor: grabbing;
 }
