@@ -1,4 +1,5 @@
 import './App.css';
+import Welcome from './screens/Auth/Welcome/Welcome';
 import Login from "./screens/Auth/Login/Login";
 import Register from "./screens/Auth/Register/Register";
 import Discussion from "./screens/DiscussionBoard/Discussion/Discussion";
@@ -23,9 +24,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-
-
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Welcome />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
         <Route path="/register" element={<Register />} />
         <Route path="/discussion" element={<PrivateRoute><Discussion /></PrivateRoute>} />
