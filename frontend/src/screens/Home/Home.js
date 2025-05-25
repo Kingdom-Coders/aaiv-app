@@ -11,19 +11,19 @@ const events = [
     time: "3:30pm - 5:30pm"
   },
   {
-    title: "Volleyball",
-    description: "everyone come to IMA 3:30 Wed",
-    time: "3:30pm - 5:30pm"
+    title: "Bible Study",
+    description: "Weekly Bible study session in the community room",
+    time: "7:00pm - 8:30pm"
   },
   {
-    title: "Volleyball",
-    description: "everyone come to IMA 3:30 Wed",
-    time: "3:30pm - 5:30pm"
+    title: "Prayer Meeting",
+    description: "Join us for our weekly prayer meeting",
+    time: "6:00pm - 7:00pm"
   },
   {
-    title: "Volleyball",
-    description: "everyone come to IMA 3:30 Wed",
-    time: "3:30pm - 5:30pm"
+    title: "Youth Group",
+    description: "Fun activities and fellowship for young adults",
+    time: "5:00pm - 7:00pm"
   },
 ];
 
@@ -98,15 +98,12 @@ const Home = () => {
     carousel.addEventListener("mousemove", dragging);
     document.addEventListener("mouseup", dragStop);
     wrapper.addEventListener("mouseenter", () => clearTimeout(timeoutIdRef.current));
-    //wrapper.addEventListener("mouseleave", autoPlay);
 
     arrowBtns?.forEach(btn => {
       btn.addEventListener("click", () => {
         carousel.scrollLeft += btn.id === "left" ? -firstCardWidth : firstCardWidth;
       });
     });
-
-    //autoPlay();
 
     return () => {
       carousel.removeEventListener("mousedown", dragStart);
@@ -122,10 +119,11 @@ const Home = () => {
 
   return (
     <div className="home-screen">
-      <h1>Home Screen</h1>
+      <h1>Welcome to Kingdom Coders</h1>
 
+      {/* Bible Verse Section */}
       <div className="BibleVerse">
-        <p><strong>daily bible verse:</strong></p>
+        <p><strong>Daily Bible Verse:</strong></p>
         <div className="blur-container" onClick={toggleBlur}>
           <p className="blur-text">
             Why did I not perish at birth, <br />
@@ -135,8 +133,9 @@ const Home = () => {
         </div>
       </div>
 
+      {/* Upcoming Events Section */}
       <div className="upcomingevents-tab">
-        <h3>Upcoming Events:</h3>
+        <h3>Upcoming Events</h3>
       </div>
 
       <div className="wrapper" ref={wrapperRef}>
@@ -153,6 +152,7 @@ const Home = () => {
         <i id="right" className="arrow right">→</i>
       </div>
 
+      {/* More Section */}
       <div className="more-tab">
         <h2>More</h2>
         <div className="links">
@@ -161,6 +161,7 @@ const Home = () => {
         </div>
       </div>
 
+      {/* Sign Out Button */}
       <div className="signoutButton" onClick={logoutHandler}>
         Sign Out
       </div>

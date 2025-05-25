@@ -1,58 +1,9 @@
+/* ChatLink Screen - Now using Chakra UI components */
+/* All styling is handled through Chakra UI props for consistency */
+
+/* Optional: Add any custom animations or overrides here if needed */
 .chatlink-screen {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    height: 100vh;
-    background-color: white;
-    gap: 10px;
-    background-color: #DBE4EE;
-  }
+  /* Removed - now handled by Chakra UI Box component */
+}
 
-  .chatlink-Title {
-    margin-top: 5vh;
-    height: 5vh;
-    width: 90vw;
-  }
-  
-  .chatlink-SearchFilter {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    height: 15vh;
-    width: 90vw;
-  }
-  
-  .chatlink-Search {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center; 
-    height: 5vh;
-    width: 90vw;
-  }
-
-  .chatlink-SearchBar {
-    width: 80vw;
-  }
-
-  .chatlink-Checkboxes {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
-    width: 90vw;
-  }
-
-  h1 {
-    font-size: 24px;
-    color: #333;
-    text-align: left;
-  }
-
-  p {
-    font-size: 18px;
-    color: #333;
-    text-align: left;
-  }
+/* All other styles removed as they're now handled by Chakra UI */

@@ -1,3 +1,10 @@
+/**
+ * UNUSED SAMPLE DATA
+ * This file contains sample notes data that is not currently used in the application.
+ * The application now uses Posts and Announcements instead of notes.
+ * This file can be safely removed.
+ */
+
 const notes = [
     {
       _id: "1",

@@ -1,75 +1,108 @@
 const Post = require("../models/postModel");
 const asyncHandler = require("express-async-handler");
 
+/**
+ * Get all posts
+ * @route GET /api/posts
+ * @access Private
+ */
 const getPosts = asyncHandler(async (req, res) => {
-    // Difference between this is that the posts takes from all or just the users
-    // const posts = await Post.find({user: req.user._id})
-    const posts = await Post.find()
+    // Get all posts from all users for the discussion board
+    // Alternative: const posts = await Post.find({user: req.user._id}) for user-specific posts
+    const posts = await Post.find({});
     res.json(posts);
 });
 
-const createPost = asyncHandler(async(req, res) => {
-    const { user, title, body } = req.body;
+/**
+ * Create a new post
+ * @route POST /api/posts
+ * @access Private
+ */
+const createPost = asyncHandler(async (req, res) => {
+    const { title, body } = req.body;
 
+    // Validate required fields
     if (!title || !body) {
         res.status(400);
         throw new Error('Please fill all the fields');
-    } else {
-        const post = new Post({ user: req.user._id, title, body});
-
-        const createdPost = await post.save();
-
-        res.status(201).json(createdPost);
     }
+
+    // Create new post with authenticated user as owner
+    const post = new Post({ 
+        user: req.user._id, 
+        title, 
+        body 
+    });
+
+    const createdPost = await post.save();
+    res.status(201).json(createdPost);
 });
 
+/**
+ * Get a single post by ID
+ * @route GET /api/posts/:id
+ * @access Private
+ */
 const getPostById = asyncHandler(async (req, res) => {
     const post = await Post.findById(req.params.id);
 
-    if(post) {
+    if (post) {
         res.json(post);
     } else {
-        res.status(404).json({ message: "Post not found" });
+        res.status(404);
+        throw new Error("Post not found");
     }
 });
 
+/**
+ * Update a post
+ * @route PUT /api/posts/:id
+ * @access Private
+ */
 const updatePost = asyncHandler(async (req, res) => {
-    const { title, body} = req.body;
-
+    const { title, body } = req.body;
     const post = await Post.findById(req.params.id);
 
-    if(post.user.toString() !== req.user._id.toString()) {
+    if (!post) {
+        res.status(404);
+        throw new Error("Post not found");
+    }
+
+    // Check if user owns the post
+    if (post.user.toString() !== req.user._id.toString()) {
         res.status(401);
         throw new Error("You cannot perform this action");
     }
 
-    if(post) {
-        post.title = title;
-        post.body = body;
+    // Update post fields
+    post.title = title;
+    post.body = body;
 
-        const updatedPost = await post.save();
-        res.json(updatedPost);
-    } else {
-        res.status(404);
-        throw new Error("Note not found");
-    }
+    const updatedPost = await post.save();
+    res.json(updatedPost);
 });
 
-const deletePost = asyncHandler(async(req, res) => {
+/**
+ * Delete a post
+ * @route DELETE /api/posts/:id
+ * @access Private
+ */
+const deletePost = asyncHandler(async (req, res) => {
     const post = await Post.findById(req.params.id);
 
-    if(post.user.toString() !== req.user._id.toString()) {
+    if (!post) {
+        res.status(404);
+        throw new Error("Post not found");
+    }
+
+    // Check if user owns the post
+    if (post.user.toString() !== req.user._id.toString()) {
         res.status(401);
         throw new Error("You cannot perform this action");
     }
 
-    if(post){
-        await post.deleteOne();
-        res.json({message: "Note Removed"});
-    } else {
-        res.status(404);
-        throw new Error("Note not found");
-    }
+    await post.deleteOne();
+    res.json({ message: "Post removed successfully" });
 });
 
 module.exports = { getPosts, createPost, getPostById, updatePost, deletePost };

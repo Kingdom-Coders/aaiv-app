@@ -1,0 +1,241 @@
+/* Calendar Integration Styles */
+.calendar-integration {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 24px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.calendar-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.calendar-header h2 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+}
+
+.calendar-header p {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+}
+
+/* Message Styles */
+.message {
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.message.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.message.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Calendar Content */
+.calendar-content {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+/* Integration Card */
+.integration-card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 32px;
+    border: 1px solid #e1e5e9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.card-icon {
+    margin-bottom: 24px;
+}
+
+.card-content {
+    margin-bottom: 32px;
+}
+
+.card-content h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 12px;
+}
+
+.card-content p {
+    font-size: 16px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+/* Features List */
+.features-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.feature {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #333;
+}
+
+.feature-icon {
+    font-size: 16px;
+}
+
+/* Card Actions */
+.card-actions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* Info Section */
+.info-section {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 24px;
+    border-left: 4px solid #007AFF;
+}
+
+.info-section h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+}
+
+.info-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.info-section li {
+    padding: 8px 0;
+    color: #555;
+    font-size: 14px;
+    position: relative;
+    padding-left: 20px;
+}
+
+.info-section li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #34a853;
+    font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .calendar-integration {
+        padding: 16px;
+    }
+    
+    .calendar-header h2 {
+        font-size: 24px;
+    }
+    
+    .integration-card {
+        padding: 24px 16px;
+    }
+    
+    .features-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .card-content h3 {
+        font-size: 20px;
+    }
+    
+    .info-section {
+        padding: 20px 16px;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .calendar-integration {
+        color: #e1e1e1;
+    }
+    
+    .calendar-header h2 {
+        color: #ffffff;
+    }
+    
+    .calendar-header p {
+        color: #b0b0b0;
+    }
+    
+    .integration-card {
+        background: #2d2d2d;
+        border-color: #404040;
+        color: #e1e1e1;
+    }
+    
+    .card-content h3 {
+        color: #ffffff;
+    }
+    
+    .card-content p {
+        color: #b0b0b0;
+    }
+    
+    .feature {
+        background: #3a3a3a;
+        color: #e1e1e1;
+    }
+    
+    .info-section {
+        background: #2a2a2a;
+        border-left-color: #007AFF;
+    }
+    
+    .info-section h4 {
+        color: #ffffff;
+    }
+    
+    .info-section li {
+        color: #b0b0b0;
+    }
+    
+    .message.success {
+        background: #1e4620;
+        color: #81c995;
+        border-color: #2d5a31;
+    }
+    
+    .message.error {
+        background: #4a1e1e;
+        color: #f5a3a3;
+        border-color: #5a2d2d;
+    }
+} 

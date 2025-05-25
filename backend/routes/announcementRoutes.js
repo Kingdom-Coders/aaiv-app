@@ -10,12 +10,12 @@ const { protect, admin } = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
-router.route('/').get(protect, getAnnouncements);
-// router.route('/').get(getAnnouncements);
-router.route('/create').post(protect, admin, createAnnouncement);
+// Announcement routes
+router.route('/').get(protect, getAnnouncements);                            // GET /api/announcements - Get all announcements (protected)
+router.route('/create').post(protect, admin, createAnnouncement);           // POST /api/announcements/create - Create announcement (admin only)
 router.route('/:id')
-    .get(getAnnouncementById)
-    .put(protect, admin, updateAnnouncement)
-    .delete(protect, admin, deleteAnnouncement); 
+    .get(getAnnouncementById)                                                // GET /api/announcements/:id - Get announcement by ID
+    .put(protect, admin, updateAnnouncement)                                 // PUT /api/announcements/:id - Update announcement (admin only)
+    .delete(protect, admin, deleteAnnouncement);                             // DELETE /api/announcements/:id - Delete announcement (admin only)
 
 module.exports = router;

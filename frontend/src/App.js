@@ -1,29 +1,41 @@
 import './App.css';
+
+// Authentication screens
 import Welcome from './screens/Auth/Welcome/Welcome';
 import Login from "./screens/Auth/Login/Login";
 import Register from "./screens/Auth/Register/Register";
+import PrivateRoute from "./screens/Auth/PrivateRoute";
+
+// Main application screens
+import Home from "./screens/Home/Home";
 import Discussion from "./screens/DiscussionBoard/Discussion/Discussion";
 import CreatePost from "./screens/DiscussionBoard/CreatePost/CreatePost";
-import Home from "./screens/Home/Home";
-import Admin from "./screens/Admin/Admin";
+import Thread from "./screens/DiscussionBoard/Thread/Thread";
 import Calendar from "./screens/Calendar/Calendar";
 import ChatLink from "./screens/ChatLink/ChatLink";
+import Admin from "./screens/Admin/Admin";
 
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+// Components
 import NavBar from "./components/NavBar/NavBar";
-import PrivateRoute from "./screens/Auth/PrivateRoute";
-import Thread from "./screens/DiscussionBoard/Thread/Thread";
+
+// React Router and Redux
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function App() {
+  // Get user authentication state from Redux store
   const userLogin = useSelector((state) => state.userLogin);
-  // Destructures the relevant information
   const { userInfo } = userLogin;
 
   return (
     <BrowserRouter>
       <Routes>
+        {/* Public routes */}
         <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        
+        {/* Protected routes - require authentication */}
         <Route
           path="/home"
           element={
@@ -32,10 +44,6 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route path="/" element={<Welcome />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
-        <Route path="/register" element={<Register />} />
         <Route
           path="/discussion"
           element={
@@ -85,6 +93,8 @@ function App() {
           }
         />
       </Routes>
+      
+      {/* Show navigation bar only when user is authenticated */}
       {userInfo && <NavBar />}
     </BrowserRouter>
   );

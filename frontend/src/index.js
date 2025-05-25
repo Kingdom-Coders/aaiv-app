@@ -1,12 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
+
+// Styles and components
 import "./index.css";
 import App from "./App";
-import reportWebVitals from "./reportWebVitals";
-import { Provider } from "react-redux";
-import store from "./store";
 import { ThemeProvider } from "./components/ui/provider";
 
+// Redux store
+import store from "./store";
+
+// Performance monitoring
+import reportWebVitals from "./reportWebVitals";
+
+// Create root element and render the application
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
@@ -16,7 +23,7 @@ root.render(
   </Provider>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+// Performance monitoring (optional)
+// To log results: reportWebVitals(console.log)
+// To send to analytics endpoint: https://bit.ly/CRA-vitals
 reportWebVitals();

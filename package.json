@@ -1,8 +1,8 @@
 {
   "name": "aaivapp",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Kingdom Coders AAIV App - A full-stack application with discussion board, announcements, and calendar integration",
+  "main": "backend/server.js",
   "scripts": {
     "start": "nodemon backend/server.js",
     "client": "npm start --prefix frontend",
