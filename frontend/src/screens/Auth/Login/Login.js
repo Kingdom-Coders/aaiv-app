@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ErrorMessage from "../../../components/ErrorMessage";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../../actions/userActions";
-import { Button } from "@chakra-ui/react";
+import { Button, Stack, Text} from "@chakra-ui/react";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -35,12 +35,15 @@ const Login = () => {
 
   return (
     <div className="container">
-      <h2>AAIV</h2> 
+      <Stack>
+        <Text textStyle="2xl" fontWeight="bold" fontFamily="Lato">AAIV Login</Text> 
+        <Text> </Text>
+      </Stack>
       <div className="formContainer">
         <input
           className="formInput"
           type="text"
-          placeholder="Email"
+          placeholder="Email/Username"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -54,12 +57,12 @@ const Login = () => {
       </div>
 
       <div className="buttonsContainer">
-        <Button size="lg" colorPalette={"purple"} rounded={"full"} onClick={() => loginHandler()}>
+        <Button size="lg" width="250px" colorPalette={"purple"} rounded={"full"} onClick={() => loginHandler()}>
           Login
         </Button>
         <div className="registerText">
-          <span>Don't have an account?</span> 
-          <span className="registerLink" onClick={() => navigate("/register")}> Register</span>
+          <span>Don't have an account? </span> 
+          <span className="registerLink" onClick={() => navigate("/register")}>Register</span>
         </div>
         {error && <ErrorMessage> {error} </ErrorMessage>}
       </div>

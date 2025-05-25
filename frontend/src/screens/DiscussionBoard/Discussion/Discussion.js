@@ -13,6 +13,14 @@ const Discussion = () => {
       <h2 className="pageTitle">Discussion Board</h2>
 
       <div className="buttonsContainer">
+        <div
+          className="signoutButton"
+          onClick={() => {
+            navigate("/create-post");
+          }}
+        >
+          Create Post
+        </div>
         <Accordion.Root collapsible className="postsContainer">
           {discussions.map((item, idx) => (
             <Accordion.Item key={idx} value={idx} className="post">
