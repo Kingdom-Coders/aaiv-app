@@ -19,8 +19,11 @@ body {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 20px;
   width: 75%;
+}
+
+.text {
+  color: black;
 }
 
 .postsContainer {
@@ -48,6 +51,13 @@ body {
 
 .title {
   font-size: 20px;
+}
+
+.pageTitle {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 12px;
+  color: black;
 }
 
 .date {
@@ -91,4 +101,21 @@ body {
   height: 100px;
   width: 100%;
   background-color: white;
+}
+
+.postButton {
+  padding: 10px;
+  width: 250px;
+  border-radius: 5px;
+  border: 1px solid gray;
+  font-size: 16px;
+  text-align: center;
+  color: black;
+  position: relative;
+  top: 4px;
+}
+
+.postButton:hover {
+  cursor: pointer;
+  transform: scale(1.02);
 }

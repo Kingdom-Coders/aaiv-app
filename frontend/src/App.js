@@ -1,4 +1,5 @@
 import './App.css';
+import Welcome from './screens/Auth/Welcome/Welcome';
 import Login from "./screens/Auth/Login/Login";
 import Register from "./screens/Auth/Register/Register";
 import Discussion from "./screens/DiscussionBoard/Discussion/Discussion";
@@ -11,11 +12,10 @@ import ChatLink from "./screens/ChatLink/ChatLink";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import NavBar from "./components/NavBar/NavBar";
-import PrivateRoute from './screens/Auth/PrivateRoute';
-
+import PrivateRoute from "./screens/Auth/PrivateRoute";
+import Thread from "./screens/DiscussionBoard/Thread/Thread";
 
 function App() {
-
   const userLogin = useSelector((state) => state.userLogin);
   // Destructures the relevant information
   const { userInfo } = userLogin;
@@ -23,16 +23,67 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-
-
         <Route path="/" element={<Login />} />
+        <Route
+          path="/home"
+          element={
+            <PrivateRoute>
+              <Home />
+            </PrivateRoute>
+          }
+        />
+        <Route path="/" element={<Welcome />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
         <Route path="/register" element={<Register />} />
-        <Route path="/discussion" element={<PrivateRoute><Discussion /></PrivateRoute>} />
-        <Route path="/create-post" element={<PrivateRoute><CreatePost /></PrivateRoute>} />
-        <Route path="/admin" element={<PrivateRoute><Admin /></PrivateRoute>} />
-        <Route path="/calendar" element={<PrivateRoute><Calendar /></PrivateRoute>} />
-        <Route path="/chat-link" element={<PrivateRoute><ChatLink /></PrivateRoute>} />
+        <Route
+          path="/discussion"
+          element={
+            <PrivateRoute>
+              <Discussion />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/create-post"
+          element={
+            <PrivateRoute>
+              <CreatePost />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/thread"
+          element={
+            <PrivateRoute>
+              <Thread />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <PrivateRoute>
+              <Admin />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/calendar"
+          element={
+            <PrivateRoute>
+              <Calendar />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/chat-link"
+          element={
+            <PrivateRoute>
+              <ChatLink />
+            </PrivateRoute>
+          }
+        />
       </Routes>
       {userInfo && <NavBar />}
     </BrowserRouter>
