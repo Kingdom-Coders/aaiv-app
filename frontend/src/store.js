@@ -6,7 +6,8 @@ import {
     userDeleteReducer, 
     userListReducer, 
     userLoginReducer, 
-    userRegisterReducer 
+    userRegisterReducer,
+    userUpdateAdminReducer
 } from "./reducers/userReducers";
 
 // Post reducers
@@ -33,6 +34,29 @@ import {
     announcementDeleteReducer 
 } from "./reducers/announcementsReducers";
 
+// Group reducers
+import { 
+    groupListReducer,
+    groupCreateReducer,
+    groupDetailsReducer,
+    groupUpdateReducer,
+    groupDeleteReducer 
+} from "./reducers/groupReducers";
+
+// Event reducers
+import {
+    eventCreateReducer,
+    eventListReducer,
+    eventDetailsReducer,
+    eventUpdateReducer,
+    eventDeleteReducer,
+    eventApproveReducer,
+    eventRejectReducer,
+    eventPendingListReducer,
+    eventUserListReducer,
+    eventAdminListReducer
+} from "./reducers/eventReducers";
+
 /**
  * Combine all reducers into a single root reducer
  */
@@ -42,6 +66,7 @@ const reducer = combineReducers({
     userRegister: userRegisterReducer,
     userDelete: userDeleteReducer,
     userList: userListReducer,
+    userUpdateAdmin: userUpdateAdminReducer,
     
     // Post state
     postList: postListReducer,
@@ -60,6 +85,25 @@ const reducer = combineReducers({
     announcementDetails: announcementDetailsReducer,
     announcementUpdate: announcementUpdateReducer,
     announcementDelete: announcementDeleteReducer,
+
+    // Group state
+    groupList: groupListReducer,
+    groupCreate: groupCreateReducer,
+    groupDetails: groupDetailsReducer,
+    groupUpdate: groupUpdateReducer,
+    groupDelete: groupDeleteReducer,
+
+    // Event state
+    eventList: eventListReducer,
+    eventCreate: eventCreateReducer,
+    eventDetails: eventDetailsReducer,
+    eventUpdate: eventUpdateReducer,
+    eventDelete: eventDeleteReducer,
+    eventApprove: eventApproveReducer,
+    eventReject: eventRejectReducer,
+    eventPendingList: eventPendingListReducer,
+    eventUserList: eventUserListReducer,
+    eventAdminList: eventAdminListReducer,
 });
 
 // Get user info from localStorage if it exists

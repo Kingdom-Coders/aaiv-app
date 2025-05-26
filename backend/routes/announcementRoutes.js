@@ -11,7 +11,7 @@ const { protect, admin } = require("../middlewares/authMiddleware");
 const router = express.Router();
 
 // Announcement routes
-router.route('/').get(protect, getAnnouncements);                            // GET /api/announcements - Get all announcements (protected)
+router.route('/').get(getAnnouncements);                                     // GET /api/announcements - Get all announcements (public)
 router.route('/create').post(protect, admin, createAnnouncement);           // POST /api/announcements/create - Create announcement (admin only)
 router.route('/:id')
     .get(getAnnouncementById)                                                // GET /api/announcements/:id - Get announcement by ID

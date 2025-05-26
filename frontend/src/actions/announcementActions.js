@@ -24,20 +24,8 @@ export const listAnnouncements = () => async (dispatch, getState) => {
             type: ANNOUNCEMENT_LIST_REQUEST,
         });
 
-        // Get user info from state
-        const {
-            userLogin: { userInfo },
-        } = getState();
-
-        // Configure headers with auth token
-        const config = {
-            headers: {
-                Authorization: `Bearer ${userInfo.token}`,
-            },
-        };
-
-        // Make API request
-        const { data } = await axios.get(`/api/announcements`, config);
+        // Make API request without authentication for public access
+        const { data } = await axios.get(`/api/announcements`);
 
         dispatch({
             type: ANNOUNCEMENT_LIST_SUCCESS,

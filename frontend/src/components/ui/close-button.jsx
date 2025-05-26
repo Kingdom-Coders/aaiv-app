@@ -1,3 +1,7 @@
+import { IconButton as ChakraIconButton } from '@chakra-ui/react'
+import * as React from 'react'
+import { LuX } from 'react-icons/lu'
+
 function _nullishCoalesce(lhs, rhsFn) {
   if (lhs != null) {
     return lhs
@@ -5,9 +9,6 @@ function _nullishCoalesce(lhs, rhsFn) {
     return rhsFn()
   }
 }
-import { IconButton as ChakraIconButton } from '@chakra-ui/react'
-import * as React from 'react'
-import { LuX } from 'react-icons/lu'
 
 export const CloseButton = React.forwardRef(function CloseButton(props, ref) {
   return (

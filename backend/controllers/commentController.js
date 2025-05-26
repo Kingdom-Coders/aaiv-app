@@ -20,7 +20,7 @@ const getCommentsByPost = asyncHandler(async (req, res) => {
     // Get all comments for the post with user information
     // Sort by creation date (oldest first for chronological order)
     const comments = await Comment.find({ post: postId })
-        .populate('user', 'name email') // Include user name and email
+        .populate('user', 'firstName lastName email') // Include user firstName, lastName and email
         .populate('parentComment') // Include parent comment info for nested replies
         .sort({ createdAt: 1 }); // Sort by oldest first
 
@@ -68,7 +68,7 @@ const createComment = asyncHandler(async (req, res) => {
     const createdComment = await comment.save();
     
     // Populate user info before returning
-    await createdComment.populate('user', 'name email');
+    await createdComment.populate('user', 'firstName lastName email');
     
     res.status(201).json(createdComment);
 });
@@ -97,7 +97,7 @@ const updateComment = asyncHandler(async (req, res) => {
     comment.body = body;
 
     const updatedComment = await comment.save();
-    await updatedComment.populate('user', 'name email');
+    await updatedComment.populate('user', 'firstName lastName email');
     
     res.json(updatedComment);
 });
@@ -137,7 +137,7 @@ const deleteComment = asyncHandler(async (req, res) => {
  */
 const getCommentById = asyncHandler(async (req, res) => {
     const comment = await Comment.findById(req.params.id)
-        .populate('user', 'name email')
+        .populate('user', 'firstName lastName email')
         .populate('parentComment');
 
     if (comment) {

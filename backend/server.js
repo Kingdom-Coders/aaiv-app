@@ -13,12 +13,14 @@ const postRoutes = require("./routes/postRoutes");
 const commentRoutes = require("./routes/commentRoutes");
 const googleRoutes = require("./routes/calendarRoutes");
 const announcementRoutes = require('./routes/announcementRoutes');
+const groupRoutes = require('./routes/groupRoutes');
+const eventRoutes = require('./routes/eventRoutes');
 
 // Middleware imports
 const { notFound, errorHandler } = require('./middlewares/errorMiddleware');
 
 // Google APIs
-const { google } = require('googleapis');
+// const { google } = require('googleapis');
 
 // Initialize Express app and configure environment
 const app = express();
@@ -54,6 +56,8 @@ app.use('/api/posts', postRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/google', googleRoutes);
 app.use('/api/announcements', announcementRoutes);
+app.use('/api/groups', groupRoutes);
+app.use('/api/events', eventRoutes);
 
 // Error handling middleware (must be last)
 app.use(notFound);

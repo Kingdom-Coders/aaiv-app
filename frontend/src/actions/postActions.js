@@ -1,5 +1,5 @@
 import axios from "axios";
-import { POST_CREATE_FAIL, POST_CREATE_REQUEST, POST_CREATE_SUCCESS, POST_DELETE_FAIL, POST_DELETE_REQUEST, POST_DELETE_SUCCESS, POST_LIST_FAIL, POST_LIST_REQUEST, POST_LIST_SUCCESS } from "../constants/postsConstants";
+import { POST_CREATE_FAIL, POST_CREATE_REQUEST, POST_CREATE_SUCCESS, POST_DELETE_FAIL, POST_DELETE_REQUEST, POST_DELETE_SUCCESS, POST_DELETE_RESET, POST_LIST_FAIL, POST_LIST_REQUEST, POST_LIST_SUCCESS } from "../constants/postsConstants";
 import { use } from "react";
 
 export const listPosts = () => async(dispatch, getState) => {
@@ -37,7 +37,7 @@ export const listPosts = () => async(dispatch, getState) => {
     }
 }
 
-export const createPostAction = (title, body) => async (dispatch, getState) => {
+export const createPostAction = (title, body, bibleVerse = null) => async (dispatch, getState) => {
     try {
         dispatch({
             type: POST_CREATE_REQUEST,
@@ -54,9 +54,14 @@ export const createPostAction = (title, body) => async (dispatch, getState) => {
             },
         };
 
+        const requestBody = { title, body };
+        if (bibleVerse) {
+            requestBody.bibleVerse = bibleVerse;
+        }
+
         const { data } = await axios.post(
             `/api/posts/create`,
-            { title, body},
+            requestBody,
             config,
         );
 
@@ -107,4 +112,10 @@ export const deletePostAction = (id) => async(dispatch, getState) => {
             payload: message,
         });
     }
+};
+
+export const resetDeletePost = () => (dispatch) => {
+    dispatch({
+        type: POST_DELETE_RESET,
+    });
 };

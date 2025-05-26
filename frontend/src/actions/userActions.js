@@ -13,7 +13,10 @@ import {
     USER_DELETE_SUCCESS, 
     USER_LIST_REQUEST, 
     USER_LIST_SUCCESS, 
-    USER_LIST_FAIL 
+    USER_LIST_FAIL,
+    USER_UPDATE_ADMIN_REQUEST,
+    USER_UPDATE_ADMIN_SUCCESS,
+    USER_UPDATE_ADMIN_FAIL
 } from "../constants/userConstants";
 
 /**
@@ -158,6 +161,46 @@ export const listUsers = () => async (dispatch, getState) => {
             : error.message;
         dispatch({
             type: USER_LIST_FAIL,
+            payload: message,
+        });
+    }
+};
+
+/**
+ * Update user admin status action (Admin only)
+ * @param {string} id - User ID to update
+ * @param {boolean} isAdmin - New admin status
+ */
+export const updateUserAdminStatus = (id, isAdmin) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: USER_UPDATE_ADMIN_REQUEST });
+
+        const { userLogin: { userInfo } } = getState();
+
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        const { data } = await axios.put(
+            `/api/users/${id}/admin`,
+            { isAdmin },
+            config
+        );
+
+        dispatch({
+            type: USER_UPDATE_ADMIN_SUCCESS,
+            payload: data,
+        });
+    } catch (error) {
+        const message = 
+            error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message;
+        dispatch({
+            type: USER_UPDATE_ADMIN_FAIL,
             payload: message,
         });
     }

@@ -87,3 +87,56 @@
     font-weight: bold;
     color: #007bff;
 }
+
+/* Action Buttons */
+.deleteButton, 
+.promoteButton, 
+.demoteButton {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+    min-width: 80px;
+}
+
+.deleteButton {
+    background-color: #dc3545;
+    color: white;
+}
+
+.deleteButton:hover {
+    background-color: #c82333;
+    transform: scale(1.05);
+}
+
+.promoteButton {
+    background-color: #28a745;
+    color: white;
+}
+
+.promoteButton:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+.demoteButton {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.demoteButton:hover {
+    background-color: #e0a800;
+    transform: scale(1.05);
+}
+
+.deleteButton:disabled,
+.promoteButton:disabled,
+.demoteButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}

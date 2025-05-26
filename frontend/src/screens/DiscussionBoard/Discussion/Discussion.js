@@ -11,10 +11,12 @@ import {
   Accordion,
   Avatar,
   Spinner,
+  Badge,
 } from '@chakra-ui/react';
-import { MdAdd } from 'react-icons/md';
+import { MdAdd, MdChatBubbleOutline } from 'react-icons/md';
 import { BiMessageSquareDetail } from 'react-icons/bi';
 import { listPosts } from '../../../actions/postActions';
+import { resetDeletePost } from '../../../actions/postActions';
 
 const Discussion = () => {
   const navigate = useNavigate();
@@ -30,16 +32,25 @@ const Discussion = () => {
   const postList = useSelector((state) => state.postList);
   const { loading, error, posts } = postList;
 
+  // Get post delete state to refresh list after deletion
+  const postDelete = useSelector((state) => state.postDelete);
+  const { success: deleteSuccess } = postDelete;
+
   // Get user info for authentication check
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  // Fetch posts when component mounts
+  // Fetch posts when component mounts or after successful deletion
   useEffect(() => {
     if (userInfo) {
       dispatch(listPosts());
     }
-  }, [dispatch, userInfo]);
+  }, [dispatch, userInfo, deleteSuccess]);
+
+  // Reset delete state when component mounts to prevent navigation issues
+  useEffect(() => {
+    dispatch(resetDeletePost());
+  }, [dispatch]);
 
   // Format date for display
   const formatDate = (dateString) => {
@@ -71,8 +82,14 @@ const Discussion = () => {
 
   // Get author name from post
   const getAuthorName = (post) => {
-    if (post.user && typeof post.user === 'object' && post.user.name) {
-      return post.user.name;
+    if (post.user && typeof post.user === 'object') {
+      if (post.user.firstName && post.user.lastName) {
+        return `${post.user.firstName} ${post.user.lastName}`;
+      } else if (post.user.firstName) {
+        return post.user.firstName;
+      } else if (post.user.lastName) {
+        return post.user.lastName;
+      }
     }
     return 'Unknown User';
   };
@@ -258,161 +275,166 @@ const Discussion = () => {
                         border="1px solid rgba(255, 255, 255, 0.2)"
                         overflow="hidden"
                         transition="all 0.3s ease"
+                        position="relative"
                         _hover={{
                           transform: "translateY(-2px)",
                           boxShadow: "0 12px 40px rgba(0, 0, 0, 0.15)",
                         }}
                       >
+                        {/* Fixed Thread Button */}
+                        <Button
+                          size="sm"
+                          bg="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+                          color="white"
+                          borderRadius="10px"
+                          fontWeight="600"
+                          p={3}
+                          minH="40px"
+                          minW="40px"
+                          position="absolute"
+                          top={4}
+                          right={4}
+                          zIndex={2}
+                          _hover={{ 
+                            transform: "translateY(-1px)",
+                            boxShadow: "0 4px 15px rgba(102, 126, 234, 0.3)"
+                          }}
+                          transition="all 0.2s ease"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate('/thread', { 
+                              state: { 
+                                post: {
+                                  _id: post._id,
+                                  title: post.title,
+                                  body: post.body,
+                                  createdAt: post.createdAt,
+                                  user: post.user,
+                                  bibleVerse: post.bibleVerse
+                                }
+                              }
+                            });
+                          }}
+                        >
+                          <BiMessageSquareDetail size={18} />
+                        </Button>
+
                         <Accordion.ItemTrigger
                           p={5}
+                          pr={20}
                           bg="transparent"
                           _hover={{ bg: "rgba(102, 126, 234, 0.05)" }}
                           transition="all 0.3s ease"
                           onClick={() => handleAccordionItemClick(post._id, index)}
                         >
-                          <HStack w="100%" spacing={4} align="center">
-                            <Avatar.Root size="md" borderRadius="10px">
-                              <Avatar.Fallback
-                                name={getInitials(getAuthorName(post))}
-                                color="white"
-                                fontWeight="600"
-                              />
-                            </Avatar.Root>
-                            
-                            <VStack flex="1" align="start" spacing={2}>
-                              <HStack w="100%" justify="space-between" align="center">
-                                <Text
+                          <VStack w="100%" spacing={4} align="stretch">
+                            {/* Main Header - Title */}
+                            <VStack spacing={2} align="start" w="100%">
+                              <Text
+                                color="gray.800"
+                                fontSize="xl"
+                                fontWeight="700"
+                                lineHeight="1.3"
+                                letterSpacing="-0.025em"
+                              >
+                                {getTruncatedTitle(post.title, index)}
+                              </Text>
+                              
+                              {/* Bible Verse Reference - Integrated with title */}
+                              {post.bibleVerse && post.bibleVerse.reference && (
+                                <HStack spacing={2} align="center">
+                                  <Box
+                                    w="3px"
+                                    h="16px"
+                                    bg="#8B4513"
+                                    borderRadius="full"
+                                  />
+                                  <Text
+                                    color="#8B4513"
+                                    fontSize="sm"
+                                    fontWeight="600"
+                                    letterSpacing="0.025em"
+                                  >
+                                    {post.bibleVerse.reference}
+                                  </Text>
+                                </HStack>
+                              )}
+                            </VStack>
+
+                            {/* Author & Date Section */}
+                            <HStack spacing={3} align="center">
+                              {/* <Avatar.Root size="sm" borderRadius="8px">
+                                <Avatar.Fallback 
+                                  bg="#6B7280" 
+                                  color="white"
+                                  fontSize="sm"
+                                >
+                                  {getAuthorName(post).charAt(0).toUpperCase()}
+                                </Avatar.Fallback>
+                              </Avatar.Root> */}
+                              <HStack spacing={0} align="start" flex="1" alignItems="center">
+                                <Text 
+                                  color="gray.700" 
+                                  fontSize="sm" 
                                   fontWeight="600"
-                                  color="gray.800"
-                                  fontSize="lg"
                                   lineHeight="1.2"
                                 >
-                                  {getTruncatedTitle(post.title, index)}
+                                  {getAuthorName(post)} •
                                 </Text>
-                                <Box
-                                  bg="rgba(102, 126, 234, 0.1)"
-                                  color="#667eea"
-                                  px={3}
-                                  py={1}
-                                  borderRadius="full"
+                                <Text 
+                                  color="gray.500" 
                                   fontSize="xs"
-                                  fontWeight="600"
-                                  flexShrink={0}
+                                  lineHeight="1.2"
                                 >
                                   {formatDate(post.createdAt)}
-                                </Box>
+                                </Text>
                               </HStack>
-                              
-                              <Text
-                                color="gray.500"
-                                fontSize="sm"
-                                fontWeight="500"
-                              >
-                                by {getAuthorName(post)}
-                              </Text>
-                              
-                              <Text
-                                color="gray.600"
-                                fontSize="sm"
-                                fontWeight="400"
-                                lineHeight="1.5"
-                                noOfLines={2}
-                              >
-                                {getTruncatedBody(post.body)}
-                              </Text>
-                            </VStack>
+                            </HStack>
                             
-                            <VStack spacing={2} align="center">
-                              <Button
-                                size="sm"
-                                bg="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-                                color="white"
-                                borderRadius="8px"
-                                fontWeight="600"
-                                px={3}
-                                py={3}
-                                minW="80px"
-                                h="auto"
-                                _hover={{ 
-                                  transform: "translateY(-1px)",
-                                  boxShadow: "0 4px 15px rgba(102, 126, 234, 0.3)"
-                                }}
-                                transition="all 0.2s ease"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  navigate('/thread', { 
-                                    state: { 
-                                      post: {
-                                        _id: post._id,
-                                        title: post.title,
-                                        body: post.body,
-                                        createdAt: post.createdAt,
-                                        user: post.user
-                                      }
-                                    }
-                                  });
-                                }}
+                            {/* Preview Text (only when collapsed) */}
+                            {!expandedPosts.has(index.toString()) && (
+                              <Box 
+                                pl={2} 
+                                borderLeft="2px solid rgba(102, 126, 234, 0.1)"
                               >
-                                <VStack spacing={0}>
-                                  <BiMessageSquareDetail size={16} />
-                                  <Text fontSize="xs" fontWeight="600" lineHeight="1">
-                                    View
-                                  </Text>
-                                  <Text fontSize="xs" fontWeight="600" lineHeight="1">
-                                    Thread
-                                  </Text>
-                                </VStack>
-                              </Button>
-                              <Accordion.ItemIndicator 
-                                color="gray.500" 
-                                fontSize="16px"
-                              />
-                            </VStack>
-                          </HStack>
+                                <Text
+                                  color="gray.600"
+                                  fontSize="sm"
+                                  fontWeight="400"
+                                  lineHeight="1.5"
+                                  noOfLines={2}
+                                  pr={6}
+                                >
+                                  {getTruncatedBody(post.body)}
+                                </Text>
+                              </Box>
+                            )}
+                          </VStack>
                         </Accordion.ItemTrigger>
                         <Accordion.ItemContent>
                           <Box px={5} pb={5}>
-                            <Box pl={12}>
-                              <VStack spacing={3} align="stretch">
-                                <Box
-                                  w="100%"
-                                  h="1px"
-                                  bg="rgba(102, 126, 234, 0.1)"
-                                />
-                                <Text
-                                  color="gray.700"
-                                  fontSize="xs"
-                                  fontWeight="600"
-                                  textTransform="uppercase"
-                                  letterSpacing="0.5px"
+                            <VStack spacing={3} align="stretch">
+                              <Box
+                                w="100%"
+                                h="1px"
+                                bg="rgba(102, 126, 234, 0.1)"
+                              />
+                              <Box
+                                bg="rgba(102, 126, 234, 0.03)"
+                                borderRadius="10px"
+                                p={4}
+                                border="1px solid rgba(102, 126, 234, 0.1)"
+                              >
+                                <Text 
+                                  color="gray.700" 
+                                  fontSize="sm" 
+                                  lineHeight="1.6"
+                                  whiteSpace="pre-wrap"
                                 >
-                                  Full Content
+                                  {post.body || 'No content provided'}
                                 </Text>
-                                <Box
-                                  bg="rgba(102, 126, 234, 0.03)"
-                                  borderRadius="10px"
-                                  p={3}
-                                  border="1px solid rgba(102, 126, 234, 0.1)"
-                                >
-                                  <Text 
-                                    color="gray.700" 
-                                    fontSize="sm" 
-                                    lineHeight="1.6"
-                                    whiteSpace="pre-wrap"
-                                  >
-                                    {post.body || 'No content provided'}
-                                  </Text>
-                                </Box>
-                                <Text
-                                  color="gray.400"
-                                  fontSize="xs"
-                                  textAlign="right"
-                                  fontStyle="italic"
-                                >
-                                  Posted {formatDate(post.createdAt)}
-                                </Text>
-                              </VStack>
-                            </Box>
+                              </Box>
+                            </VStack>
                           </Box>
                         </Accordion.ItemContent>
                       </Box>

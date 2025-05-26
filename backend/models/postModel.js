@@ -18,6 +18,21 @@ const postSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    bibleVerse: {
+        reference: {
+            type: String,
+            required: false,
+        },
+        text: {
+            type: String,
+            required: false,
+        },
+        translation: {
+            type: String,
+            required: false,
+            default: "web"
+        }
+    }
 }, {
     timestamps: true, // Automatically add createdAt and updatedAt fields
 });
