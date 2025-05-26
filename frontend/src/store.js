@@ -16,6 +16,14 @@ import {
     postListReducer 
 } from "./reducers/postsReducers";
 
+// Comment reducers
+import { 
+    commentListReducer,
+    commentCreateReducer,
+    commentUpdateReducer,
+    commentDeleteReducer 
+} from "./reducers/commentReducers";
+
 // Announcement reducers
 import { 
     announcementListReducer,
@@ -39,6 +47,12 @@ const reducer = combineReducers({
     postList: postListReducer,
     postCreate: postCreateReducer,
     postDelete: postDeleteReducer,
+    
+    // Comment state
+    commentList: commentListReducer,
+    commentCreate: commentCreateReducer,
+    commentUpdate: commentUpdateReducer,
+    commentDelete: commentDeleteReducer,
     
     // Announcement state
     announcementList: announcementListReducer,

@@ -221,6 +221,7 @@ const ChatLink = () => {
                 }}
                 transition="all 0.3s ease"
                 w="200px"
+                border="2px solid rgba(255, 255, 255, 0.3)"
               >
                 Add Group
               </Button>
@@ -350,7 +351,6 @@ const ChatLink = () => {
                           <Avatar.Image src={item.image} />
                           <Avatar.Fallback
                             name={item.title}
-                            bg="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
                             color="white"
                             fontWeight="600"
                           />

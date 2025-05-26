@@ -7,9 +7,11 @@ const asyncHandler = require("express-async-handler");
  * @access Private
  */
 const getPosts = asyncHandler(async (req, res) => {
-    // Get all posts from all users for the discussion board
-    // Alternative: const posts = await Post.find({user: req.user._id}) for user-specific posts
-    const posts = await Post.find({});
+    // Get all posts from all users for the discussion board with user information
+    // Sort by creation date (newest first)
+    const posts = await Post.find({})
+        .populate('user', 'name email') // Include user name and email
+        .sort({ createdAt: -1 }); // Sort by newest first
     res.json(posts);
 });
 

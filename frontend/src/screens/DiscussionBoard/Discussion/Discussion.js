@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
   VStack,
@@ -9,13 +10,109 @@ import {
   Heading,
   Accordion,
   Avatar,
+  Spinner,
 } from '@chakra-ui/react';
 import { MdAdd } from 'react-icons/md';
 import { BiMessageSquareDetail } from 'react-icons/bi';
-import discussions from './DiscussionData';
+import { listPosts } from '../../../actions/postActions';
 
 const Discussion = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // State for tracking expanded posts
+  const [expandedPosts, setExpandedPosts] = useState(new Set(["0"])); // Initialize with first post expanded
+
+  // Character limit for post preview
+  const CHARACTER_LIMIT = 100;
+
+  // Get posts from Redux state
+  const postList = useSelector((state) => state.postList);
+  const { loading, error, posts } = postList;
+
+  // Get user info for authentication check
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  // Fetch posts when component mounts
+  useEffect(() => {
+    if (userInfo) {
+      dispatch(listPosts());
+    }
+  }, [dispatch, userInfo]);
+
+  // Format date for display
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffTime = Math.abs(now - date);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 1) return 'Today';
+    if (diffDays === 2) return 'Yesterday';
+    if (diffDays <= 7) return `${diffDays - 1} days ago`;
+    
+    return date.toLocaleDateString('en-US', { 
+      month: 'short', 
+      day: 'numeric' 
+    });
+  };
+
+  // Generate initials for avatar
+  const getInitials = (name) => {
+    if (!name) return 'U';
+    return name
+      .split(' ')
+      .map(word => word.charAt(0))
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
+  // Get author name from post
+  const getAuthorName = (post) => {
+    if (post.user && typeof post.user === 'object' && post.user.name) {
+      return post.user.name;
+    }
+    return 'Unknown User';
+  };
+
+  // Get truncated post body for preview
+  const getTruncatedBody = (body) => {
+    if (!body) return 'No content provided';
+    if (body.length <= CHARACTER_LIMIT) return body;
+    return body.substring(0, CHARACTER_LIMIT) + '...';
+  };
+
+  // Get truncated title for display (or full title if expanded)
+  const getTruncatedTitle = (title, index) => {
+    if (!title) return 'Untitled';
+    const TITLE_LIMIT = 40; // Character limit for titles
+    
+    const isExpanded = expandedPosts.has(index.toString());
+    
+    // Show full title if post is expanded, truncated if not expanded
+    if (isExpanded) {
+      return title;
+    }
+    
+    // Post is not expanded, so truncate if needed
+    if (title.length <= TITLE_LIMIT) return title;
+    return title.substring(0, TITLE_LIMIT) + '...';
+  };
+
+  // Handle accordion item click to toggle expanded state
+  const handleAccordionItemClick = (postId, index) => {
+    const newExpandedPosts = new Set(expandedPosts);
+    
+    if (newExpandedPosts.has(index.toString())) {
+      newExpandedPosts.delete(index.toString());
+    } else {
+      newExpandedPosts.add(index.toString());
+    }
+    
+    setExpandedPosts(newExpandedPosts);
+  };
 
   return (
     <Box
@@ -54,143 +151,298 @@ const Discussion = () => {
           w="200px"
           leftIcon={<MdAdd size={20} />}
           onClick={() => navigate("/create-post")}
+          border="2px solid rgba(255, 255, 255, 0.3)"
         >
           Create Post
         </Button>
 
-        {/* Discussion Posts */}
-        <Box w="100%" maxW="800px">
-          <Accordion.Root
-            variant="plain"
-            collapsible
-            defaultValue={["0"]}
+        {/* Loading State */}
+        {loading && (
+          <Box
+            bg="rgba(255, 255, 255, 0.95)"
+            borderRadius="16px"
+            p={8}
+            w="100%"
+            maxW="800px"
+            boxShadow="0 8px 32px rgba(0, 0, 0, 0.1)"
+            backdropFilter="blur(10px)"
+            border="1px solid rgba(255, 255, 255, 0.2)"
+            textAlign="center"
           >
             <VStack spacing={4}>
-              {discussions.map((item, index) => (
-                <Accordion.Item
-                  key={index}
-                  value={index.toString()}
-                  w="100%"
-                >
-                  <Box
-                    bg="rgba(255, 255, 255, 0.95)"
-                    borderRadius="16px"
-                    boxShadow="0 8px 32px rgba(0, 0, 0, 0.1)"
-                    backdropFilter="blur(10px)"
-                    border="1px solid rgba(255, 255, 255, 0.2)"
-                    overflow="hidden"
-                    transition="all 0.3s ease"
-                    _hover={{
-                      transform: "translateY(-2px)",
-                      boxShadow: "0 12px 40px rgba(0, 0, 0, 0.15)",
-                    }}
-                  >
-                    <Accordion.ItemTrigger
-                      p={4}
-                      bg="transparent"
-                      _hover={{ bg: "rgba(102, 126, 234, 0.05)" }}
-                      transition="all 0.3s ease"
-                    >
-                      <HStack w="100%" spacing={4} align="center">
-                        <Avatar.Root size="md" borderRadius="10px">
-                          <Avatar.Fallback
-                            name={item.verses}
-                            bg="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-                            color="white"
-                            fontWeight="600"
-                          />
-                        </Avatar.Root>
-                        <Box flex="1" textAlign="left">
-                          <HStack spacing={2} align="center" mb={1}>
-                            <Text
-                              fontWeight="600"
-                              color="gray.800"
-                              fontSize="md"
-                            >
-                              {item.verses}
-                            </Text>
-                            <Box
-                              bg="rgba(102, 126, 234, 0.1)"
-                              color="#667eea"
-                              px={2}
-                              py={1}
-                              borderRadius="full"
-                              fontSize="xs"
-                              fontWeight="500"
-                            >
-                              {item.date}
-                            </Box>
-                          </HStack>
-                          <Text
-                            color="gray.600"
-                            fontSize="sm"
-                            fontWeight="400"
-                          >
-                            {item.title}
-                          </Text>
-                        </Box>
-                        <HStack spacing={2}>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            color="gray.600"
-                            _hover={{ color: "#667eea", bg: "rgba(102, 126, 234, 0.1)" }}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              navigate('/thread', { 
-                                state: { 
-                                  post: {
-                                    verses: item.verses,
-                                    title: item.title,
-                                    date: item.date,
-                                    applicationQuestions: item.applicationQuestions
-                                  }
-                                }
-                              });
-                            }}
-                            leftIcon={<BiMessageSquareDetail size={16} />}
-                          >
-                            View
-                          </Button>
-                          <Accordion.ItemIndicator color="gray.600" />
-                        </HStack>
-                      </HStack>
-                    </Accordion.ItemTrigger>
-                    <Accordion.ItemContent>
-                      <Box p={4} pt={0}>
-                        <VStack spacing={2} align="stretch">
-                          <Text
-                            color="gray.700"
-                            fontSize="sm"
-                            fontWeight="500"
-                            mb={2}
-                          >
-                            Application Questions:
-                          </Text>
-                          {item.applicationQuestions.map((question, qIndex) => (
-                            <HStack key={qIndex} align="flex-start" spacing={3}>
-                              <Box
-                                w="6px"
-                                h="6px"
-                                borderRadius="full"
-                                bg="#667eea"
-                                mt={2}
-                                flexShrink={0}
-                              />
-                              <Text color="gray.600" fontSize="sm" lineHeight="1.5">
-                                {question}
-                              </Text>
-                            </HStack>
-                          ))}
-                        </VStack>
-                      </Box>
-                    </Accordion.ItemContent>
-                  </Box>
-                </Accordion.Item>
-              ))}
+              <Spinner size="lg" color="#667eea" />
+              <Text color="gray.600" fontSize="md">
+                Loading discussions...
+              </Text>
             </VStack>
-          </Accordion.Root>
-        </Box>
+          </Box>
+        )}
+
+        {/* Error State */}
+        {error && (
+          <Box
+            bg="rgba(255, 255, 255, 0.95)"
+            borderRadius="16px"
+            p={6}
+            w="100%"
+            maxW="800px"
+            boxShadow="0 8px 32px rgba(0, 0, 0, 0.1)"
+            backdropFilter="blur(10px)"
+            border="1px solid rgba(255, 255, 255, 0.2)"
+          >
+            <Box
+              bg="rgba(229, 62, 62, 0.1)"
+              border="1px solid rgba(229, 62, 62, 0.3)"
+              borderRadius="8px"
+              p={4}
+              w="100%"
+            >
+              <Text color="red.600" fontSize="sm" fontWeight="500">
+                Error loading posts: {error}
+              </Text>
+            </Box>
+          </Box>
+        )}
+
+        {/* Discussion Posts */}
+        {!loading && !error && posts && (
+          <Box w="100%" maxW="800px">
+            {posts.length === 0 ? (
+              <Box
+                bg="rgba(255, 255, 255, 0.95)"
+                borderRadius="16px"
+                p={8}
+                w="100%"
+                boxShadow="0 8px 32px rgba(0, 0, 0, 0.1)"
+                backdropFilter="blur(10px)"
+                border="1px solid rgba(255, 255, 255, 0.2)"
+                textAlign="center"
+              >
+                <VStack spacing={4}>
+                  <Text color="gray.600" fontSize="lg" fontWeight="500">
+                    No discussions yet
+                  </Text>
+                  <Text color="gray.500" fontSize="sm">
+                    Be the first to start a conversation!
+                  </Text>
+                  <Button
+                    bg="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+                    color="white"
+                    size="md"
+                    borderRadius="12px"
+                    leftIcon={<MdAdd size={18} />}
+                    onClick={() => navigate("/create-post")}
+                  >
+                    Create First Post
+                  </Button>
+                </VStack>
+              </Box>
+            ) : (
+              <Accordion.Root
+                variant="plain"
+                collapsible
+                defaultValue={["0"]}
+              >
+                <VStack spacing={4}>
+                  {posts.map((post, index) => (
+                    <Accordion.Item
+                      key={post._id}
+                      value={index.toString()}
+                      w="100%"
+                    >
+                      <Box
+                        bg="rgba(255, 255, 255, 0.95)"
+                        borderRadius="16px"
+                        boxShadow="0 8px 32px rgba(0, 0, 0, 0.1)"
+                        backdropFilter="blur(10px)"
+                        border="1px solid rgba(255, 255, 255, 0.2)"
+                        overflow="hidden"
+                        transition="all 0.3s ease"
+                        _hover={{
+                          transform: "translateY(-2px)",
+                          boxShadow: "0 12px 40px rgba(0, 0, 0, 0.15)",
+                        }}
+                      >
+                        <Accordion.ItemTrigger
+                          p={5}
+                          bg="transparent"
+                          _hover={{ bg: "rgba(102, 126, 234, 0.05)" }}
+                          transition="all 0.3s ease"
+                          onClick={() => handleAccordionItemClick(post._id, index)}
+                        >
+                          <HStack w="100%" spacing={4} align="center">
+                            <Avatar.Root size="md" borderRadius="10px">
+                              <Avatar.Fallback
+                                name={getInitials(getAuthorName(post))}
+                                color="white"
+                                fontWeight="600"
+                              />
+                            </Avatar.Root>
+                            
+                            <VStack flex="1" align="start" spacing={2}>
+                              <HStack w="100%" justify="space-between" align="center">
+                                <Text
+                                  fontWeight="600"
+                                  color="gray.800"
+                                  fontSize="lg"
+                                  lineHeight="1.2"
+                                >
+                                  {getTruncatedTitle(post.title, index)}
+                                </Text>
+                                <Box
+                                  bg="rgba(102, 126, 234, 0.1)"
+                                  color="#667eea"
+                                  px={3}
+                                  py={1}
+                                  borderRadius="full"
+                                  fontSize="xs"
+                                  fontWeight="600"
+                                  flexShrink={0}
+                                >
+                                  {formatDate(post.createdAt)}
+                                </Box>
+                              </HStack>
+                              
+                              <Text
+                                color="gray.500"
+                                fontSize="sm"
+                                fontWeight="500"
+                              >
+                                by {getAuthorName(post)}
+                              </Text>
+                              
+                              <Text
+                                color="gray.600"
+                                fontSize="sm"
+                                fontWeight="400"
+                                lineHeight="1.5"
+                                noOfLines={2}
+                              >
+                                {getTruncatedBody(post.body)}
+                              </Text>
+                            </VStack>
+                            
+                            <VStack spacing={2} align="center">
+                              <Button
+                                size="sm"
+                                bg="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+                                color="white"
+                                borderRadius="8px"
+                                fontWeight="600"
+                                px={3}
+                                py={3}
+                                minW="80px"
+                                h="auto"
+                                _hover={{ 
+                                  transform: "translateY(-1px)",
+                                  boxShadow: "0 4px 15px rgba(102, 126, 234, 0.3)"
+                                }}
+                                transition="all 0.2s ease"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  navigate('/thread', { 
+                                    state: { 
+                                      post: {
+                                        _id: post._id,
+                                        title: post.title,
+                                        body: post.body,
+                                        createdAt: post.createdAt,
+                                        user: post.user
+                                      }
+                                    }
+                                  });
+                                }}
+                              >
+                                <VStack spacing={0}>
+                                  <BiMessageSquareDetail size={16} />
+                                  <Text fontSize="xs" fontWeight="600" lineHeight="1">
+                                    View
+                                  </Text>
+                                  <Text fontSize="xs" fontWeight="600" lineHeight="1">
+                                    Thread
+                                  </Text>
+                                </VStack>
+                              </Button>
+                              <Accordion.ItemIndicator 
+                                color="gray.500" 
+                                fontSize="16px"
+                              />
+                            </VStack>
+                          </HStack>
+                        </Accordion.ItemTrigger>
+                        <Accordion.ItemContent>
+                          <Box px={5} pb={5}>
+                            <Box pl={12}>
+                              <VStack spacing={3} align="stretch">
+                                <Box
+                                  w="100%"
+                                  h="1px"
+                                  bg="rgba(102, 126, 234, 0.1)"
+                                />
+                                <Text
+                                  color="gray.700"
+                                  fontSize="xs"
+                                  fontWeight="600"
+                                  textTransform="uppercase"
+                                  letterSpacing="0.5px"
+                                >
+                                  Full Content
+                                </Text>
+                                <Box
+                                  bg="rgba(102, 126, 234, 0.03)"
+                                  borderRadius="10px"
+                                  p={3}
+                                  border="1px solid rgba(102, 126, 234, 0.1)"
+                                >
+                                  <Text 
+                                    color="gray.700" 
+                                    fontSize="sm" 
+                                    lineHeight="1.6"
+                                    whiteSpace="pre-wrap"
+                                  >
+                                    {post.body || 'No content provided'}
+                                  </Text>
+                                </Box>
+                                <Text
+                                  color="gray.400"
+                                  fontSize="xs"
+                                  textAlign="right"
+                                  fontStyle="italic"
+                                >
+                                  Posted {formatDate(post.createdAt)}
+                                </Text>
+                              </VStack>
+                            </Box>
+                          </Box>
+                        </Accordion.ItemContent>
+                      </Box>
+                    </Accordion.Item>
+                  ))}
+                </VStack>
+              </Accordion.Root>
+            )}
+          </Box>
+        )}
+
+        {/* Help Text */}
+        {!loading && !error && (
+          <Box
+            bg="rgba(255, 255, 255, 0.1)"
+            borderRadius="12px"
+            p={4}
+            maxW="800px"
+            w="100%"
+          >
+            <Text
+              color="white"
+              fontSize="sm"
+              textAlign="center"
+              opacity={0.9}
+            >
+              Share your thoughts, ask questions, and engage in meaningful discussions with the community.
+            </Text>
+          </Box>
+        )}
       </VStack>
     </Box>
   );
