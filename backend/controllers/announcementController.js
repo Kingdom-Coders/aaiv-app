@@ -4,10 +4,12 @@ const asyncHandler = require("express-async-handler");
 /**
  * Get all announcements
  * @route GET /api/announcements
- * @access Private
+ * @access Public
  */
 const getAnnouncements = asyncHandler(async (req, res) => {
-    const announcements = await Announcement.find({});
+    const announcements = await Announcement.find({})
+        .populate('user', 'name email')
+        .sort({ createdAt: -1 });
     res.json(announcements);
 });
 

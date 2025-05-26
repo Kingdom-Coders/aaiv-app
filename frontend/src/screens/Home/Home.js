@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../actions/userActions";
+import { listAnnouncements } from "../../actions/announcementActions";
 import { getDailyVerse } from "../../utils/dailyVerse";
+import AnnouncementsCarousel from "../../components/AnnouncementsCarousel/AnnouncementsCarousel";
 import './Home.css';
 
 const events = [
@@ -41,11 +43,20 @@ const Home = () => {
   const timeoutIdRef = useRef(null);
   const [dailyVerse, setDailyVerse] = useState(null);
 
+  // Get announcements state from Redux
+  const announcementList = useSelector((state) => state.announcementList);
+  const { loading: announcementsLoading, error: announcementsError, announcements } = announcementList;
+
   // Get the daily verse when component mounts
   useEffect(() => {
     const verse = getDailyVerse();
     setDailyVerse(verse);
   }, []);
+
+  // Fetch announcements when component mounts
+  useEffect(() => {
+    dispatch(listAnnouncements());
+  }, [dispatch]);
 
   // Set up an interval to check for new day and update verse at midnight
   useEffect(() => {
@@ -145,7 +156,7 @@ const Home = () => {
 
   return (
     <div className="home-screen">
-      <h1>Welcome to Kingdom Coders</h1>
+      <h1>Welcome to AAIV</h1>
 
       {/* Bible Verse Section */}
       <div className="BibleVerse">
@@ -170,6 +181,13 @@ const Home = () => {
         </div>
       </div>
 
+      {/* Announcements Section */}
+      <AnnouncementsCarousel 
+        announcements={announcements}
+        loading={announcementsLoading}
+        error={announcementsError}
+      />
+
       {/* Upcoming Events Section */}
       <div className="upcomingevents-tab">
         <h3>Upcoming Events</h3>
@@ -190,13 +208,13 @@ const Home = () => {
       </div>
 
       {/* More Section */}
-      <div className="more-tab">
+      {/* <div className="more-tab">
         <h2>More</h2>
         <div className="links">
           <div className="insta">AAIV Instagram</div>
           <div className="markcamp">Sign up for Mark Camp</div>
         </div>
-      </div>
+      </div> */}
 
       {/* Sign Out Button */}
       <div className="signoutButton" onClick={logoutHandler}>

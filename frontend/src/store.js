@@ -33,6 +33,15 @@ import {
     announcementDeleteReducer 
 } from "./reducers/announcementsReducers";
 
+// Group reducers
+import { 
+    groupListReducer,
+    groupCreateReducer,
+    groupDetailsReducer,
+    groupUpdateReducer,
+    groupDeleteReducer 
+} from "./reducers/groupReducers";
+
 /**
  * Combine all reducers into a single root reducer
  */
@@ -60,6 +69,13 @@ const reducer = combineReducers({
     announcementDetails: announcementDetailsReducer,
     announcementUpdate: announcementUpdateReducer,
     announcementDelete: announcementDeleteReducer,
+
+    // Group state
+    groupList: groupListReducer,
+    groupCreate: groupCreateReducer,
+    groupDetails: groupDetailsReducer,
+    groupUpdate: groupUpdateReducer,
+    groupDelete: groupDeleteReducer,
 });
 
 // Get user info from localStorage if it exists

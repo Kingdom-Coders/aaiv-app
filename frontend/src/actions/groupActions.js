@@ -1,34 +1,34 @@
 import axios from "axios";
 import {
-    ANNOUNCEMENT_LIST_REQUEST,
-    ANNOUNCEMENT_LIST_SUCCESS,
-    ANNOUNCEMENT_LIST_FAIL,
-    ANNOUNCEMENT_CREATE_REQUEST,
-    ANNOUNCEMENT_CREATE_SUCCESS,
-    ANNOUNCEMENT_CREATE_FAIL,
-    ANNOUNCEMENT_DETAILS_REQUEST,
-    ANNOUNCEMENT_DETAILS_SUCCESS,
-    ANNOUNCEMENT_DETAILS_FAIL,
-    ANNOUNCEMENT_UPDATE_REQUEST,
-    ANNOUNCEMENT_UPDATE_SUCCESS,
-    ANNOUNCEMENT_UPDATE_FAIL,
-    ANNOUNCEMENT_DELETE_REQUEST,
-    ANNOUNCEMENT_DELETE_SUCCESS,
-    ANNOUNCEMENT_DELETE_FAIL,
-} from "../constants/announcementsConstants";
+    GROUP_LIST_REQUEST,
+    GROUP_LIST_SUCCESS,
+    GROUP_LIST_FAIL,
+    GROUP_CREATE_REQUEST,
+    GROUP_CREATE_SUCCESS,
+    GROUP_CREATE_FAIL,
+    GROUP_DETAILS_REQUEST,
+    GROUP_DETAILS_SUCCESS,
+    GROUP_DETAILS_FAIL,
+    GROUP_UPDATE_REQUEST,
+    GROUP_UPDATE_SUCCESS,
+    GROUP_UPDATE_FAIL,
+    GROUP_DELETE_REQUEST,
+    GROUP_DELETE_SUCCESS,
+    GROUP_DELETE_FAIL,
+} from "../constants/groupConstants";
 
-// Action to list all announcements
-export const listAnnouncements = () => async (dispatch, getState) => {
+// Action to list all groups
+export const listGroups = () => async (dispatch, getState) => {
     try {
         dispatch({
-            type: ANNOUNCEMENT_LIST_REQUEST,
+            type: GROUP_LIST_REQUEST,
         });
 
         // Make API request without authentication for public access
-        const { data } = await axios.get(`/api/announcements`);
+        const { data } = await axios.get(`/api/groups`);
 
         dispatch({
-            type: ANNOUNCEMENT_LIST_SUCCESS,
+            type: GROUP_LIST_SUCCESS,
             payload: data,
         });
     } catch (error) {
@@ -37,17 +37,17 @@ export const listAnnouncements = () => async (dispatch, getState) => {
                 ? error.response.data.message
                 : error.message;
         dispatch({
-            type: ANNOUNCEMENT_LIST_FAIL,
+            type: GROUP_LIST_FAIL,
             payload: message,
         });
     }
 };
 
-// Action to create a new announcement
-export const createAnnouncementAction = (title, body) => async (dispatch, getState) => {
+// Action to create a new group
+export const createGroupAction = (name, link, badges, description) => async (dispatch, getState) => {
     try {
         dispatch({
-            type: ANNOUNCEMENT_CREATE_REQUEST,
+            type: GROUP_CREATE_REQUEST,
         });
 
         const {
@@ -62,13 +62,13 @@ export const createAnnouncementAction = (title, body) => async (dispatch, getSta
         };
 
         const { data } = await axios.post(
-            `/api/announcements/create`,
-            { title, body },
+            `/api/groups/create`,
+            { name, link, badges, description },
             config
         );
 
         dispatch({
-            type: ANNOUNCEMENT_CREATE_SUCCESS,
+            type: GROUP_CREATE_SUCCESS,
             payload: data,
         });
     } catch (error) {
@@ -77,33 +77,23 @@ export const createAnnouncementAction = (title, body) => async (dispatch, getSta
                 ? error.response.data.message
                 : error.message;
         dispatch({
-            type: ANNOUNCEMENT_CREATE_FAIL,
+            type: GROUP_CREATE_FAIL,
             payload: message,
         });
     }
 };
 
-// Action to get a single announcement by ID
-export const getAnnouncementDetails = (id) => async (dispatch, getState) => {
+// Action to get a single group by ID
+export const getGroupDetails = (id) => async (dispatch, getState) => {
     try {
         dispatch({
-            type: ANNOUNCEMENT_DETAILS_REQUEST,
+            type: GROUP_DETAILS_REQUEST,
         });
 
-        const {
-            userLogin: { userInfo },
-        } = getState();
-
-        const config = {
-            headers: {
-                Authorization: `Bearer ${userInfo.token}`,
-            },
-        };
-
-        const { data } = await axios.get(`/api/announcements/${id}`, config);
+        const { data } = await axios.get(`/api/groups/${id}`);
 
         dispatch({
-            type: ANNOUNCEMENT_DETAILS_SUCCESS,
+            type: GROUP_DETAILS_SUCCESS,
             payload: data,
         });
     } catch (error) {
@@ -112,17 +102,17 @@ export const getAnnouncementDetails = (id) => async (dispatch, getState) => {
                 ? error.response.data.message
                 : error.message;
         dispatch({
-            type: ANNOUNCEMENT_DETAILS_FAIL,
+            type: GROUP_DETAILS_FAIL,
             payload: message,
         });
     }
 };
 
-// Action to update an announcement
-export const updateAnnouncementAction = (id, title, body) => async (dispatch, getState) => {
+// Action to update a group
+export const updateGroupAction = (id, name, link, badges, description) => async (dispatch, getState) => {
     try {
         dispatch({
-            type: ANNOUNCEMENT_UPDATE_REQUEST,
+            type: GROUP_UPDATE_REQUEST,
         });
 
         const {
@@ -137,13 +127,13 @@ export const updateAnnouncementAction = (id, title, body) => async (dispatch, ge
         };
 
         const { data } = await axios.put(
-            `/api/announcements/${id}`,
-            { title, body },
+            `/api/groups/${id}`,
+            { name, link, badges, description },
             config
         );
 
         dispatch({
-            type: ANNOUNCEMENT_UPDATE_SUCCESS,
+            type: GROUP_UPDATE_SUCCESS,
             payload: data,
         });
     } catch (error) {
@@ -152,17 +142,17 @@ export const updateAnnouncementAction = (id, title, body) => async (dispatch, ge
                 ? error.response.data.message
                 : error.message;
         dispatch({
-            type: ANNOUNCEMENT_UPDATE_FAIL,
+            type: GROUP_UPDATE_FAIL,
             payload: message,
         });
     }
 };
 
-// Action to delete an announcement
-export const deleteAnnouncementAction = (id) => async (dispatch, getState) => {
+// Action to delete a group
+export const deleteGroupAction = (id) => async (dispatch, getState) => {
     try {
         dispatch({
-            type: ANNOUNCEMENT_DELETE_REQUEST,
+            type: GROUP_DELETE_REQUEST,
         });
 
         const {
@@ -175,10 +165,10 @@ export const deleteAnnouncementAction = (id) => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.delete(`/api/announcements/${id}`, config);
+        const { data } = await axios.delete(`/api/groups/${id}`, config);
 
         dispatch({
-            type: ANNOUNCEMENT_DELETE_SUCCESS,
+            type: GROUP_DELETE_SUCCESS,
             payload: data,
         });
     } catch (error) {
@@ -187,8 +177,8 @@ export const deleteAnnouncementAction = (id) => async (dispatch, getState) => {
                 ? error.response.data.message
                 : error.message;
         dispatch({
-            type: ANNOUNCEMENT_DELETE_FAIL,
+            type: GROUP_DELETE_FAIL,
             payload: message,
         });
     }
-};
+}; 
