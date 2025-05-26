@@ -141,7 +141,7 @@ const Discussion = () => {
     >
       <VStack spacing={6} maxW="1200px" mx="auto">
         {/* Header */}
-        <Box textAlign="center" mt={4}>
+        <Box textAlign="center" mt={10}>
           <Heading
             size="2xl"
             color="white"

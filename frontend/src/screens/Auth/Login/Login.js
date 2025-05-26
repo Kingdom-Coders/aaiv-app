@@ -72,7 +72,7 @@ const Login = () => {
               Welcome Back
             </Heading>
             <Text color="gray.600" fontSize="md">
-              Sign in to Kingdom Coders AAIV
+              Sign in to AAIV app
             </Text>
           </Box>
 

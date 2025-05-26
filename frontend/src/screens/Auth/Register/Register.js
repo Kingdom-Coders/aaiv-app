@@ -73,7 +73,7 @@ const Register = () => {
               bgClip="text"
               mb={2}
             >
-              Join Kingdom Coders
+              Join AAIV
             </Heading>
             <Text color="gray.600" fontSize="md">
               Create your AAIV account

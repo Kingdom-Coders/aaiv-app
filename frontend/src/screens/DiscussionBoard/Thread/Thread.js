@@ -216,7 +216,7 @@ const Thread = () => {
       pb="120px" // Space for bottom navigation
       fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
     >
-      <VStack spacing={6} maxW="800px" mx="auto">
+      <VStack spacing={6} maxW="800px" mx="auto" mt={10}>
         {/* Header */}
         <HStack
           w="100%"

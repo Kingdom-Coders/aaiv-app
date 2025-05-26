@@ -2,7 +2,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  padding-top: max(40px, env(safe-area-inset-top) + 20px);
+  padding-top: max(80px, env(safe-area-inset-top) + 60px);
   padding-bottom: max(120px, env(safe-area-inset-bottom) + 100px);
 }
 

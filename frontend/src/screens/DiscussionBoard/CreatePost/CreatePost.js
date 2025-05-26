@@ -66,7 +66,7 @@ const CreatePost = () => {
     >
       <VStack spacing={6} maxW="800px" mx="auto">
         {/* Header */}
-        <Box textAlign="center" mt={4}>
+        <Box textAlign="center" mt={10}>
           <Heading
             size="2xl"
             color="white"
