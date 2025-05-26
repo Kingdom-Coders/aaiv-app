@@ -11,7 +11,7 @@ import Home from "./screens/Home/Home";
 import Discussion from "./screens/DiscussionBoard/Discussion/Discussion";
 import CreatePost from "./screens/DiscussionBoard/CreatePost/CreatePost";
 import Thread from "./screens/DiscussionBoard/Thread/Thread";
-import Calendar from "./screens/Calendar/Calendar";
+import Events from "./screens/Events/Events";
 import ChatLink from "./screens/ChatLink/ChatLink";
 import Admin from "./screens/Admin/Admin";
 
@@ -77,10 +77,10 @@ function App() {
           }
         />
         <Route
-          path="/calendar"
+          path="/events"
           element={
             <PrivateRoute>
-              <Calendar />
+              <Events />
             </PrivateRoute>
           }
         />

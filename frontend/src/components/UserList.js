@@ -95,7 +95,7 @@ function UserList() {
         dispatch(listUsers()); // Fetch users when component loads
     }, [dispatch, successDelete, successUpdate]);
 
-    return (
+  return (
         <Box
             minH="100vh"
             bg="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
@@ -432,7 +432,7 @@ function UserList() {
                 )}
             </VStack>
         </Box>
-    )
+  )
 }
 
 export default UserList

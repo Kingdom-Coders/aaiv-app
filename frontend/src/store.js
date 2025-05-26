@@ -43,6 +43,20 @@ import {
     groupDeleteReducer 
 } from "./reducers/groupReducers";
 
+// Event reducers
+import {
+    eventCreateReducer,
+    eventListReducer,
+    eventDetailsReducer,
+    eventUpdateReducer,
+    eventDeleteReducer,
+    eventApproveReducer,
+    eventRejectReducer,
+    eventPendingListReducer,
+    eventUserListReducer,
+    eventAdminListReducer
+} from "./reducers/eventReducers";
+
 /**
  * Combine all reducers into a single root reducer
  */
@@ -78,6 +92,18 @@ const reducer = combineReducers({
     groupDetails: groupDetailsReducer,
     groupUpdate: groupUpdateReducer,
     groupDelete: groupDeleteReducer,
+
+    // Event state
+    eventList: eventListReducer,
+    eventCreate: eventCreateReducer,
+    eventDetails: eventDetailsReducer,
+    eventUpdate: eventUpdateReducer,
+    eventDelete: eventDeleteReducer,
+    eventApprove: eventApproveReducer,
+    eventReject: eventRejectReducer,
+    eventPendingList: eventPendingListReducer,
+    eventUserList: eventUserListReducer,
+    eventAdminList: eventAdminListReducer,
 });
 
 // Get user info from localStorage if it exists

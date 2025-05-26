@@ -1,0 +1,471 @@
+/* Events Screen Styles */
+.events-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+    padding-bottom: 120px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.events-header {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.events-title {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
+.events-subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    margin-top: 10px;
+}
+
+.events-divider {
+    width: 200px;
+    height: 2px;
+    background: white;
+    margin: 10px auto;
+    opacity: 0.8;
+}
+
+/* Tab Navigation */
+.tab-navigation {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.tab-button {
+    padding: 12px 24px;
+    border-radius: 12px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tab-button.active {
+    background: rgba(255, 255, 255, 0.9);
+    color: #4a5568;
+}
+
+.tab-button.inactive {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.tab-button:hover {
+    transform: translateY(-2px);
+}
+
+.tab-button.active:hover {
+    background: rgba(255, 255, 255, 1);
+}
+
+.tab-button.inactive:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Create Event Button */
+.create-event-button {
+    background: rgba(255, 255, 255, 0.9);
+    color: #4a5568;
+    padding: 16px 32px;
+    border-radius: 12px;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 auto 40px;
+}
+
+.create-event-button:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Event Cards */
+.events-list {
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.event-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.event-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.event-card.pending {
+    border: 2px solid #fbbf24;
+}
+
+.event-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.event-title {
+    color: #2d3748;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.event-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.event-badge.approved {
+    background: #f0fff4;
+    color: #22543d;
+}
+
+.event-badge.pending {
+    background: #fffbeb;
+    color: #92400e;
+}
+
+.event-badge.all-day {
+    background: #e6fffa;
+    color: #234e52;
+}
+
+.event-badge.timed {
+    background: #ebf8ff;
+    color: #2a4365;
+}
+
+/* Event Details */
+.event-details {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 16px;
+    color: #718096;
+    font-size: 0.9rem;
+}
+
+.event-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.event-description {
+    color: #4a5568;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.event-creator {
+    color: #a0aec0;
+    font-size: 0.8rem;
+}
+
+/* Admin Actions */
+.admin-actions {
+    display: flex;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid #e2e8f0;
+    margin-top: 16px;
+}
+
+.admin-button {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.admin-button.approve {
+    background: #48bb78;
+    color: white;
+}
+
+.admin-button.approve:hover {
+    background: #38a169;
+    transform: translateY(-1px);
+}
+
+.admin-button.reject {
+    background: #f56565;
+    color: white;
+}
+
+.admin-button.reject:hover {
+    background: #e53e3e;
+    transform: translateY(-1px);
+}
+
+/* Loading and Error States */
+.loading-container,
+.error-container,
+.empty-state {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    padding: 48px;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.loading-spinner {
+    color: #667eea;
+    margin-bottom: 16px;
+}
+
+.loading-text,
+.empty-state-title {
+    color: #718096;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.empty-state-subtitle {
+    color: #a0aec0;
+    font-size: 0.9rem;
+    margin-top: 8px;
+}
+
+.error-text {
+    color: #e53e3e;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Form Styles */
+.event-form {
+    max-width: 600px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #4a5568;
+}
+
+.form-input,
+.form-textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-row {
+    display: flex;
+    gap: 16px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-switch {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 24px;
+    border-top: 1px solid #e2e8f0;
+    margin-top: 24px;
+}
+
+.form-button {
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.form-button.primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.form-button.primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+}
+
+.form-button.secondary {
+    background: transparent;
+    color: #718096;
+    border: 1px solid #e2e8f0;
+}
+
+.form-button.secondary:hover {
+    background: #f7fafc;
+}
+
+/* Success/Error Messages */
+.message-box {
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.message-box.success {
+    background: #f0fff4;
+    color: #22543d;
+    border: 1px solid #9ae6b4;
+}
+
+.message-box.error {
+    background: #fed7d7;
+    color: #c53030;
+    border: 1px solid #feb2b2;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .events-container {
+        padding: 16px;
+        padding-bottom: 100px;
+    }
+
+    .events-title {
+        font-size: 2rem;
+    }
+
+    .events-divider {
+        width: 150px;
+    }
+
+    .tab-navigation {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .tab-button {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+    }
+
+    .create-event-button {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+    }
+
+    .event-details {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .form-button {
+        width: 100%;
+    }
+
+    .admin-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .admin-button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .events-container {
+        padding: 12px;
+    }
+
+    .events-title {
+        font-size: 1.75rem;
+    }
+
+    .event-card {
+        padding: 16px;
+    }
+
+    .event-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .loading-container,
+    .error-container,
+    .empty-state {
+        padding: 32px 16px;
+    }
+} 
