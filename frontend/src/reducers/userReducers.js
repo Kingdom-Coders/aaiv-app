@@ -12,7 +12,11 @@ import {
      USER_DELETE_SUCCESS,
      USER_LIST_FAIL,
      USER_LIST_REQUEST,
-     USER_LIST_SUCCESS } from "../constants/userConstants";
+     USER_LIST_SUCCESS,
+     USER_UPDATE_ADMIN_REQUEST,
+     USER_UPDATE_ADMIN_SUCCESS,
+     USER_UPDATE_ADMIN_FAIL
+ } from "../constants/userConstants";
 // Main purpose of reducers is to manage the state of user login
 // Depending on a login state we handle what the state is updated to here
 
@@ -76,5 +80,18 @@ export const userListReducer = ( state = { users: []}, action) => {
             return { loading: false, error: action.payload };
         default:
             return state;
+    }
+};
+
+export const userUpdateAdminReducer = (state = {}, action) => {
+    switch (action.type) {
+        case USER_UPDATE_ADMIN_REQUEST:
+            return { loading: true };
+        case USER_UPDATE_ADMIN_SUCCESS:
+            return { loading: false, success: true, user: action.payload }; 
+        case USER_UPDATE_ADMIN_FAIL:
+            return { loading: false, error: action.payload }; 
+        default:
+            return state; 
     }
 };

@@ -13,15 +13,25 @@ import {
   Separator,
   Textarea,
   Spinner,
+  IconButton,
 } from "@chakra-ui/react";
-import { MdArrowBack, MdChatBubbleOutline, MdSend } from "react-icons/md";
+import { MdArrowBack, MdChatBubbleOutline, MdSend, MdMenuBook, MdDelete, MdFlag } from "react-icons/md";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { listComments, createCommentAction } from "../../../actions/commentActions";
+import { deletePostAction } from "../../../actions/postActions";
+import { 
+  DrawerRoot, 
+  DrawerContent, 
+  DrawerHeader, 
+  DrawerBody, 
+  DrawerCloseTrigger 
+} from "../../../components/ui/drawer";
 
 const Thread = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   // Local state for comment form
   const [newComment, setNewComment] = useState("");
@@ -44,6 +54,9 @@ const Thread = () => {
   const commentCreate = useSelector((state) => state.commentCreate);
   const { loading: createLoading, success: createSuccess } = commentCreate;
 
+  const postDelete = useSelector((state) => state.postDelete);
+  const { loading: deleteLoading, success: deleteSuccess } = postDelete;
+
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
@@ -53,6 +66,35 @@ const Thread = () => {
       dispatch(listComments(postData._id));
     }
   }, [dispatch, userInfo, postData._id, createSuccess]);
+
+  // Handle successful post deletion
+  useEffect(() => {
+    if (deleteSuccess) {
+      navigate("/discussion");
+    }
+  }, [deleteSuccess, navigate]);
+
+  // Check if current user owns the post
+  const isPostOwner = () => {
+    if (!userInfo || !postData.user) return false;
+    
+    // Handle both string ID and object user
+    const postUserId = typeof postData.user === 'object' ? postData.user._id : postData.user;
+    return userInfo._id === postUserId;
+  };
+
+  // Handle delete post action
+  const handleDeletePost = () => {
+    if (window.confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
+      dispatch(deletePostAction(postData._id));
+    }
+  };
+
+  // Handle report post action (empty for now)
+  const handleReportPost = () => {
+    // TODO: Implement report functionality
+    alert("Report functionality will be implemented soon.");
+  };
 
   // Date formatting functions
   const months = [
@@ -213,6 +255,55 @@ const Thread = () => {
               Discussion Thread
             </Text>
           </Box>
+          {/* Bible Verse Button */}
+          {postData.bibleVerse && (
+            <IconButton
+              aria-label="View Bible Verse"
+              variant="ghost"
+              size="md"
+              color="gray.600"
+              _hover={{ 
+                color: "#667eea", 
+                bg: "rgba(102, 126, 234, 0.1)" 
+              }}
+              onClick={() => setIsDrawerOpen(true)}
+            >
+              <MdMenuBook size={20} />
+            </IconButton>
+          )}
+          
+          {/* Delete/Report Button */}
+          {isPostOwner() ? (
+            <IconButton
+              aria-label="Delete Post"
+              variant="ghost"
+              size="md"
+              color="gray.600"
+              _hover={{ 
+                color: "#e53e3e", 
+                bg: "rgba(229, 62, 62, 0.1)" 
+              }}
+              onClick={handleDeletePost}
+              isLoading={deleteLoading}
+            >
+              <MdDelete size={20} />
+            </IconButton>
+          ) : (
+            <IconButton
+              aria-label="Report Post"
+              variant="ghost"
+              size="md"
+              color="gray.600"
+              _hover={{ 
+                color: "#d69e2e", 
+                bg: "rgba(214, 158, 46, 0.1)" 
+              }}
+              onClick={handleReportPost}
+            >
+              <MdFlag size={20} />
+            </IconButton>
+          )}
+          
           <Box
             bg="rgba(102, 126, 234, 0.1)"
             color="#667eea"
@@ -332,6 +423,24 @@ const Thread = () => {
               </Button>
             </HStack>
           </VStack>
+        </Box>
+
+        {/* Help Text */}
+        <Box
+          bg="rgba(255, 255, 255, 0.1)"
+          borderRadius="12px"
+          p={4}
+          maxW="800px"
+          w="100%"
+        >
+          <Text
+            color="white"
+            fontSize="sm"
+            textAlign="center"
+            opacity={0.9}
+          >
+            Join the conversation by sharing your thoughts and insights.
+          </Text>
         </Box>
 
         {/* Comments Section */}
@@ -469,7 +578,7 @@ const Thread = () => {
                               onClick={() => {}}
                             >
                               Report
-        </Button>
+                            </Button>
                           </HStack>
                         </Box>
                       </HStack>
@@ -518,7 +627,7 @@ const Thread = () => {
                                 }}
                               >
                                 Cancel
-                    </Button>
+                              </Button>
                               <Button
                                 size="sm"
                                 bg="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
@@ -529,10 +638,10 @@ const Thread = () => {
                                 isDisabled={!replyText.trim()}
                               >
                                 Reply
-                    </Button>
+                              </Button>
                             </HStack>
                           </VStack>
-                </Box>
+                        </Box>
                       )}
 
                       {/* Replies */}
@@ -595,7 +704,7 @@ const Thread = () => {
                                         onClick={() => setReplyingTo(comment._id)}
                                       >
                                         Reply
-                      </Button>
+                                      </Button>
                                       <Button
                                         size="xs"
                                         variant="ghost"
@@ -608,7 +717,7 @@ const Thread = () => {
                                         onClick={() => {}}
                                       >
                                         Report
-                      </Button>
+                                      </Button>
                                     </HStack>
                                   </Box>
                                 </HStack>
@@ -619,8 +728,8 @@ const Thread = () => {
                       )}
                     </Box>
                   </Box>
-          ))
-        ) : (
+                ))
+              ) : (
                 <Box
                   bg="rgba(255, 255, 255, 0.95)"
                   borderRadius="16px"
@@ -639,6 +748,124 @@ const Thread = () => {
           )}
         </Box>
       </VStack>
+
+      {/* Bible Verse Sidebar */}
+      <DrawerRoot 
+        open={isDrawerOpen} 
+        onOpenChange={(e) => setIsDrawerOpen(e.open)}
+        placement="end"
+        size="md"
+      >
+        <DrawerContent>
+          <DrawerCloseTrigger onClick={() => setIsDrawerOpen(false)} />
+          <DrawerHeader>
+            <HStack spacing={2}>
+              <MdMenuBook size={24} color="#667eea" />
+              <Text color="gray.800" fontWeight="600">
+                Bible Verse
+              </Text>
+            </HStack>
+          </DrawerHeader>
+          <DrawerBody>
+            {postData.bibleVerse ? (
+              <VStack spacing={6} align="stretch" pt={4}>
+                {/* Reference */}
+                <Box>
+                  <Text
+                    color="gray.600"
+                    fontSize="sm"
+                    fontWeight="500"
+                    mb={2}
+                  >
+                    Reference
+                  </Text>
+                  <Box
+                    bg="rgba(102, 126, 234, 0.1)"
+                    borderRadius="12px"
+                    p={4}
+                  >
+                    <Text
+                      color="#667eea"
+                      fontSize="lg"
+                      fontWeight="600"
+                    >
+                      {postData.bibleVerse.reference}
+                    </Text>
+                  </Box>
+                </Box>
+
+                {/* Translation */}
+                <Box>
+                  <Text
+                    color="gray.600"
+                    fontSize="sm"
+                    fontWeight="500"
+                    mb={2}
+                  >
+                    Translation
+                  </Text>
+                  <Text
+                    color="gray.700"
+                    fontSize="md"
+                    fontWeight="500"
+                  >
+                    {postData.bibleVerse.translation || 'WEB'}
+                  </Text>
+                </Box>
+
+                {/* Verse Text */}
+                <Box>
+                  <Text
+                    color="gray.600"
+                    fontSize="sm"
+                    fontWeight="500"
+                    mb={2}
+                  >
+                    Verse
+                  </Text>
+                  <Box
+                    bg="gray.50"
+                    borderRadius="12px"
+                    p={6}
+                    border="1px solid rgba(102, 126, 234, 0.1)"
+                  >
+                    <Text
+                      color="gray.800"
+                      fontSize="md"
+                      lineHeight="1.8"
+                      fontStyle="italic"
+                    >
+                      "{postData.bibleVerse.text || 'Verse text not available'}"
+                    </Text>
+                  </Box>
+                </Box>
+
+                {/* Footer */}
+                <Box
+                  bg="rgba(102, 126, 234, 0.05)"
+                  borderRadius="12px"
+                  p={4}
+                  mt={4}
+                >
+                  <Text
+                    color="gray.600"
+                    fontSize="sm"
+                    textAlign="center"
+                  >
+                    This verse was shared to support the discussion
+                  </Text>
+                </Box>
+              </VStack>
+            ) : (
+              <Box textAlign="center" pt={8}>
+                <Text color="gray.500" fontSize="md">
+                  No Bible verse associated with this post
+                </Text>
+              </Box>
+            )}
+          </DrawerBody>
+        </DrawerContent>
+      </DrawerRoot>
     </Box>
   );
 };

@@ -57,7 +57,7 @@ const getAnnouncementById = asyncHandler(async (req, res) => {
 /**
  * Update an announcement
  * @route PUT /api/announcements/:id
- * @access Private
+ * @access Private/Admin
  */
 const updateAnnouncement = asyncHandler(async (req, res) => {
     const { title, body } = req.body;
@@ -68,13 +68,8 @@ const updateAnnouncement = asyncHandler(async (req, res) => {
         throw new Error("Announcement not found");
     }
 
-    // Check if user owns the announcement
-    if (announcement.user.toString() !== req.user._id.toString()) {
-        res.status(401);
-        throw new Error("You cannot perform this action");
-    }
-
-    // Update announcement fields (only if provided)
+    // Since this route requires admin privileges (protect, admin middleware),
+    // admins can update any announcement
     announcement.title = title || announcement.title;
     announcement.body = body || announcement.body;
 
@@ -85,7 +80,7 @@ const updateAnnouncement = asyncHandler(async (req, res) => {
 /**
  * Delete an announcement
  * @route DELETE /api/announcements/:id
- * @access Private
+ * @access Private/Admin
  */
 const deleteAnnouncement = asyncHandler(async (req, res) => {
     const announcement = await Announcement.findById(req.params.id);
@@ -95,12 +90,8 @@ const deleteAnnouncement = asyncHandler(async (req, res) => {
         throw new Error("Announcement not found");
     }
 
-    // Check if user owns the announcement
-    if (announcement.user.toString() !== req.user._id.toString()) {
-        res.status(401);
-        throw new Error("You cannot perform this action");
-    }
-
+    // Since this route requires admin privileges (protect, admin middleware),
+    // admins can delete any announcement
     await announcement.deleteOne();
     res.json({ message: "Announcement removed successfully" });
 });

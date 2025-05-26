@@ -21,7 +21,7 @@ const getPosts = asyncHandler(async (req, res) => {
  * @access Private
  */
 const createPost = asyncHandler(async (req, res) => {
-    const { title, body } = req.body;
+    const { title, body, bibleVerse } = req.body;
 
     // Validate required fields
     if (!title || !body) {
@@ -29,11 +29,34 @@ const createPost = asyncHandler(async (req, res) => {
         throw new Error('Please fill all the fields');
     }
 
+    let bibleVerseData = null;
+
+    // If Bible verse reference is provided, fetch the verse text
+    if (bibleVerse && bibleVerse.reference) {
+        try {
+            const axios = require('axios');
+            const translation = bibleVerse.translation || 'web';
+            const response = await axios.get(`https://bible-api.com/${encodeURIComponent(bibleVerse.reference)}?translation=${translation}`);
+            
+            if (response.data && response.data.text) {
+                bibleVerseData = {
+                    reference: response.data.reference || bibleVerse.reference,
+                    text: response.data.text.trim(),
+                    translation: translation.toUpperCase()
+                };
+            }
+        } catch (error) {
+            console.error('Error fetching Bible verse:', error);
+            // Continue without Bible verse if API fails
+        }
+    }
+
     // Create new post with authenticated user as owner
     const post = new Post({ 
         user: req.user._id, 
         title, 
-        body 
+        body,
+        bibleVerse: bibleVerseData
     });
 
     const createdPost = await post.save();

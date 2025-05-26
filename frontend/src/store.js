@@ -6,7 +6,8 @@ import {
     userDeleteReducer, 
     userListReducer, 
     userLoginReducer, 
-    userRegisterReducer 
+    userRegisterReducer,
+    userUpdateAdminReducer
 } from "./reducers/userReducers";
 
 // Post reducers
@@ -51,6 +52,7 @@ const reducer = combineReducers({
     userRegister: userRegisterReducer,
     userDelete: userDeleteReducer,
     userList: userListReducer,
+    userUpdateAdmin: userUpdateAdminReducer,
     
     // Post state
     postList: postListReducer,

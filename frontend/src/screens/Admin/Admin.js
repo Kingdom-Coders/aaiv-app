@@ -106,42 +106,8 @@ const Admin = () => {
         </div>
       )}
 
-      {/* Announcements List */}
-      <div className="announcements-list">
-        <h2 className="section-heading">Current Announcements</h2>
-        
-        {listLoading ? (
-          <div className="loading-spinner"></div>
-        ) : listError ? (
-          <div className="error-message">Error loading announcements</div>
-        ) : (
-          <>
-            {announcements && announcements.length > 0 ? (
-              announcements.map((announcement) => (
-                <div 
-                  key={announcement._id} 
-                  className="announcement-item"
-                >
-                  <h3 className="announcement-title">{announcement.title}</h3>
-                  <div className="announcement-body">{announcement.body}</div>
-                  <button 
-                    className="delete-button"
-                    onClick={() => deleteHandler(announcement._id)}
-                    disabled={deleteLoading}
-                  >
-                    {deleteLoading ? 'Deleting...' : 'Delete'}
-                  </button>
-                </div>
-              ))
-            ) : (
-              <div>No announcements yet</div>
-            )}
-          </>
-        )}
-      </div>
-      
-      {/* Create Announcement Form */}
-      <div className="announcement-post">
+        {/* Create Announcement Form */}
+        <div className="announcement-post">
         <div className="announcement-title">
           <h1>Create New Announcement</h1>
         </div>
@@ -177,6 +143,41 @@ const Admin = () => {
         </form> 
         
       </div>
+
+      {/* Announcements List */}
+      <div className="announcements-list">
+        <h2 className="section-heading">Current Announcements</h2>
+        
+        {listLoading ? (
+          <div className="loading-spinner"></div>
+        ) : listError ? (
+          <div className="error-message">Error loading announcements</div>
+        ) : (
+          <>
+            {announcements && announcements.length > 0 ? (
+              announcements.map((announcement) => (
+                <div 
+                  key={announcement._id} 
+                  className="announcement-item"
+                >
+                  <h3 className="announcement-title">{announcement.title}</h3>
+                  <div className="announcement-body">{announcement.body}</div>
+                  <button 
+                    className="delete-button"
+                    onClick={() => deleteHandler(announcement._id)}
+                    disabled={deleteLoading}
+                  >
+                    {deleteLoading ? 'Deleting...' : 'Delete'}
+                  </button>
+                </div>
+              ))
+            ) : (
+              <div>No announcements yet</div>
+            )}
+          </>
+        )}
+      </div>
+      
       </Tabs.Content>
     </div>
     </Tabs.Root>

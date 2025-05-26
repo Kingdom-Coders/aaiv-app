@@ -11,10 +11,12 @@ import {
   Accordion,
   Avatar,
   Spinner,
+  Badge,
 } from '@chakra-ui/react';
-import { MdAdd } from 'react-icons/md';
+import { MdAdd, MdChatBubbleOutline } from 'react-icons/md';
 import { BiMessageSquareDetail } from 'react-icons/bi';
 import { listPosts } from '../../../actions/postActions';
+import { resetDeletePost } from '../../../actions/postActions';
 
 const Discussion = () => {
   const navigate = useNavigate();
@@ -30,16 +32,25 @@ const Discussion = () => {
   const postList = useSelector((state) => state.postList);
   const { loading, error, posts } = postList;
 
+  // Get post delete state to refresh list after deletion
+  const postDelete = useSelector((state) => state.postDelete);
+  const { success: deleteSuccess } = postDelete;
+
   // Get user info for authentication check
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  // Fetch posts when component mounts
+  // Fetch posts when component mounts or after successful deletion
   useEffect(() => {
     if (userInfo) {
       dispatch(listPosts());
     }
-  }, [dispatch, userInfo]);
+  }, [dispatch, userInfo, deleteSuccess]);
+
+  // Reset delete state when component mounts to prevent navigation issues
+  useEffect(() => {
+    dispatch(resetDeletePost());
+  }, [dispatch]);
 
   // Format date for display
   const formatDate = (dateString) => {
@@ -298,7 +309,8 @@ const Discussion = () => {
                                   title: post.title,
                                   body: post.body,
                                   createdAt: post.createdAt,
-                                  user: post.user
+                                  user: post.user,
+                                  bibleVerse: post.bibleVerse
                                 }
                               }
                             });
@@ -315,64 +327,87 @@ const Discussion = () => {
                           transition="all 0.3s ease"
                           onClick={() => handleAccordionItemClick(post._id, index)}
                         >
-                          <VStack w="100%" spacing={3} align="stretch">
-                            {/* Header Row - Title and Date */}
-                            <HStack w="100%" justify="space-between" align="start">
+                          <VStack w="100%" spacing={4} align="stretch">
+                            {/* Main Header - Title */}
+                            <VStack spacing={2} align="start" w="100%">
                               <Text
-                                fontWeight="600"
                                 color="gray.800"
-                                fontSize="lg"
-                                lineHeight="1.2"
-                                noOfLines={2}
-                                flex="1"
-                                pr={6}
+                                fontSize="xl"
+                                fontWeight="700"
+                                lineHeight="1.3"
+                                letterSpacing="-0.025em"
                               >
-                                {post.title || "Untitled"}
+                                {getTruncatedTitle(post.title, index)}
                               </Text>
-                              <HStack spacing={3} align="center" flexShrink={0} maxW="140px">
-                                <Box
-                                  bg="rgba(102, 126, 234, 0.1)"
-                                  color="#667eea"
-                                  px={2}
-                                  py={1}
-                                  borderRadius="full"
-                                  fontSize="xs"
+                              
+                              {/* Bible Verse Reference - Integrated with title */}
+                              {post.bibleVerse && post.bibleVerse.reference && (
+                                <HStack spacing={2} align="center">
+                                  <Box
+                                    w="3px"
+                                    h="16px"
+                                    bg="#8B4513"
+                                    borderRadius="full"
+                                  />
+                                  <Text
+                                    color="#8B4513"
+                                    fontSize="sm"
+                                    fontWeight="600"
+                                    letterSpacing="0.025em"
+                                  >
+                                    {post.bibleVerse.reference}
+                                  </Text>
+                                </HStack>
+                              )}
+                            </VStack>
+
+                            {/* Author & Date Section */}
+                            <HStack spacing={3} align="center">
+                              {/* <Avatar.Root size="sm" borderRadius="8px">
+                                <Avatar.Fallback 
+                                  bg="#6B7280" 
+                                  color="white"
+                                  fontSize="sm"
+                                >
+                                  {getAuthorName(post).charAt(0).toUpperCase()}
+                                </Avatar.Fallback>
+                              </Avatar.Root> */}
+                              <HStack spacing={0} align="start" flex="1" alignItems="center">
+                                <Text 
+                                  color="gray.700" 
+                                  fontSize="sm" 
                                   fontWeight="600"
-                                  whiteSpace="nowrap"
+                                  lineHeight="1.2"
+                                >
+                                  {getAuthorName(post)} •
+                                </Text>
+                                <Text 
+                                  color="gray.500" 
+                                  fontSize="xs"
+                                  lineHeight="1.2"
                                 >
                                   {formatDate(post.createdAt)}
-                                </Box>
-                                <Accordion.ItemIndicator 
-                                  color="gray.500" 
-                                  fontSize="16px"
-                                  flexShrink={0}
-                                />
+                                </Text>
                               </HStack>
-                            </HStack>
-                            
-                            {/* Author Row */}
-                            <HStack w="100%" justify="space-between" align="center">
-                              <Text
-                                color="gray.500"
-                                fontSize="sm"
-                                fontWeight="400"
-                              >
-                                by {getAuthorName(post)}
-                              </Text>
                             </HStack>
                             
                             {/* Preview Text (only when collapsed) */}
                             {!expandedPosts.has(index.toString()) && (
-                              <Text
-                                color="gray.600"
-                                fontSize="sm"
-                                fontWeight="400"
-                                lineHeight="1.4"
-                                noOfLines={2}
-                                pr={6}
+                              <Box 
+                                pl={2} 
+                                borderLeft="2px solid rgba(102, 126, 234, 0.1)"
                               >
-                                {getTruncatedBody(post.body)}
-                              </Text>
+                                <Text
+                                  color="gray.600"
+                                  fontSize="sm"
+                                  fontWeight="400"
+                                  lineHeight="1.5"
+                                  noOfLines={2}
+                                  pr={6}
+                                >
+                                  {getTruncatedBody(post.body)}
+                                </Text>
+                              </Box>
                             )}
                           </VStack>
                         </Accordion.ItemTrigger>

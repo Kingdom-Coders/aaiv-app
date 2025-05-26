@@ -105,4 +105,43 @@ const getUsers = asyncHandler(async (req, res) => {
     res.json(users);
 });
 
-module.exports = { registerUser, authUser, deleteUser, getUsers };
+/**
+ * Update user admin status (promote/demote)
+ * @route PUT /api/users/:id/admin
+ * @access Private/Admin
+ */
+const updateUserAdminStatus = asyncHandler(async (req, res) => {
+    const { isAdmin } = req.body;
+    const user = await User.findById(req.params.id);
+
+    // Check if requesting user has admin permissions
+    if (!req.user || req.user.isAdmin !== true) {
+        res.status(403);
+        throw new Error("You do not have permission");
+    }
+
+    if (!user) {
+        res.status(404);
+        throw new Error("User not found");
+    }
+
+    // Prevent admin from demoting themselves
+    if (req.user._id.toString() === user._id.toString()) {
+        res.status(400);
+        throw new Error("You cannot change your own admin status");
+    }
+
+    // Update user admin status
+    user.isAdmin = isAdmin;
+    const updatedUser = await user.save();
+
+    res.json({
+        _id: updatedUser._id,
+        firstName: updatedUser.firstName,
+        lastName: updatedUser.lastName,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin
+    });
+});
+
+module.exports = { registerUser, authUser, deleteUser, getUsers, updateUserAdminStatus };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -11,30 +11,44 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { createPostAction } from "../../../actions/postActions";
+import { createPostAction, listPosts } from "../../../actions/postActions";
 import { MdArrowBack, MdSend } from "react-icons/md";
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+  const [bibleReference, setBibleReference] = useState("");
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
   const postCreate = useSelector((state) => state.postCreate);
-  const { loading, error } = postCreate;
+  const { loading, error, success } = postCreate;
 
   const resetHandler = () => {
     setTitle("");
     setBody("");
+    setBibleReference("");
   };
 
   const submitHandler = () => {
     if (!title) return;
-    dispatch(createPostAction(title, body));
-    resetHandler();
-    navigate("/discussion");
+    
+    const bibleVerse = bibleReference.trim() ? {
+      reference: bibleReference.trim(),
+      translation: "asv"
+    } : null;
+    
+    dispatch(createPostAction(title, body, bibleVerse));
   };
+
+  useEffect(() => {
+    if (success) {
+      resetHandler();
+      dispatch(listPosts());
+      navigate("/discussion");
+    }
+  }, [success, dispatch, navigate]);
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' && e.ctrlKey) {
@@ -158,6 +172,44 @@ const CreatePost = () => {
                 textAlign="right"
               >
                 Tip: Press Ctrl+Enter to submit
+              </Text>
+            </Box>
+
+            {/* Bible Verse Section */}
+            <Box w="100%">
+              <Text
+                color="gray.700"
+                fontSize="sm"
+                fontWeight="500"
+                mb={2}
+              >
+                Bible Verse Reference (Optional)
+              </Text>
+              <VStack spacing={3}>
+                <Input
+                  placeholder="e.g., John 3:16, Psalm 23:1, Romans 8:28"
+                  value={bibleReference}
+                  onChange={(e) => setBibleReference(e.target.value)}
+                  borderRadius="12px"
+                  border="2px solid rgba(102, 126, 234, 0.1)"
+                  bg="rgba(255, 255, 255, 0.8)"
+                  color="gray.800"
+                  fontSize="md"
+                  p={4}
+                  _focus={{
+                    borderColor: "#667eea",
+                    bg: "rgba(255, 255, 255, 1)",
+                    boxShadow: "0 0 0 4px rgba(102, 126, 234, 0.1)",
+                  }}
+                  _placeholder={{ color: "gray.500" }}
+                />
+              </VStack>
+              <Text
+                color="gray.500"
+                fontSize="xs"
+                mt={1}
+              >
+                Add a Bible verse to support your discussion (ASV translation)
               </Text>
             </Box>
 
