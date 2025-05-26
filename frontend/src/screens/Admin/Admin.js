@@ -86,7 +86,7 @@ const Admin = () => {
   return (
     <Tabs.Root defaultValue="members">
     <div className="admin-screen">
-      <h1 className="titleText">Admin Screen</h1>
+      <h1 className="titleText">👨‍💼 Admin Screen</h1>
       <Tabs.List>
         <Tabs.Trigger value="members">
           <LuUser />
@@ -109,7 +109,7 @@ const Admin = () => {
         {/* Create Announcement Form */}
         <div className="announcement-post">
         <div className="announcement-title">
-          <h1>Create New Announcement</h1>
+          <h1>📝 Create New Announcement</h1>
         </div>
         <form onSubmit={submitHandler}>
           <h2>Title</h2>
@@ -146,7 +146,7 @@ const Admin = () => {
 
       {/* Announcements List */}
       <div className="announcements-list">
-        <h2 className="section-heading">Current Announcements</h2>
+        <h2 className="section-heading">📋 Current Announcements</h2>
         
         {listLoading ? (
           <div className="loading-spinner"></div>

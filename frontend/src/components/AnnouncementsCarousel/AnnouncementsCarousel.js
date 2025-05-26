@@ -96,7 +96,7 @@ const AnnouncementsCarousel = ({ announcements, loading, error }) => {
   if (loading) {
     return (
       <div className="announcements-section">
-        <h3>Announcements</h3>
+        <h3>📢 Announcements</h3>
         <div className="loading">Loading announcements...</div>
       </div>
     );
@@ -105,7 +105,7 @@ const AnnouncementsCarousel = ({ announcements, loading, error }) => {
   if (error) {
     return (
       <div className="announcements-section">
-        <h3>Announcements</h3>
+        <h3>📢 Announcements</h3>
         <div className="error">Error loading announcements: {error}</div>
       </div>
     );
@@ -114,7 +114,7 @@ const AnnouncementsCarousel = ({ announcements, loading, error }) => {
   if (!announcements?.length) {
     return (
       <div className="announcements-section">
-        <h3>Announcements</h3>
+        <h3>📢 Announcements</h3>
         <div className="no-announcements">No announcements available</div>
       </div>
     );
@@ -122,7 +122,7 @@ const AnnouncementsCarousel = ({ announcements, loading, error }) => {
 
   return (
     <div className="announcements-section">
-      <h3>Announcements</h3>
+      <h3>📢 Announcements</h3>
       <div className="announcements-wrapper" ref={wrapperRef}>
         <i id="announcement-left" className="arrow left">←</i>
         <div className="announcements-carousel" ref={carouselRef}>

@@ -218,6 +218,7 @@
 @media (max-width: 480px) {
   .container {
     padding: 12px;
+    padding-top: max(40px, env(safe-area-inset-top) + 20px);
   }
   
   .login-card {

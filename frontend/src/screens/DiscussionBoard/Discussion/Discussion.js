@@ -148,7 +148,7 @@ const Discussion = () => {
             fontWeight="600"
             textShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
           >
-            Discussion Board
+            💬 Discussion Board
           </Heading>
           <Box w="200px" h="2px" bg="white" mx="auto" mt={2} opacity={0.8} />
         </Box>
@@ -170,7 +170,7 @@ const Discussion = () => {
           onClick={() => navigate("/create-post")}
           border="2px solid rgba(255, 255, 255, 0.3)"
         >
-          Create Post
+          ✍️ Create Post
         </Button>
 
         {/* Loading State */}
