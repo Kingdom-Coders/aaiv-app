@@ -10,7 +10,7 @@ const getPosts = asyncHandler(async (req, res) => {
     // Get all posts from all users for the discussion board with user information
     // Sort by creation date (newest first)
     const posts = await Post.find({})
-        .populate('user', 'name email') // Include user name and email
+        .populate('user', 'firstName lastName email') // Include user firstName, lastName and email
         .sort({ createdAt: -1 }); // Sort by newest first
     res.json(posts);
 });

@@ -103,8 +103,14 @@ const Thread = () => {
 
   // Helper functions
   const getAuthorName = (comment) => {
-    if (comment.user && typeof comment.user === 'object' && comment.user.name) {
-      return comment.user.name;
+    if (comment.user && typeof comment.user === 'object') {
+      if (comment.user.firstName && comment.user.lastName) {
+        return `${comment.user.firstName} ${comment.user.lastName}`;
+      } else if (comment.user.firstName) {
+        return comment.user.firstName;
+      } else if (comment.user.lastName) {
+        return comment.user.lastName;
+      }
     }
     return 'Unknown User';
   };
@@ -402,7 +408,7 @@ const Thread = () => {
                         <Avatar.Root size="md" borderRadius="10px">
                           <Avatar.Fallback
                             name={getInitials(getAuthorName(comment))}
-                            bg="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+                            // bg="#6B7280"
                             color="white"
                             fontWeight="600"
                           />
@@ -545,7 +551,7 @@ const Thread = () => {
                                   <Avatar.Root size="sm" borderRadius="8px">
                                     <Avatar.Fallback
                                       name={getInitials(getAuthorName(reply))}
-                                      bg="rgba(102, 126, 234, 0.8)"
+                                      // bg="#6B7280"
                                       color="white"
                                       fontWeight="500"
                                       fontSize="xs"
