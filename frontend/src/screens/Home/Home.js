@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../actions/userActions";
+import { getDailyVerse } from "../../utils/dailyVerse";
 import './Home.css';
 
 const events = [
@@ -38,6 +39,31 @@ const Home = () => {
   const carouselRef = useRef(null);
   const wrapperRef = useRef(null);
   const timeoutIdRef = useRef(null);
+  const [dailyVerse, setDailyVerse] = useState(null);
+
+  // Get the daily verse when component mounts
+  useEffect(() => {
+    const verse = getDailyVerse();
+    setDailyVerse(verse);
+  }, []);
+
+  // Set up an interval to check for new day and update verse at midnight
+  useEffect(() => {
+    const checkForNewDay = () => {
+      const now = new Date();
+      const isNearMidnight = now.getHours() === 0 && now.getMinutes() === 0;
+      
+      if (isNearMidnight) {
+        const newVerse = getDailyVerse();
+        setDailyVerse(newVerse);
+      }
+    };
+
+    // Check every minute for midnight
+    const interval = setInterval(checkForNewDay, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -126,9 +152,20 @@ const Home = () => {
         <p><strong>Daily Bible Verse:</strong></p>
         <div className="blur-container" onClick={toggleBlur}>
           <p className="blur-text">
-            Why did I not perish at birth, <br />
-            and die as I came from the womb?<br />
-            Job 3:11
+            {dailyVerse ? (
+              <>
+                {dailyVerse.text.split('\n').map((line, index) => (
+                  <React.Fragment key={index}>
+                    {line}
+                    {index < dailyVerse.text.split('\n').length - 1 && <br />}
+                  </React.Fragment>
+                ))}
+                <br />
+                {dailyVerse.reference}
+              </>
+            ) : (
+              'Loading daily verse...'
+            )}
           </p>
         </div>
       </div>
