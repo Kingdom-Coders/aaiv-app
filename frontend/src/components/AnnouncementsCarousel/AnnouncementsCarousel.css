@@ -38,21 +38,25 @@
 .announcement-card {
   min-width: 300px;
   max-width: 350px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
   cursor: grab;
   user-select: none;
   position: relative;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .announcement-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 1);
 }
 
 .announcement-card:active {
@@ -72,19 +76,20 @@
 
 .announcement-date {
   font-size: 0.85rem;
-  opacity: 0.8;
-  background: rgba(255, 255, 255, 0.2);
-  padding: 4px 8px;
-  border-radius: 6px;
+  color: #007AFF;
+  background: rgba(0, 122, 255, 0.1);
+  padding: 6px 12px;
+  border-radius: 20px;
   display: inline-block;
   margin-bottom: 15px;
+  font-weight: 500;
 }
 
 .announcement-body {
   margin: 0 0 15px 0;
   font-size: 0.95rem;
   line-height: 1.5;
-  opacity: 0.95;
+  color: #555;
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
@@ -93,7 +98,7 @@
 
 .announcement-author {
   font-size: 0.85rem;
-  opacity: 0.8;
+  color: #999;
   font-style: italic;
   display: block;
   text-align: right;
@@ -194,4 +199,34 @@
   .announcements-wrapper .arrow {
     display: none;
   }
-} 
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .announcement-card {
+    background: rgba(45, 45, 45, 0.95);
+    color: #e1e1e1;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .announcement-card:hover {
+    background: rgba(45, 45, 45, 1);
+  }
+  
+  .announcement-card h4 {
+    color: #ffffff;
+  }
+  
+  .announcement-body {
+    color: #b0b0b0;
+  }
+  
+  .announcement-author {
+    color: #888;
+  }
+  
+  .announcement-date {
+    background: rgba(0, 122, 255, 0.2);
+    color: #5ac8fa;
+  }
+}

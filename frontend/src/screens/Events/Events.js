@@ -217,7 +217,7 @@ const Events = () => {
                         fontWeight="600"
                         textShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
                     >
-                        Events
+                        🎉 Events
                     </Heading>
                     <Box w="200px" h="2px" bg="white" mx="auto" mt={2} opacity={0.8} />
                     <Text color="white" opacity={0.9} mt={2} fontSize="md">
@@ -270,7 +270,7 @@ const Events = () => {
                             }}
                             transition="all 0.3s ease"
                         >
-                            Create New Event
+                            ➕ Create New Event
                         </Button>
                     </Dialog.Trigger>
                     <Dialog.Backdrop />
