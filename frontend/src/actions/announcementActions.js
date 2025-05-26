@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getApiUrl } from "../config/api";
 import {
     ANNOUNCEMENT_LIST_REQUEST,
     ANNOUNCEMENT_LIST_SUCCESS,
@@ -25,7 +26,7 @@ export const listAnnouncements = () => async (dispatch, getState) => {
         });
 
         // Make API request without authentication for public access
-        const { data } = await axios.get(`/api/announcements`);
+        const { data } = await axios.get(getApiUrl(`/api/announcements`));
 
         dispatch({
             type: ANNOUNCEMENT_LIST_SUCCESS,
@@ -62,7 +63,7 @@ export const createAnnouncementAction = (title, body) => async (dispatch, getSta
         };
 
         const { data } = await axios.post(
-            `/api/announcements/create`,
+            getApiUrl(`/api/announcements/create`),
             { title, body },
             config
         );
@@ -100,7 +101,7 @@ export const getAnnouncementDetails = (id) => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.get(`/api/announcements/${id}`, config);
+        const { data } = await axios.get(getApiUrl(`/api/announcements/${id}`), config);
 
         dispatch({
             type: ANNOUNCEMENT_DETAILS_SUCCESS,
@@ -118,7 +119,7 @@ export const getAnnouncementDetails = (id) => async (dispatch, getState) => {
     }
 };
 
-// Action to update an announcement
+// Action to update an announcement by ID
 export const updateAnnouncementAction = (id, title, body) => async (dispatch, getState) => {
     try {
         dispatch({
@@ -137,7 +138,7 @@ export const updateAnnouncementAction = (id, title, body) => async (dispatch, ge
         };
 
         const { data } = await axios.put(
-            `/api/announcements/${id}`,
+            getApiUrl(`/api/announcements/${id}`),
             { title, body },
             config
         );
@@ -175,7 +176,7 @@ export const deleteAnnouncementAction = (id) => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.delete(`/api/announcements/${id}`, config);
+        const { data } = await axios.delete(getApiUrl(`/api/announcements/${id}`), config);
 
         dispatch({
             type: ANNOUNCEMENT_DELETE_SUCCESS,

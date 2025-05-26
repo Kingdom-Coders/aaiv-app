@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getApiUrl } from '../config/api';
 import { 
     USER_LOGIN_FAIL, 
     USER_LOGIN_REQUEST, 
@@ -35,7 +36,7 @@ export const login = (email, password) => async (dispatch) => {
         };
         
         const { data } = await axios.post(
-            "/api/users/login",
+            getApiUrl("/api/users/login"),
             { email, password },
             config
         );
@@ -58,10 +59,9 @@ export const login = (email, password) => async (dispatch) => {
 /**
  * Logout user action
  */
-export const logout = () => async (dispatch) => {
+export const logout = () => (dispatch) => {
     localStorage.removeItem("userInfo");
     dispatch({ type: USER_LOGOUT });
-    dispatch({ type: USER_REGISTER_LOGOUT });
 };
 
 /**
@@ -82,7 +82,7 @@ export const register = (firstName, lastName, email, password) => async (dispatc
         };
 
         const { data } = await axios.post(
-            "/api/users",
+            getApiUrl("/api/users"),
             { firstName, lastName, email, password },
             config
         );
@@ -119,7 +119,7 @@ export const deleteUser = (id) => async (dispatch, getState) => {
             },
         };
 
-        await axios.delete(`/api/users/delete/${id}`, config);
+        await axios.delete(getApiUrl(`/api/users/delete/${id}`), config);
 
         dispatch({ type: USER_DELETE_SUCCESS });
     } catch (error) {
@@ -148,7 +148,7 @@ export const listUsers = () => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.get(`/api/users/adminlist`, config);
+        const { data } = await axios.get(getApiUrl(`/api/users/adminlist`), config);
 
         dispatch({
             type: USER_LIST_SUCCESS,
@@ -185,7 +185,7 @@ export const updateUserAdminStatus = (id, isAdmin) => async (dispatch, getState)
         };
 
         const { data } = await axios.put(
-            `/api/users/${id}/admin`,
+            getApiUrl(`/api/users/${id}/admin`),
             { isAdmin },
             config
         );

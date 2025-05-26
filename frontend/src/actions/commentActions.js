@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getApiUrl } from "../config/api";
 import { 
     COMMENT_LIST_REQUEST, 
     COMMENT_LIST_SUCCESS, 
@@ -35,7 +36,7 @@ export const listComments = (postId) => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.get(`/api/comments/${postId}`, config);
+        const { data } = await axios.get(getApiUrl(`/api/comments/${postId}`), config);
 
         dispatch({
             type: COMMENT_LIST_SUCCESS,
@@ -77,7 +78,7 @@ export const createCommentAction = (postId, body, parentCommentId = null) => asy
         };
 
         const { data } = await axios.post(
-            `/api/comments`,
+            getApiUrl(`/api/comments`),
             { postId, body, parentCommentId },
             config,
         );
@@ -101,7 +102,7 @@ export const createCommentAction = (postId, body, parentCommentId = null) => asy
 /**
  * Update a comment
  * @param {string} commentId - The ID of the comment to update
- * @param {string} body - The updated comment content
+ * @param {string} body - The new comment content
  */
 export const updateCommentAction = (commentId, body) => async (dispatch, getState) => {
     try {
@@ -121,7 +122,7 @@ export const updateCommentAction = (commentId, body) => async (dispatch, getStat
         };
 
         const { data } = await axios.put(
-            `/api/comments/single/${commentId}`,
+            getApiUrl(`/api/comments/${commentId}`),
             { body },
             config,
         );
@@ -162,14 +163,15 @@ export const deleteCommentAction = (commentId) => async (dispatch, getState) => 
             },
         };
 
-        const { data } = await axios.delete(`/api/comments/single/${commentId}`, config);
+        const { data } = await axios.delete(getApiUrl(`/api/comments/${commentId}`), config);
 
-        dispatch ({
+        dispatch({
             type: COMMENT_DELETE_SUCCESS,
             payload: data,
         });
     } catch (error) {
-        const message = error.response && error.response.data.message
+        const message = 
+            error.response && error.response.data.message
             ? error.response.data.message
             : error.message;
         dispatch({

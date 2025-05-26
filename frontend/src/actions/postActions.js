@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getApiUrl } from "../config/api";
 import { POST_CREATE_FAIL, POST_CREATE_REQUEST, POST_CREATE_SUCCESS, POST_DELETE_FAIL, POST_DELETE_REQUEST, POST_DELETE_SUCCESS, POST_DELETE_RESET, POST_LIST_FAIL, POST_LIST_REQUEST, POST_LIST_SUCCESS } from "../constants/postsConstants";
 import { use } from "react";
 
@@ -19,7 +20,7 @@ export const listPosts = () => async(dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.get(`/api/posts`, config);
+        const { data } = await axios.get(getApiUrl(`/api/posts`), config);
 
         dispatch({
             type: POST_LIST_SUCCESS,
@@ -60,7 +61,7 @@ export const createPostAction = (title, body, bibleVerse = null) => async (dispa
         }
 
         const { data } = await axios.post(
-            `/api/posts/create`,
+            getApiUrl(`/api/posts/create`),
             requestBody,
             config,
         );
@@ -97,7 +98,7 @@ export const deletePostAction = (id) => async(dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.delete(`/api/posts/${id}`, config);
+        const { data } = await axios.delete(getApiUrl(`/api/posts/${id}`), config);
 
         dispatch ({
             type: POST_DELETE_SUCCESS,

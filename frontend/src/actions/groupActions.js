@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getApiUrl } from "../config/api";
 import {
     GROUP_LIST_REQUEST,
     GROUP_LIST_SUCCESS,
@@ -25,7 +26,7 @@ export const listGroups = () => async (dispatch, getState) => {
         });
 
         // Make API request without authentication for public access
-        const { data } = await axios.get(`/api/groups`);
+        const { data } = await axios.get(getApiUrl(`/api/groups`));
 
         dispatch({
             type: GROUP_LIST_SUCCESS,
@@ -44,7 +45,7 @@ export const listGroups = () => async (dispatch, getState) => {
 };
 
 // Action to create a new group
-export const createGroupAction = (name, link, badges, description) => async (dispatch, getState) => {
+export const createGroupAction = (name, description) => async (dispatch, getState) => {
     try {
         dispatch({
             type: GROUP_CREATE_REQUEST,
@@ -62,8 +63,8 @@ export const createGroupAction = (name, link, badges, description) => async (dis
         };
 
         const { data } = await axios.post(
-            `/api/groups/create`,
-            { name, link, badges, description },
+            getApiUrl(`/api/groups/create`),
+            { name, description },
             config
         );
 
@@ -90,7 +91,7 @@ export const getGroupDetails = (id) => async (dispatch, getState) => {
             type: GROUP_DETAILS_REQUEST,
         });
 
-        const { data } = await axios.get(`/api/groups/${id}`);
+        const { data } = await axios.get(getApiUrl(`/api/groups/${id}`));
 
         dispatch({
             type: GROUP_DETAILS_SUCCESS,
@@ -109,7 +110,7 @@ export const getGroupDetails = (id) => async (dispatch, getState) => {
 };
 
 // Action to update a group
-export const updateGroupAction = (id, name, link, badges, description) => async (dispatch, getState) => {
+export const updateGroupAction = (id, name, description) => async (dispatch, getState) => {
     try {
         dispatch({
             type: GROUP_UPDATE_REQUEST,
@@ -127,8 +128,8 @@ export const updateGroupAction = (id, name, link, badges, description) => async 
         };
 
         const { data } = await axios.put(
-            `/api/groups/${id}`,
-            { name, link, badges, description },
+            getApiUrl(`/api/groups/${id}`),
+            { name, description },
             config
         );
 
@@ -165,7 +166,7 @@ export const deleteGroupAction = (id) => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.delete(`/api/groups/${id}`, config);
+        const { data } = await axios.delete(getApiUrl(`/api/groups/${id}`), config);
 
         dispatch({
             type: GROUP_DELETE_SUCCESS,
