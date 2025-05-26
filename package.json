@@ -19,6 +19,9 @@
   },
   "homepage": "https://github.com/Johnslee123/AAIVApp#readme",
   "dependencies": {
+    "@capacitor/android": "^7.2.0",
+    "@capacitor/core": "^7.2.0",
+    "@capacitor/ios": "^7.2.0",
     "@chakra-ui/react": "^3.12.0",
     "@daypilot/daypilot-lite-react": "^3.32.1",
     "@emotion/react": "^11.14.0",
@@ -42,5 +45,8 @@
     "react-redux": "^9.2.0",
     "redux": "^5.0.1",
     "redux-thunk": "^3.1.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.2.0"
   }
 }
