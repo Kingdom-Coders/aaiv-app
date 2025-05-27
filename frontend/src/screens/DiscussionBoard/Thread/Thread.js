@@ -756,9 +756,27 @@ const Thread = () => {
         placement="end"
         size="md"
       >
-        <DrawerContent>
-          <DrawerCloseTrigger onClick={() => setIsDrawerOpen(false)} />
-          <DrawerHeader>
+        <DrawerContent pt="max(60px, env(safe-area-inset-top) + 40px)">
+          <DrawerCloseTrigger 
+            onClick={() => setIsDrawerOpen(false)}
+            position="absolute"
+            top="max(60px, env(safe-area-inset-top) + 30px)"
+            right="20px"
+            zIndex={10}
+            bg="rgba(255, 255, 255, 0.9)"
+            borderRadius="50%"
+            w="40px"
+            h="40px"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            boxShadow="0 2px 8px rgba(0, 0, 0, 0.1)"
+            _hover={{
+              bg: "rgba(255, 255, 255, 1)",
+              transform: "scale(1.05)"
+            }}
+          />
+          <DrawerHeader pt={4}>
             <HStack spacing={2}>
               <MdMenuBook size={24} color="#667eea" />
               <Text color="gray.800" fontWeight="600">
