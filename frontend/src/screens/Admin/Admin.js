@@ -5,7 +5,8 @@ import './Admin.css';
 import { 
   createAnnouncementAction, 
   listAnnouncements, 
-  deleteAnnouncementAction 
+  deleteAnnouncementAction,
+  getAllAnnouncementsAction
 } from '../../actions/announcementActions';
 import { 
   getPendingReportsAction, 
@@ -15,6 +16,8 @@ import {
 } from '../../actions/reportActions';
 import { Tabs } from '@chakra-ui/react';
 import { LuMegaphone, LuUser, LuFlag } from 'react-icons/lu';
+import usePullToRefresh from '../../hooks/usePullToRefresh';
+import PullToRefreshIndicator from '../../components/PullToRefreshIndicator';
 
 const Admin = () => {
   const [title, setTitle] = useState('');
@@ -46,6 +49,18 @@ const Admin = () => {
   
   const reportDismiss = useSelector((state) => state.reportDismiss);
   const { loading: dismissLoading, success: dismissSuccess, error: dismissError } = reportDismiss;
+
+  // Pull-to-refresh functionality
+  const {
+    isPulling,
+    isRefreshing,
+    pullDistance,
+    refreshProgress
+  } = usePullToRefresh(() => {
+    dispatch(listAnnouncements());
+    dispatch(getPendingReportsAction());
+    dispatch(getAllReportsAction());
+  });
 
   // Load announcements when component mounts
   useEffect(() => {
@@ -246,246 +261,256 @@ const Admin = () => {
   };
 
   return (
-    <Tabs.Root defaultValue="members">
-    <div className="admin-screen">
-      <h1 className="titleText">👨‍💼 Admin Screen</h1>
-      <Tabs.List>
-        <Tabs.Trigger value="members">
-          <LuUser />
-          Members
-        </Tabs.Trigger>
-        <Tabs.Trigger value="announcements">
-          <LuMegaphone />
-          Announcements
-        </Tabs.Trigger>
-        <Tabs.Trigger value="reports">
-          <LuFlag />
-          Reports
-        </Tabs.Trigger>
-      </Tabs.List>
-      <Tabs.Content value="members"><UserList /></Tabs.Content>
-      <Tabs.Content value="announcements">
-      {/* Status Alert */}
-      {statusMessage && (
-        <div className={`alert alert-${statusMessage.type}`}>
-          {statusMessage.text}
-        </div>
-      )}
-
-        {/* Create Announcement Form */}
-        <div className="announcement-post">
-        <div className="announcement-title">
-          <h1>📝 Create New Announcement</h1>
-        </div>
-        <form onSubmit={submitHandler}>
-          <h2>Title</h2>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="text-input"
-            placeholder="Enter announcement title"
-          />
-          
-          <h2>Body</h2>
-          <div className="text-area">
-            <textarea
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-              className="textarea-input"
-              placeholder="Enter announcement body"
-            />
-          </div>
-          
-          <div className="button">
-            <button 
-              type="submit" 
-              className="submit-button"
-              disabled={createLoading}
-            >
-              {createLoading ? 'Posting...' : 'Post Announcement'}
-            </button>
-          </div>
-        </form> 
-        
-      </div>
-
-      {/* Announcements List */}
-      <div className="announcements-list">
-        <h2 className="section-heading">📋 Current Announcements</h2>
-        
-        {listLoading ? (
-          <div className="loading-spinner"></div>
-        ) : listError ? (
-          <div className="error-message">Error loading announcements</div>
-        ) : (
-          <>
-            {announcements && announcements.length > 0 ? (
-              announcements.map((announcement) => (
-                <div 
-                  key={announcement._id} 
-                  className="announcement-item"
-                >
-                  <h3 className="announcement-title">{announcement.title}</h3>
-                  <div className="announcement-body">{announcement.body}</div>
-                  <button 
-                    className="delete-button"
-                    onClick={() => deleteHandler(announcement._id)}
-                    disabled={deleteLoading}
-                  >
-                    {deleteLoading ? 'Deleting...' : 'Delete'}
-                  </button>
-                </div>
-              ))
-            ) : (
-              <div>No announcements yet</div>
-            )}
-          </>
-        )}
-      </div>
+    <>
+      {/* Pull-to-refresh indicator */}
+      <PullToRefreshIndicator 
+        isPulling={isPulling}
+        isRefreshing={isRefreshing}
+        pullDistance={pullDistance}
+        refreshProgress={refreshProgress}
+      />
       
-      </Tabs.Content>
-      <Tabs.Content value="reports">
-        <div className="reports-section">
-          <h2 className="section-heading">🚩 Reports Management</h2>
-          
-          {/* Reports Sub-tabs */}
-          <div className="reports-tabs">
-            <button 
-              className={`tab-button ${activeReportsTab === 'pending' ? 'active' : ''}`}
-              onClick={() => setActiveReportsTab('pending')}
-            >
-              Pending Reports ({pendingReports ? pendingReports.length : 0})
-            </button>
-            <button 
-              className={`tab-button ${activeReportsTab === 'all' ? 'active' : ''}`}
-              onClick={() => setActiveReportsTab('all')}
-            >
-              All Reports ({allReports ? allReports.length : 0})
-            </button>
+      <Tabs.Root defaultValue="members">
+      <div className="admin-screen">
+        <h1 className="titleText">👨‍�� Admin Screen</h1>
+        <Tabs.List>
+          <Tabs.Trigger value="members">
+            <LuUser />
+            Members
+          </Tabs.Trigger>
+          <Tabs.Trigger value="announcements">
+            <LuMegaphone />
+            Announcements
+          </Tabs.Trigger>
+          <Tabs.Trigger value="reports">
+            <LuFlag />
+            Reports
+          </Tabs.Trigger>
+        </Tabs.List>
+        <Tabs.Content value="members"><UserList /></Tabs.Content>
+        <Tabs.Content value="announcements">
+        {/* Status Alert */}
+        {statusMessage && (
+          <div className={`alert alert-${statusMessage.type}`}>
+            {statusMessage.text}
           </div>
+        )}
 
-          {/* Pending Reports */}
-          {activeReportsTab === 'pending' && (
-            <div className="reports-list">
-              <h3>Pending Reports</h3>
-              {pendingLoading ? (
-                <div className="loading-spinner"></div>
-              ) : pendingError ? (
-                <div className="error-message">Error loading pending reports</div>
-              ) : (
-                <>
-                  {pendingReports && pendingReports.length > 0 ? (
-                    pendingReports.map((report) => (
-                      <div key={report._id} className="report-item">
-                        <div className="report-header">
-                          <span className={`status-badge ${getStatusBadge(report.status)}`}>
-                            {report.status}
-                          </span>
-                          <span className="report-date">{formatDate(report.createdAt)}</span>
-                        </div>
-                        <div className="report-content">
-                          <div className="report-info">
-                            <strong>Type:</strong> {report.contentType} | 
-                            <strong> Reason:</strong> {report.reason} |
-                            <strong> Reporter:</strong> {report.reportedBy?.firstName} {report.reportedBy?.lastName}
-                          </div>
-                          <div className="report-description">
-                            <strong>Description:</strong> {report.description}
-                          </div>
-                          {report.customReason && (
-                            <div className="report-custom-reason">
-                              <strong>Custom Reason:</strong> {report.customReason}
-                            </div>
-                          )}
-                          {/* Display the actual reported content */}
-                          {renderReportedContent(report)}
-                        </div>
-                        <div className="report-actions">
-                          <button 
-                            className="action-button approve"
-                            onClick={() => handleReviewReport(report._id, 'content_removed', true)}
-                            disabled={reviewLoading}
-                          >
-                            Remove Content
-                          </button>
-                          <button 
-                            className="action-button dismiss"
-                            onClick={() => handleDismissReport(report._id)}
-                            disabled={dismissLoading}
-                          >
-                            Dismiss
-                          </button>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="no-reports">No pending reports</div>
-                  )}
-                </>
-              )}
+          {/* Create Announcement Form */}
+          <div className="announcement-post">
+          <div className="announcement-title">
+            <h1>📝 Create New Announcement</h1>
+          </div>
+          <form onSubmit={submitHandler}>
+            <h2>Title</h2>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="text-input"
+              placeholder="Enter announcement title"
+            />
+            
+            <h2>Body</h2>
+            <div className="text-area">
+              <textarea
+                value={body}
+                onChange={(e) => setBody(e.target.value)}
+                className="textarea-input"
+                placeholder="Enter announcement body"
+              />
             </div>
-          )}
+            
+            <div className="button">
+              <button 
+                type="submit" 
+                className="submit-button"
+                disabled={createLoading}
+              >
+                {createLoading ? 'Posting...' : 'Post Announcement'}
+              </button>
+            </div>
+          </form> 
+          
+        </div>
 
-          {/* All Reports */}
-          {activeReportsTab === 'all' && (
-            <div className="reports-list">
-              <h3>All Reports</h3>
-              {allReportsLoading ? (
-                <div className="loading-spinner"></div>
-              ) : allReportsError ? (
-                <div className="error-message">Error loading reports</div>
+        {/* Announcements List */}
+        <div className="announcements-list">
+          <h2 className="section-heading">📋 Current Announcements</h2>
+          
+          {listLoading ? (
+            <div className="loading-spinner"></div>
+          ) : listError ? (
+            <div className="error-message">Error loading announcements</div>
+          ) : (
+            <>
+              {announcements && announcements.length > 0 ? (
+                announcements.map((announcement) => (
+                  <div 
+                    key={announcement._id} 
+                    className="announcement-item"
+                  >
+                    <h3 className="announcement-title">{announcement.title}</h3>
+                    <div className="announcement-body">{announcement.body}</div>
+                    <button 
+                      className="delete-button"
+                      onClick={() => deleteHandler(announcement._id)}
+                      disabled={deleteLoading}
+                    >
+                      {deleteLoading ? 'Deleting...' : 'Delete'}
+                    </button>
+                  </div>
+                ))
               ) : (
-                <>
-                  {allReports && allReports.length > 0 ? (
-                    allReports.map((report) => (
-                      <div key={report._id} className="report-item">
-                        <div className="report-header">
-                          <span className={`status-badge ${getStatusBadge(report.status)}`}>
-                            {report.status}
-                          </span>
-                          <span className="report-date">{formatDate(report.createdAt)}</span>
-                        </div>
-                        <div className="report-content">
-                          <div className="report-info">
-                            <strong>Type:</strong> {report.contentType} | 
-                            <strong> Reason:</strong> {report.reason} |
-                            <strong> Reporter:</strong> {report.reportedBy?.firstName} {report.reportedBy?.lastName}
-                          </div>
-                          <div className="report-description">
-                            <strong>Description:</strong> {report.description}
-                          </div>
-                          {report.customReason && (
-                            <div className="report-custom-reason">
-                              <strong>Custom Reason:</strong> {report.customReason}
-                            </div>
-                          )}
-                          {/* Display the actual reported content */}
-                          {renderReportedContent(report)}
-                          {report.actionTaken && (
-                            <div className="report-action-taken">
-                              <strong>Action Taken:</strong> {report.actionTaken}
-                            </div>
-                          )}
-                          {report.reviewedAt && (
-                            <div className="report-reviewed-date">
-                              <strong>Reviewed:</strong> {formatDate(report.reviewedAt)}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="no-reports">No reports found</div>
-                  )}
-                </>
+                <div>No announcements yet</div>
               )}
-            </div>
+            </>
           )}
         </div>
-      </Tabs.Content>
-    </div>
-    </Tabs.Root>
+        
+        </Tabs.Content>
+        <Tabs.Content value="reports">
+          <div className="reports-section">
+            <h2 className="section-heading">🚩 Reports Management</h2>
+            
+            {/* Reports Sub-tabs */}
+            <div className="reports-tabs">
+              <button 
+                className={`tab-button ${activeReportsTab === 'pending' ? 'active' : ''}`}
+                onClick={() => setActiveReportsTab('pending')}
+              >
+                Pending Reports ({pendingReports ? pendingReports.length : 0})
+              </button>
+              <button 
+                className={`tab-button ${activeReportsTab === 'all' ? 'active' : ''}`}
+                onClick={() => setActiveReportsTab('all')}
+              >
+                All Reports ({allReports ? allReports.length : 0})
+              </button>
+            </div>
+
+            {/* Pending Reports */}
+            {activeReportsTab === 'pending' && (
+              <div className="reports-list">
+                <h3>Pending Reports</h3>
+                {pendingLoading ? (
+                  <div className="loading-spinner"></div>
+                ) : pendingError ? (
+                  <div className="error-message">Error loading pending reports</div>
+                ) : (
+                  <>
+                    {pendingReports && pendingReports.length > 0 ? (
+                      pendingReports.map((report) => (
+                        <div key={report._id} className="report-item">
+                          <div className="report-header">
+                            <span className={`status-badge ${getStatusBadge(report.status)}`}>
+                              {report.status}
+                            </span>
+                            <span className="report-date">{formatDate(report.createdAt)}</span>
+                          </div>
+                          <div className="report-content">
+                            <div className="report-info">
+                              <strong>Type:</strong> {report.contentType} | 
+                              <strong> Reason:</strong> {report.reason} |
+                              <strong> Reporter:</strong> {report.reportedBy?.firstName} {report.reportedBy?.lastName}
+                            </div>
+                            <div className="report-description">
+                              <strong>Description:</strong> {report.description}
+                            </div>
+                            {report.customReason && (
+                              <div className="report-custom-reason">
+                                <strong>Custom Reason:</strong> {report.customReason}
+                              </div>
+                            )}
+                            {/* Display the actual reported content */}
+                            {renderReportedContent(report)}
+                          </div>
+                          <div className="report-actions">
+                            <button 
+                              className="action-button approve"
+                              onClick={() => handleReviewReport(report._id, 'content_removed', true)}
+                              disabled={reviewLoading}
+                            >
+                              Remove Content
+                            </button>
+                            <button 
+                              className="action-button dismiss"
+                              onClick={() => handleDismissReport(report._id)}
+                              disabled={dismissLoading}
+                            >
+                              Dismiss
+                            </button>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="no-reports">No pending reports</div>
+                    )}
+                  </>
+                )}
+              </div>
+            )}
+
+            {/* All Reports */}
+            {activeReportsTab === 'all' && (
+              <div className="reports-list">
+                <h3>All Reports</h3>
+                {allReportsLoading ? (
+                  <div className="loading-spinner"></div>
+                ) : allReportsError ? (
+                  <div className="error-message">Error loading reports</div>
+                ) : (
+                  <>
+                    {allReports && allReports.length > 0 ? (
+                      allReports.map((report) => (
+                        <div key={report._id} className="report-item">
+                          <div className="report-header">
+                            <span className={`status-badge ${getStatusBadge(report.status)}`}>
+                              {report.status}
+                            </span>
+                            <span className="report-date">{formatDate(report.createdAt)}</span>
+                          </div>
+                          <div className="report-content">
+                            <div className="report-info">
+                              <strong>Type:</strong> {report.contentType} | 
+                              <strong> Reason:</strong> {report.reason} |
+                              <strong> Reporter:</strong> {report.reportedBy?.firstName} {report.reportedBy?.lastName}
+                            </div>
+                            <div className="report-description">
+                              <strong>Description:</strong> {report.description}
+                            </div>
+                            {report.customReason && (
+                              <div className="report-custom-reason">
+                                <strong>Custom Reason:</strong> {report.customReason}
+                              </div>
+                            )}
+                            {/* Display the actual reported content */}
+                            {renderReportedContent(report)}
+                            {report.actionTaken && (
+                              <div className="report-action-taken">
+                                <strong>Action Taken:</strong> {report.actionTaken}
+                              </div>
+                            )}
+                            {report.reviewedAt && (
+                              <div className="report-reviewed-date">
+                                <strong>Reviewed:</strong> {formatDate(report.reviewedAt)}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="no-reports">No reports found</div>
+                    )}
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        </Tabs.Content>
+      </div>
+      </Tabs.Root>
+    </>
   );
 };
 

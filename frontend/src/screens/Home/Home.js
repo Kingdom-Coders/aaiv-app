@@ -6,6 +6,8 @@ import { listAnnouncements } from "../../actions/announcementActions";
 import { listEvents } from "../../actions/eventActions";
 import { getDailyVerse } from "../../utils/dailyVerse";
 import AnnouncementsCarousel from "../../components/AnnouncementsCarousel/AnnouncementsCarousel";
+import usePullToRefresh from "../../hooks/usePullToRefresh";
+import PullToRefreshIndicator from "../../components/PullToRefreshIndicator";
 import './Home.css';
 
 function toggleBlur() {
@@ -30,6 +32,19 @@ const Home = () => {
   // Get events state from Redux
   const eventList = useSelector((state) => state.eventList);
   const { loading: eventsLoading, error: eventsError, events } = eventList;
+
+  // Pull-to-refresh functionality
+  const {
+    isPulling,
+    isRefreshing,
+    pullDistance,
+    refreshProgress
+  } = usePullToRefresh(() => {
+    dispatch(listAnnouncements());
+    dispatch(listEvents());
+    const verse = getDailyVerse();
+    setDailyVerse(verse);
+  });
 
   // Get the daily verse when component mounts
   useEffect(() => {
@@ -261,152 +276,162 @@ const Home = () => {
   }, [events]); // Re-run when events change
 
   return (
-    <div className="home-screen">
-      {/* Header with title and logout icon */}
-      <div className="home-header">
-        <h1>🙏 Welcome to AAIV 🙏</h1>
-        <button className="logout-icon" onClick={logoutHandler} title="Sign Out">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M16 17L21 12L16 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M21 12H9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
-      </div>
-
-      {/* Bible Verse Section */}
-      <div className="BibleVerse">
-        <p><strong>📖  Daily Bible Verse:</strong></p>
-        <div className="blur-container" onClick={toggleBlur}>
-          <p className="blur-text">
-            {dailyVerse ? (
-              <>
-                {dailyVerse.text.split('\n').map((line, index) => (
-                  <React.Fragment key={index}>
-                    {line}
-                    {index < dailyVerse.text.split('\n').length - 1 && <br />}
-                  </React.Fragment>
-                ))}
-                <br />
-                {dailyVerse.reference}
-              </>
-            ) : (
-              'Loading daily verse...'
-            )}
-          </p>
-        </div>
-      </div>
-
-      {/* Announcements Section */}
-      <AnnouncementsCarousel 
-        announcements={announcements}
-        loading={announcementsLoading}
-        error={announcementsError}
+    <>
+      {/* Pull-to-refresh indicator */}
+      <PullToRefreshIndicator 
+        isPulling={isPulling}
+        isRefreshing={isRefreshing}
+        pullDistance={pullDistance}
+        refreshProgress={refreshProgress}
       />
+      
+      <div className="home-screen">
+        {/* Header with title and logout icon */}
+        <div className="home-header">
+          <h1>🙏 Welcome to AAIV 🙏</h1>
+          <button className="logout-icon" onClick={logoutHandler} title="Sign Out">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M16 17L21 12L16 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M21 12H9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        </div>
 
-      {/* Upcoming Events Section */}
-      <div className="upcomingevents-tab">
-        <h3>📅 Upcoming Events</h3>
-      </div>
+        {/* Bible Verse Section */}
+        <div className="BibleVerse">
+          <p><strong>📖  Daily Bible Verse:</strong></p>
+          <div className="blur-container" onClick={toggleBlur}>
+            <p className="blur-text">
+              {dailyVerse ? (
+                <>
+                  {dailyVerse.text.split('\n').map((line, index) => (
+                    <React.Fragment key={index}>
+                      {line}
+                      {index < dailyVerse.text.split('\n').length - 1 && <br />}
+                    </React.Fragment>
+                  ))}
+                  <br />
+                  {dailyVerse.reference}
+                </>
+              ) : (
+                'Loading daily verse...'
+              )}
+            </p>
+          </div>
+        </div>
 
-      <div className="wrapper" ref={wrapperRef}>
-        <i id="left" className="arrow left">←</i>
-        <div className="carousel" ref={carouselRef}>
-          {eventsLoading ? (
-            <div className="card">
-              <div className="card-content">
-                <h2>Loading Events...</h2>
-                <p>Fetching upcoming events from the database</p>
-              </div>
-              <div className="card-footer">
-                <small>Please wait</small>
-              </div>
-            </div>
-          ) : eventsError ? (
-            <div className="card">
-              <div className="card-content">
-                <h2>Error Loading Events</h2>
-                <p>Unable to fetch events at this time</p>
-              </div>
-              <div className="card-footer">
-                <small>Please try again later</small>
-              </div>
-            </div>
-          ) : !events || events.length === 0 ? (
-            <div className="card">
-              <div className="card-content">
-                <h2>No Upcoming Events</h2>
-                <p>Check back later for new events!</p>
-              </div>
-              <div className="card-footer">
-                <small>Create events in the Events tab</small>
-              </div>
-            </div>
-          ) : (
-            events.slice(0, 6).map((event) => (
-              <div className="card" key={event._id} onClick={() => handleEventClick(event)}>
+        {/* Announcements Section */}
+        <AnnouncementsCarousel 
+          announcements={announcements}
+          loading={announcementsLoading}
+          error={announcementsError}
+        />
+
+        {/* Upcoming Events Section */}
+        <div className="upcomingevents-tab">
+          <h3>📅 Upcoming Events</h3>
+        </div>
+
+        <div className="wrapper" ref={wrapperRef}>
+          <i id="left" className="arrow left">←</i>
+          <div className="carousel" ref={carouselRef}>
+            {eventsLoading ? (
+              <div className="card">
                 <div className="card-content">
-                  <h2>{event.title}</h2>
-                  <p>{truncateDescription(event.description)}</p>
+                  <h2>Loading Events...</h2>
+                  <p>Fetching upcoming events from the database</p>
                 </div>
                 <div className="card-footer">
-                  <small>{formatEventTime(event)}</small>
-                  {event.location && (
-                    <small>📍 {event.location}</small>
-                  )}
+                  <small>Please wait</small>
                 </div>
               </div>
-            ))
-          )}
-        </div>
-        <i id="right" className="arrow right">→</i>
-      </div>
-
-      {/* Event Modal */}
-      {showModal && selectedEvent && (
-        <div className="event-modal-overlay" onClick={closeModal}>
-          <div className="event-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="event-modal-header">
-              <h2 className="event-modal-title">{selectedEvent.title}</h2>
-              <button className="event-modal-close" onClick={closeModal}>
-                ×
-              </button>
-            </div>
-
-            <div className="event-modal-badge">
-              {selectedEvent.isAllDay ? 'All Day Event' : 'Timed Event'}
-            </div>
-
-            <div className="event-modal-details">
-              <div className="event-modal-detail-row">
-                <span className="event-modal-detail-icon">🗓️</span>
-                <span>{formatFullEventTime(selectedEvent)}</span>
+            ) : eventsError ? (
+              <div className="card">
+                <div className="card-content">
+                  <h2>Error Loading Events</h2>
+                  <p>Unable to fetch events at this time</p>
+                </div>
+                <div className="card-footer">
+                  <small>Please try again later</small>
+                </div>
               </div>
-              
-              {selectedEvent.location && (
+            ) : !events || events.length === 0 ? (
+              <div className="card">
+                <div className="card-content">
+                  <h2>No Upcoming Events</h2>
+                  <p>Check back later for new events!</p>
+                </div>
+                <div className="card-footer">
+                  <small>Create events in the Events tab</small>
+                </div>
+              </div>
+            ) : (
+              events.slice(0, 6).map((event) => (
+                <div className="card" key={event._id} onClick={() => handleEventClick(event)}>
+                  <div className="card-content">
+                    <h2>{event.title}</h2>
+                    <p>{truncateDescription(event.description)}</p>
+                  </div>
+                  <div className="card-footer">
+                    <small>{formatEventTime(event)}</small>
+                    {event.location && (
+                      <small>📍 {event.location}</small>
+                    )}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+          <i id="right" className="arrow right">→</i>
+        </div>
+
+        {/* Event Modal */}
+        {showModal && selectedEvent && (
+          <div className="event-modal-overlay" onClick={closeModal}>
+            <div className="event-modal" onClick={(e) => e.stopPropagation()}>
+              <div className="event-modal-header">
+                <h2 className="event-modal-title">{selectedEvent.title}</h2>
+                <button className="event-modal-close" onClick={closeModal}>
+                  ×
+                </button>
+              </div>
+
+              <div className="event-modal-badge">
+                {selectedEvent.isAllDay ? 'All Day Event' : 'Timed Event'}
+              </div>
+
+              <div className="event-modal-details">
                 <div className="event-modal-detail-row">
-                  <span className="event-modal-detail-icon">📍</span>
-                  <span>{selectedEvent.location}</span>
+                  <span className="event-modal-detail-icon">🗓️</span>
+                  <span>{formatFullEventTime(selectedEvent)}</span>
+                </div>
+                
+                {selectedEvent.location && (
+                  <div className="event-modal-detail-row">
+                    <span className="event-modal-detail-icon">📍</span>
+                    <span>{selectedEvent.location}</span>
+                  </div>
+                )}
+              </div>
+
+              {selectedEvent.description && (
+                <div className="event-modal-description">
+                  <h4>Description</h4>
+                  <p>{selectedEvent.description}</p>
+                </div>
+              )}
+
+              {selectedEvent.createdBy && (
+                <div className="event-modal-creator">
+                  Created by {selectedEvent.createdBy.firstName} {selectedEvent.createdBy.lastName}
                 </div>
               )}
             </div>
-
-            {selectedEvent.description && (
-              <div className="event-modal-description">
-                <h4>Description</h4>
-                <p>{selectedEvent.description}</p>
-              </div>
-            )}
-
-            {selectedEvent.createdBy && (
-              <div className="event-modal-creator">
-                Created by {selectedEvent.createdBy.firstName} {selectedEvent.createdBy.lastName}
-              </div>
-            )}
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { GoHome, GoCommentDiscussion,  } from 'react-icons/go';
+import { GoHome, GoCommentDiscussion, GoCalendar } from 'react-icons/go';
 import { GoLink } from 'react-icons/go';
 import { MdEvent } from 'react-icons/md';
 import { RiAdminLine } from "react-icons/ri";
@@ -36,7 +36,7 @@ const NavBar = () => {
           className={`navbar-item ${active === '/events' ? 'active' : ''}`}
           onClick={() => handleNavigation('/events')}
         >
-          <MdEvent className="navbar-icon" />
+          <GoCalendar className="navbar-icon" />
         </li>
         <li
           className={`navbar-item ${active === '/chat-link' ? 'active' : ''}`}
