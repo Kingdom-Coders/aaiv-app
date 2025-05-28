@@ -272,7 +272,7 @@ const Admin = () => {
       
       <Tabs.Root defaultValue="members">
       <div className="admin-screen">
-        <h1 className="titleText">👨‍�� Admin Screen</h1>
+        <h1 className="titleText">👨‍💻 Admin Screen</h1>
         <Tabs.List>
           <Tabs.Trigger value="members">
             <LuUser />

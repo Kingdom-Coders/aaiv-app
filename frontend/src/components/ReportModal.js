@@ -11,7 +11,7 @@ import {
   Spinner,
 } from '@chakra-ui/react';
 import { MdClose, MdFlag } from 'react-icons/md';
-import { createReportAction } from '../actions/reportActions';
+import { createReportAction, resetReportCreate } from '../actions/reportActions';
 
 const ReportModal = ({ isOpen, onClose, contentType, contentId, contentTitle }) => {
   const dispatch = useDispatch();
@@ -51,18 +51,39 @@ const ReportModal = ({ isOpen, onClose, contentType, contentId, contentTitle }) 
       description: reportReason === 'other' ? customReason.trim() : reportReasons.find(r => r.value === reportReason)?.label || '',
     };
 
-    alert('Report submitted successfully');
     dispatch(createReportAction(reportData));
   };
 
   // Close modal and reset form when report is successful
   React.useEffect(() => {
     if (success) {
-      onClose();
+      // Show success message
+      alert('Report submitted successfully');
+      
+      // Reset form state
       setReportReason('');
       setCustomReason('');
+      
+      // Close modal after a longer delay to ensure the report is processed
+      setTimeout(() => {
+        onClose();
+        // Reset Redux state after closing
+        dispatch(resetReportCreate());
+      }, 500);
     }
-  }, [success, onClose]);
+  }, [success, onClose, dispatch]);
+
+  // Also reset state when modal is closed manually
+  const handleClose = () => {
+    onClose();
+    // Only reset if not currently submitting
+    if (!loading) {
+      dispatch(resetReportCreate());
+    }
+    // Reset form state
+    setReportReason('');
+    setCustomReason('');
+  };
 
   if (!isOpen) return null;
 
@@ -79,6 +100,12 @@ const ReportModal = ({ isOpen, onClose, contentType, contentId, contentTitle }) 
       justifyContent="center"
       zIndex="1000"
       p={4}
+      onClick={(e) => {
+        // Close modal if clicking on backdrop
+        if (e.target === e.currentTarget) {
+          handleClose();
+        }
+      }}
     >
       <Box
         bg="white"
@@ -89,6 +116,7 @@ const ReportModal = ({ isOpen, onClose, contentType, contentId, contentTitle }) 
         maxH="90vh"
         overflow="auto"
         position="relative"
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <Box
@@ -122,7 +150,7 @@ const ReportModal = ({ isOpen, onClose, contentType, contentId, contentTitle }) 
             <Button
               variant="ghost"
               size="sm"
-              onClick={onClose}
+              onClick={handleClose}
               color="gray.500"
               _hover={{ color: "gray.700", bg: "gray.100" }}
             >
@@ -251,7 +279,7 @@ const ReportModal = ({ isOpen, onClose, contentType, contentId, contentTitle }) 
             <HStack spacing={3} justify="flex-end">
               <Button
                 variant="ghost"
-                onClick={onClose}
+                onClick={handleClose}
                 color="gray.600"
                 _hover={{ bg: "gray.100" }}
                 disabled={loading}

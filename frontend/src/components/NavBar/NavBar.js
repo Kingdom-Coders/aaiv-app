@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { GoHome, GoCommentDiscussion, GoCalendar } from 'react-icons/go';
 import { GoLink } from 'react-icons/go';
 import { MdEvent } from 'react-icons/md';
@@ -9,13 +9,18 @@ import './NavBar.css';
 
 const NavBar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [active, setActive] = useState('/');
+
+  // Update active state based on current location
+  useEffect(() => {
+    setActive(location.pathname);
+  }, [location.pathname]);
 
   const handleNavigation = (path) => {
     setActive(path);
     navigate(path);
   };
-
 
   const userLogin = useSelector((state) => state.userLogin);
   // Destructures the relevant information
@@ -27,8 +32,8 @@ const NavBar = () => {
     <div className="navbar">
       <ul className="navbar-list">
         <li
-          className={`navbar-item ${active === '/home' ? 'active' : ''}`}
-          onClick={() => handleNavigation('/')}
+          className={`navbar-item ${active === '/home' || active === '/' ? 'active' : ''}`}
+          onClick={() => handleNavigation('/home')}
         >
           <GoHome className="navbar-icon" />
         </li>
@@ -45,7 +50,7 @@ const NavBar = () => {
           <GoLink className="navbar-icon" />
         </li>
         <li
-          className={`navbar-item ${active === '/discussion' ? 'active' : ''}`}
+          className={`navbar-item ${active === '/discussion' || active === '/thread' || active === '/create-post' ? 'active' : ''}`}
           onClick={() => handleNavigation('/discussion')}
         >
           <GoCommentDiscussion className="navbar-icon" />

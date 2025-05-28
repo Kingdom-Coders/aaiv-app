@@ -19,6 +19,7 @@ import { MdArrowBack, MdChatBubbleOutline, MdSend, MdMenuBook, MdDelete, MdFlag 
 import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { listComments, createCommentAction } from "../../../actions/commentActions";
 import { deletePostAction } from "../../../actions/postActions";
+import { resetReportCreate } from "../../../actions/reportActions";
 import ReportModal from "../../../components/ReportModal";
 import { 
   DrawerRoot, 
@@ -83,6 +84,17 @@ const Thread = () => {
       dispatch(listComments(postData._id));
     }
   }, [dispatch, userInfo, postData._id, createSuccess]);
+
+  // Clean up report state when component unmounts
+  useEffect(() => {
+    return () => {
+      // Only reset report state if there's no active submission
+      const reportCreate = commentCreate; // Use existing selector pattern
+      if (!reportCreate?.loading) {
+        dispatch(resetReportCreate());
+      }
+    };
+  }, [dispatch]);
 
   // Handle successful post deletion
   useEffect(() => {
@@ -218,6 +230,13 @@ const Thread = () => {
   };
 
   const organizedComments = comments ? organizeComments(comments) : [];
+
+  // Enhanced close handler for report modal
+  const handleCloseReportModal = () => {
+    setIsReportModalOpen(false);
+    setReportModalData({ contentType: '', contentId: '', contentTitle: '' });
+    // Don't reset here - let the ReportModal handle its own state management
+  };
 
   return (
     <>
@@ -929,10 +948,7 @@ const Thread = () => {
         {/* Report Modal */}
         <ReportModal
           isOpen={isReportModalOpen}
-          onClose={() => {
-            setIsReportModalOpen(false);
-            setReportModalData({ contentType: '', contentId: '', contentTitle: '' });
-          }}
+          onClose={handleCloseReportModal}
           contentType={reportModalData.contentType}
           contentId={reportModalData.contentId}
           contentTitle={reportModalData.contentTitle}

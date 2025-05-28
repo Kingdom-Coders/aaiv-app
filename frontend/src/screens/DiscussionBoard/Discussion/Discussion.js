@@ -17,6 +17,7 @@ import { MdAdd, MdFlag } from 'react-icons/md';
 import { BiMessageSquareDetail } from 'react-icons/bi';
 import { listPosts } from '../../../actions/postActions';
 import { resetDeletePost } from '../../../actions/postActions';
+import { resetReportCreate } from '../../../actions/reportActions';
 import ReportModal from '../../../components/ReportModal';
 import usePullToRefresh from '../../../hooks/usePullToRefresh';
 import PullToRefreshIndicator from '../../../components/PullToRefreshIndicator';
@@ -67,6 +68,17 @@ const Discussion = () => {
   // Reset delete state when component mounts to prevent navigation issues
   useEffect(() => {
     dispatch(resetDeletePost());
+  }, [dispatch]);
+
+  // Clean up report state when component unmounts
+  useEffect(() => {
+    return () => {
+      // Only reset report state if there's no active submission
+      const reportCreate = postDelete; // Use existing selector pattern  
+      if (!reportCreate?.loading) {
+        dispatch(resetReportCreate());
+      }
+    };
   }, [dispatch]);
 
   // Format date for display
@@ -127,6 +139,13 @@ const Discussion = () => {
     }
     
     setExpandedPosts(newExpandedPosts);
+  };
+
+  // Enhanced close handler for report modal
+  const handleCloseReportModal = () => {
+    setIsReportModalOpen(false);
+    setSelectedPost(null);
+    // Don't reset here - let the ReportModal handle its own state management
   };
 
   return (
@@ -502,10 +521,7 @@ const Discussion = () => {
         {/* Report Modal */}
         <ReportModal  
           isOpen={isReportModalOpen}
-          onClose={() => {
-            setIsReportModalOpen(false);
-            setSelectedPost(null);
-          }}
+          onClose={handleCloseReportModal}
           contentType="post"
           contentId={selectedPost?._id}
           contentTitle={selectedPost?.title}

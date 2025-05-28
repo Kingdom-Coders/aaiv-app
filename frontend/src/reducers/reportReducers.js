@@ -2,6 +2,7 @@ import {
     REPORT_CREATE_REQUEST,
     REPORT_CREATE_SUCCESS,
     REPORT_CREATE_FAIL,
+    REPORT_CREATE_RESET,
     REPORT_LIST_REQUEST,
     REPORT_LIST_SUCCESS,
     REPORT_LIST_FAIL,
@@ -25,6 +26,8 @@ export const reportCreateReducer = (state = {}, action) => {
             return { loading: false, success: true, report: action.payload };
         case REPORT_CREATE_FAIL:
             return { loading: false, error: action.payload };
+        case REPORT_CREATE_RESET:
+            return {};
         default:
             return state;
     }

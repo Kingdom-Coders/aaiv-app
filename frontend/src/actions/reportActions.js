@@ -1,9 +1,11 @@
 import axios from 'axios';
+import { getApiUrl } from '../config/api';
 
 // Action Types
 export const REPORT_CREATE_REQUEST = 'REPORT_CREATE_REQUEST';
 export const REPORT_CREATE_SUCCESS = 'REPORT_CREATE_SUCCESS';
 export const REPORT_CREATE_FAIL = 'REPORT_CREATE_FAIL';
+export const REPORT_CREATE_RESET = 'REPORT_CREATE_RESET';
 
 export const REPORT_LIST_REQUEST = 'REPORT_LIST_REQUEST';
 export const REPORT_LIST_SUCCESS = 'REPORT_LIST_SUCCESS';
@@ -37,7 +39,7 @@ export const createReportAction = (reportData) => async (dispatch, getState) => 
             },
         };
 
-        const { data } = await axios.post('/api/reports', reportData, config);
+        const { data } = await axios.post(getApiUrl('/api/reports'), reportData, config);
 
         dispatch({
             type: REPORT_CREATE_SUCCESS,
@@ -71,7 +73,7 @@ export const getPendingReportsAction = () => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.get('/api/reports/pending', config);
+        const { data } = await axios.get(getApiUrl('/api/reports/pending'), config);
 
         dispatch({
             type: REPORT_PENDING_SUCCESS,
@@ -103,7 +105,7 @@ export const getAllReportsAction = () => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.get('/api/reports', config);
+        const { data } = await axios.get(getApiUrl('/api/reports'), config);
 
         dispatch({
             type: REPORT_LIST_SUCCESS,
@@ -137,7 +139,7 @@ export const reviewReportAction = (reportId, actionTaken, deleteContent = false)
         };
 
         const { data } = await axios.put(
-            `/api/reports/${reportId}/review`,
+            getApiUrl(`/api/reports/${reportId}/review`),
             { actionTaken, deleteContent },
             config
         );
@@ -175,7 +177,7 @@ export const dismissReportAction = (reportId) => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.put(`/api/reports/${reportId}/dismiss`, {}, config);
+        const { data } = await axios.put(getApiUrl(`/api/reports/${reportId}/dismiss`), {}, config);
 
         dispatch({
             type: REPORT_DISMISS_SUCCESS,
@@ -192,4 +194,9 @@ export const dismissReportAction = (reportId) => async (dispatch, getState) => {
                     : error.message,
         });
     }
+};
+
+// Reset report create state
+export const resetReportCreate = () => (dispatch) => {
+    dispatch({ type: REPORT_CREATE_RESET });
 }; 

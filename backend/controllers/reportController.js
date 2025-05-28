@@ -134,9 +134,23 @@ const getAllReports = asyncHandler(async (req, res) => {
         // Manually populate content based on contentModel
         for (let report of reports) {
             if (report.contentModel === 'Post') {
-                await report.populate('contentId', 'title body user createdAt');
+                await report.populate({
+                    path: 'contentId',
+                    select: 'title body user createdAt',
+                    populate: {
+                        path: 'user',
+                        select: 'firstName lastName email'
+                    }
+                });
             } else if (report.contentModel === 'Comment') {
-                await report.populate('contentId', 'body user post createdAt');
+                await report.populate({
+                    path: 'contentId',
+                    select: 'body user post createdAt',
+                    populate: {
+                        path: 'user',
+                        select: 'firstName lastName email'
+                    }
+                });
             }
         }
 
@@ -178,9 +192,23 @@ const reviewReport = asyncHandler(async (req, res) => {
 
         // Manually populate content based on contentModel
         if (report.contentModel === 'Post') {
-            await report.populate('contentId', 'title body user createdAt');
+            await report.populate({
+                path: 'contentId',
+                select: 'title body user createdAt',
+                populate: {
+                    path: 'user',
+                    select: 'firstName lastName email'
+                }
+            });
         } else if (report.contentModel === 'Comment') {
-            await report.populate('contentId', 'body user post createdAt');
+            await report.populate({
+                path: 'contentId',
+                select: 'body user post createdAt',
+                populate: {
+                    path: 'user',
+                    select: 'firstName lastName email'
+                }
+            });
         }
 
         if (report.status !== 'pending') {
