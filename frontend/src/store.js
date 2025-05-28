@@ -57,6 +57,15 @@ import {
     eventAdminListReducer
 } from "./reducers/eventReducers";
 
+// Report reducers
+import {
+    reportCreateReducer,
+    reportListReducer,
+    reportPendingReducer,
+    reportReviewReducer,
+    reportDismissReducer
+} from "./reducers/reportReducers";
+
 /**
  * Combine all reducers into a single root reducer
  */
@@ -104,6 +113,13 @@ const reducer = combineReducers({
     eventPendingList: eventPendingListReducer,
     eventUserList: eventUserListReducer,
     eventAdminList: eventAdminListReducer,
+
+    // Report state
+    reportCreate: reportCreateReducer,
+    reportList: reportListReducer,
+    reportPending: reportPendingReducer,
+    reportReview: reportReviewReducer,
+    reportDismiss: reportDismissReducer,
 });
 
 // Get user info from localStorage if it exists

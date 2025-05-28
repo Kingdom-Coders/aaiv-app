@@ -23,7 +23,8 @@ import {
     MdPendingActions,
     MdCheck,
     MdClose,
-    MdCalendarToday
+    MdCalendarToday,
+    MdDelete
 } from 'react-icons/md';
 import { FaCalendarAlt, FaCalendarPlus, FaClock, FaMapMarkerAlt } from 'react-icons/fa';
 import { 
@@ -32,7 +33,8 @@ import {
     resetEventCreate,
     listPendingEvents,
     approveEvent,
-    rejectEvent
+    rejectEvent,
+    deleteEvent
 } from '../../actions/eventActions';
 import './Events.css';
 
@@ -50,6 +52,7 @@ const Events = () => {
     const [isAllDay, setIsAllDay] = useState(false);
     const [rejectionReason, setRejectionReason] = useState('');
     const [selectedEventForRejection, setSelectedEventForRejection] = useState(null);
+    const [selectedEventForDeletion, setSelectedEventForDeletion] = useState(null);
     const [activeTab, setActiveTab] = useState('upcoming'); // 'upcoming' or 'pending'
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
@@ -71,6 +74,9 @@ const Events = () => {
 
     const eventReject = useSelector((state) => state.eventReject);
     const { loading: loadingReject, success: successReject } = eventReject;
+
+    const eventDelete = useSelector((state) => state.eventDelete);
+    const { loading: loadingDelete, success: successDelete } = eventDelete;
 
     // Load events on component mount
     useEffect(() => {
@@ -111,11 +117,13 @@ const Events = () => {
 
     // Refresh lists after approval/rejection
     useEffect(() => {
-        if (successApprove || successReject) {
+        if (successApprove || successReject || successDelete) {
             dispatch(listEvents());
-            dispatch(listPendingEvents());
+            if (userInfo && userInfo.isAdmin) {
+                dispatch(listPendingEvents());
+            }
         }
-    }, [successApprove, successReject, dispatch]);
+    }, [successApprove, successReject, successDelete, dispatch]);
 
     // Handle form submission
     const handleSubmit = (e) => {
@@ -168,6 +176,14 @@ const Events = () => {
         dispatch(rejectEvent(selectedEventForRejection, rejectionReason));
         setSelectedEventForRejection(null);
         setRejectionReason('');
+    };
+
+    // Handle event deletion
+    const handleDelete = () => {
+        if (!selectedEventForDeletion) return;
+        
+        dispatch(deleteEvent(selectedEventForDeletion));
+        setSelectedEventForDeletion(null);
     };
 
     // Format date and time for display
@@ -553,6 +569,62 @@ const Events = () => {
                                                             Created by {event.createdBy.firstName} {event.createdBy.lastName}
                                                         </Text>
                                                     )}
+
+                                                    {/* Admin Delete Button */}
+                                                    {userInfo?.isAdmin && (
+                                                        <HStack justify="flex-end" pt={2}>
+                                                            <Dialog.Root>
+                                                                <Dialog.Trigger>
+                                                                    <Button
+                                                                        size="sm"
+                                                                        bg="red.500"
+                                                                        color="white"
+                                                                        leftIcon={<MdDelete />}
+                                                                        onClick={() => setSelectedEventForDeletion(event._id)}
+                                                                        _hover={{
+                                                                            bg: "red.600",
+                                                                            transform: "translateY(-1px)"
+                                                                        }}
+                                                                    >
+                                                                        Delete
+                                                                    </Button>
+                                                                </Dialog.Trigger>
+                                                                <Dialog.Backdrop />
+                                                                <Dialog.Positioner>
+                                                                    <Dialog.Content>
+                                                                        <Dialog.CloseTrigger />
+                                                                        <Dialog.Header>
+                                                                            <Dialog.Title>Delete Event</Dialog.Title>
+                                                                        </Dialog.Header>
+                                                                        <Dialog.Body>
+                                                                            <VStack spacing={4} align="stretch">
+                                                                                <Text>
+                                                                                    Are you sure you want to delete this event? This action cannot be undone.
+                                                                                </Text>
+                                                                                <Text fontWeight="bold" color="gray.700">
+                                                                                    "{event.title}"
+                                                                                </Text>
+                                                                                <HStack justify="flex-end" spacing={3}>
+                                                                                    <Dialog.CloseTrigger>
+                                                                                        <Button variant="outline">Cancel</Button>
+                                                                                    </Dialog.CloseTrigger>
+                                                                                    <Button
+                                                                                        bg="red.500"
+                                                                                        color="white"
+                                                                                        onClick={handleDelete}
+                                                                                        isLoading={loadingDelete}
+                                                                                        _hover={{ bg: "red.600" }}
+                                                                                    >
+                                                                                        Delete Event
+                                                                                    </Button>
+                                                                                </HStack>
+                                                                            </VStack>
+                                                                        </Dialog.Body>
+                                                                    </Dialog.Content>
+                                                                </Dialog.Positioner>
+                                                            </Dialog.Root>
+                                                        </HStack>
+                                                    )}
                                                 </VStack>
                                             </Box>
                                         ))}
@@ -726,6 +798,57 @@ const Events = () => {
                                                                                     _hover={{ bg: "red.600" }}
                                                                                 >
                                                                                     Reject Event
+                                                                                </Button>
+                                                                            </HStack>
+                                                                        </VStack>
+                                                                    </Dialog.Body>
+                                                                </Dialog.Content>
+                                                            </Dialog.Positioner>
+                                                        </Dialog.Root>
+                                                        
+                                                        <Dialog.Root>
+                                                            <Dialog.Trigger>
+                                                                <Button
+                                                                    size="sm"
+                                                                    bg="gray.500"
+                                                                    color="white"
+                                                                    leftIcon={<MdDelete />}
+                                                                    onClick={() => setSelectedEventForDeletion(event._id)}
+                                                                    _hover={{
+                                                                        bg: "gray.600",
+                                                                        transform: "translateY(-1px)"
+                                                                    }}
+                                                                >
+                                                                    Delete
+                                                                </Button>
+                                                            </Dialog.Trigger>
+                                                            <Dialog.Backdrop />
+                                                            <Dialog.Positioner>
+                                                                <Dialog.Content>
+                                                                    <Dialog.CloseTrigger />
+                                                                    <Dialog.Header>
+                                                                        <Dialog.Title>Delete Event</Dialog.Title>
+                                                                    </Dialog.Header>
+                                                                    <Dialog.Body>
+                                                                        <VStack spacing={4} align="stretch">
+                                                                            <Text>
+                                                                                Are you sure you want to delete this event? This action cannot be undone.
+                                                                            </Text>
+                                                                            <Text fontWeight="bold" color="gray.700">
+                                                                                "{event.title}"
+                                                                            </Text>
+                                                                            <HStack justify="flex-end" spacing={3}>
+                                                                                <Dialog.CloseTrigger>
+                                                                                    <Button variant="outline">Cancel</Button>
+                                                                                </Dialog.CloseTrigger>
+                                                                                <Button
+                                                                                    bg="red.500"
+                                                                                    color="white"
+                                                                                    onClick={handleDelete}
+                                                                                    isLoading={loadingDelete}
+                                                                                    _hover={{ bg: "red.600" }}
+                                                                                >
+                                                                                    Delete Event
                                                                                 </Button>
                                                                             </HStack>
                                                                         </VStack>

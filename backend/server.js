@@ -15,6 +15,7 @@ const googleRoutes = require("./routes/calendarRoutes");
 const announcementRoutes = require('./routes/announcementRoutes');
 const groupRoutes = require('./routes/groupRoutes');
 const eventRoutes = require('./routes/eventRoutes');
+const reportRoutes = require('./routes/reportRoutes');
 
 // Middleware imports
 const { notFound, errorHandler } = require('./middlewares/errorMiddleware');
@@ -58,6 +59,7 @@ app.use('/api/google', googleRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/groups', groupRoutes);
 app.use('/api/events', eventRoutes);
+app.use('/api/reports', reportRoutes);
 
 // Error handling middleware (must be last)
 app.use(notFound);

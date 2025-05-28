@@ -5,10 +5,12 @@ import ErrorMessage from "../../../components/ErrorMessage";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../../actions/userActions";
 import { Box, Button, Input, VStack, Text, Heading } from "@chakra-ui/react";
+import EULA from "../../../components/EULA/EULA";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [eulaAccepted, setEulaAccepted] = useState(false);
 
   // Navigation hook for routes
   const navigate = useNavigate();
@@ -30,14 +32,21 @@ const Login = () => {
 
   // Called when login button is clicked
   const loginHandler = async () => {
+    if (!eulaAccepted) {
+      return;
+    }
     dispatch(login(email, password));
   }
 
   // Handle Enter key press
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && eulaAccepted) {
       loginHandler();
     }
+  }
+
+  const handleEulaAccept = (accepted) => {
+    setEulaAccepted(accepted);
   }
 
   return (
@@ -122,11 +131,13 @@ const Login = () => {
           </VStack>
 
           <VStack spacing={5} w="100%">
+            <EULA onAccept={handleEulaAccept} isAccepted={eulaAccepted} />
+            
             <Button
               onClick={loginHandler}
               isLoading={loading}
               loadingText="Signing in..."
-              disabled={loading}
+              disabled={loading || !eulaAccepted}
               size="lg"
               w="100%"
               h="56px"
@@ -137,8 +148,8 @@ const Login = () => {
               borderRadius="12px"
               boxShadow="0 4px 20px rgba(102, 126, 234, 0.3)"
               _hover={{
-                transform: "translateY(-2px)",
-                boxShadow: "0 8px 30px rgba(102, 126, 234, 0.4)",
+                transform: !eulaAccepted ? "none" : "translateY(-2px)",
+                boxShadow: !eulaAccepted ? "0 4px 20px rgba(102, 126, 234, 0.3)" : "0 8px 30px rgba(102, 126, 234, 0.4)",
                 _disabled: { transform: "none" }
               }}
               _active={{

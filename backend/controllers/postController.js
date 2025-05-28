@@ -120,8 +120,8 @@ const deletePost = asyncHandler(async (req, res) => {
         throw new Error("Post not found");
     }
 
-    // Check if user owns the post
-    if (post.user.toString() !== req.user._id.toString()) {
+    // Check if user owns the post OR is an admin
+    if (post.user.toString() !== req.user._id.toString() && !req.user.isAdmin) {
         res.status(401);
         throw new Error("You cannot perform this action");
     }

@@ -115,8 +115,8 @@ const deleteComment = asyncHandler(async (req, res) => {
         throw new Error("Comment not found");
     }
 
-    // Check if user owns the comment
-    if (comment.user.toString() !== req.user._id.toString()) {
+    // Check if user owns the comment OR is an admin
+    if (comment.user.toString() !== req.user._id.toString() && !req.user.isAdmin) {
         res.status(401);
         throw new Error("You can only delete your own comments");
     }

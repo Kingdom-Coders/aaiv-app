@@ -9,14 +9,15 @@ import {
   Text,
   Heading,
   Accordion,
-  Avatar,
   Spinner,
-  Badge,
+  useToast,
+  IconButton,
 } from '@chakra-ui/react';
-import { MdAdd, MdChatBubbleOutline } from 'react-icons/md';
+import { MdAdd, MdFlag } from 'react-icons/md';
 import { BiMessageSquareDetail } from 'react-icons/bi';
 import { listPosts } from '../../../actions/postActions';
 import { resetDeletePost } from '../../../actions/postActions';
+import ReportModal from '../../../components/ReportModal';
 
 const Discussion = () => {
   const navigate = useNavigate();
@@ -24,6 +25,8 @@ const Discussion = () => {
 
   // State for tracking expanded posts
   const [expandedPosts, setExpandedPosts] = useState(new Set(["0"])); // Initialize with first post expanded
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
 
   // Character limit for post preview
   const CHARACTER_LIMIT = 100;
@@ -54,30 +57,11 @@ const Discussion = () => {
 
   // Format date for display
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffTime = Math.abs(now - date);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
-    if (diffDays === 1) return 'Today';
-    if (diffDays === 2) return 'Yesterday';
-    if (diffDays <= 7) return `${diffDays - 1} days ago`;
-    
-    return date.toLocaleDateString('en-US', { 
+    return new Date(dateString).toLocaleDateString('en-US', { 
+      year: 'numeric', 
       month: 'short', 
       day: 'numeric' 
     });
-  };
-
-  // Generate initials for avatar
-  const getInitials = (name) => {
-    if (!name) return 'U';
-    return name
-      .split(' ')
-      .map(word => word.charAt(0))
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
   };
 
   // Get author name from post
@@ -319,6 +303,31 @@ const Discussion = () => {
                           <BiMessageSquareDetail size={18} />
                         </Button>
 
+                        {/* Report Button */}
+                        <IconButton
+                          aria-label="Report Post"
+                          size="sm"
+                          variant="ghost"
+                          color="gray.500"
+                          position="absolute"
+                          top={4}
+                          right={14}
+                          zIndex={2}
+                          _hover={{ 
+                            color: "#d69e2e", 
+                            bg: "rgba(214, 158, 46, 0.1)",
+                            transform: "translateY(-1px)"
+                          }}
+                          transition="all 0.2s ease"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedPost(post);
+                            setIsReportModalOpen(true);
+                          }}
+                        >
+                          <MdFlag size={16} />
+                        </IconButton>
+
                         <Accordion.ItemTrigger
                           p={5}
                           pr={20}
@@ -466,6 +475,19 @@ const Discussion = () => {
           </Box>
         )}
       </VStack>
+
+      {/* Report Modal */}
+      <ReportModal  
+        isOpen={isReportModalOpen}
+        onClose={() => {
+
+          setIsReportModalOpen(false);
+          setSelectedPost(null);
+        }}
+        contentType="post"
+        contentId={selectedPost?._id}
+        contentTitle={selectedPost?.title}
+      />
     </Box>
   );
 };

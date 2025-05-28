@@ -19,6 +19,7 @@ import { MdArrowBack, MdChatBubbleOutline, MdSend, MdMenuBook, MdDelete, MdFlag 
 import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { listComments, createCommentAction } from "../../../actions/commentActions";
 import { deletePostAction } from "../../../actions/postActions";
+import ReportModal from "../../../components/ReportModal";
 import { 
   DrawerRoot, 
   DrawerContent, 
@@ -32,6 +33,8 @@ const Thread = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [reportModalData, setReportModalData] = useState({ contentType: '', contentId: '', contentTitle: '' });
 
   // Local state for comment form
   const [newComment, setNewComment] = useState("");
@@ -88,12 +91,6 @@ const Thread = () => {
     if (window.confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
       dispatch(deletePostAction(postData._id));
     }
-  };
-
-  // Handle report post action (empty for now)
-  const handleReportPost = () => {
-    // TODO: Implement report functionality
-    alert("Report functionality will be implemented soon.");
   };
 
   // Date formatting functions
@@ -298,7 +295,14 @@ const Thread = () => {
                 color: "#d69e2e", 
                 bg: "rgba(214, 158, 46, 0.1)" 
               }}
-              onClick={handleReportPost}
+              onClick={() => {
+                setReportModalData({
+                  contentType: 'post',
+                  contentId: postData._id,
+                  contentTitle: postData.title
+                });
+                setIsReportModalOpen(true);
+              }}
             >
               <MdFlag size={20} />
             </IconButton>
@@ -575,7 +579,14 @@ const Thread = () => {
                                 bg: "rgba(229, 62, 62, 0.1)" 
                               }}
                               leftIcon={<AiOutlineExclamationCircle size={16} />}
-                              onClick={() => {}}
+                              onClick={() => {
+                                setReportModalData({
+                                  contentType: 'comment',
+                                  contentId: comment._id,
+                                  contentTitle: `Comment by ${getAuthorName(comment)}`
+                                });
+                                setIsReportModalOpen(true);
+                              }}
                             >
                               Report
                             </Button>
@@ -714,7 +725,14 @@ const Thread = () => {
                                           bg: "rgba(229, 62, 62, 0.1)" 
                                         }}
                                         leftIcon={<AiOutlineExclamationCircle size={14} />}
-                                        onClick={() => {}}
+                                        onClick={() => {
+                                          setReportModalData({
+                                            contentType: 'comment',
+                                            contentId: reply._id,
+                                            contentTitle: `Reply by ${getAuthorName(reply)}`
+                                          });
+                                          setIsReportModalOpen(true);
+                                        }}
                                       >
                                         Report
                                       </Button>
@@ -884,6 +902,19 @@ const Thread = () => {
           </DrawerBody>
         </DrawerContent>
       </DrawerRoot>
+
+      {/* Report Modal */}
+      <ReportModal
+        isOpen={isReportModalOpen}
+        onClose={() => {
+          alert('Report submitted successfully'); 
+          setIsReportModalOpen(false);
+          setReportModalData({ contentType: '', contentId: '', contentTitle: '' });
+        }}
+        contentType={reportModalData.contentType}
+        contentId={reportModalData.contentId}
+        contentTitle={reportModalData.contentTitle}
+      />
     </Box>
   );
 };

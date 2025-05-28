@@ -172,3 +172,213 @@
   font-size: 1.1rem;
   margin-bottom: 10px;
 }
+
+/* Reports Section Styles */
+.reports-section {
+  margin-top: 20px;
+}
+
+.reports-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-weight: 500;
+  color: #4a5568;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.tab-button:hover {
+  color: #667eea;
+  background-color: rgba(102, 126, 234, 0.1);
+}
+
+.tab-button.active {
+  color: #667eea;
+  border-bottom-color: #667eea;
+  background-color: rgba(102, 126, 234, 0.1);
+}
+
+.reports-list {
+  margin-top: 20px;
+}
+
+.report-item {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease;
+}
+
+.report-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-pending {
+  background-color: #fed7d7;
+  color: #c53030;
+}
+
+.status-reviewed {
+  background-color: #c6f6d5;
+  color: #2f855a;
+}
+
+.status-dismissed {
+  background-color: #e2e8f0;
+  color: #4a5568;
+}
+
+.report-date {
+  color: #718096;
+  font-size: 0.9rem;
+}
+
+.report-content {
+  margin-bottom: 15px;
+}
+
+.report-info,
+.report-description,
+.report-custom-reason,
+.report-action-taken,
+.report-reviewed-date {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.report-info strong,
+.report-description strong,
+.report-custom-reason strong,
+.report-action-taken strong,
+.report-reviewed-date strong {
+  color: #2d3748;
+}
+
+.report-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.action-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.action-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.action-button.approve {
+  background-color: #48bb78;
+  color: white;
+}
+
+.action-button.approve:hover:not(:disabled) {
+  background-color: #38a169;
+}
+
+.action-button.dismiss {
+  background-color: #a0aec0;
+  color: white;
+}
+
+.action-button.dismiss:hover:not(:disabled) {
+  background-color: #718096;
+}
+
+.no-reports {
+  text-align: center;
+  color: #718096;
+  font-style: italic;
+  padding: 40px;
+  background-color: #f7fafc;
+  border-radius: 8px;
+  border: 1px dashed #cbd5e0;
+}
+
+/* Reported Content Styles */
+.reported-content {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 15px;
+  margin: 10px 0;
+  border-left: 4px solid #007bff;
+}
+
+.reported-content .content-header {
+  color: #495057;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.reported-content .content-title,
+.reported-content .content-body,
+.reported-content .content-author {
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.reported-content .content-text {
+  background-color: white;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #dee2e6;
+  margin-top: 5px;
+  font-style: italic;
+  color: #6c757d;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.reported-content .content-author {
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.reported-content-missing,
+.reported-content-unknown {
+  background-color: #fff3cd;
+  border: 1px solid #ffeaa7;
+  color: #856404;
+  padding: 10px;
+  border-radius: 4px;
+  margin: 10px 0;
+  font-style: italic;
+  text-align: center;
+}

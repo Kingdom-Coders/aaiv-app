@@ -5,6 +5,7 @@ import "./Register.css";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../../actions/userActions";
 import { Box, Button, Input, VStack, Text, Heading } from "@chakra-ui/react";
+import EULA from "../../../components/EULA/EULA";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -12,6 +13,7 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [eulaAccepted, setEulaAccepted] = useState(false);
 
   const [message, setMessage] = useState(null);
 
@@ -29,6 +31,9 @@ const Register = () => {
   }, [userInfo, navigate])
 
   const onRegisterHandle = async () => {
+    if (!eulaAccepted) {
+      return;
+    }
     if(password !== confirmPassword) {
       setMessage('Passwords do not match');
     } else {
@@ -39,9 +44,13 @@ const Register = () => {
 
   // Handle Enter key press
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && eulaAccepted) {
       onRegisterHandle();
     }
+  }
+
+  const handleEulaAccept = (accepted) => {
+    setEulaAccepted(accepted);
   }
 
   return (
@@ -189,11 +198,13 @@ const Register = () => {
           </VStack>
 
           <VStack spacing={5} w="100%">
+            <EULA onAccept={handleEulaAccept} isAccepted={eulaAccepted} />
+            
             <Button
               onClick={onRegisterHandle}
               isLoading={loading}
               loadingText="Creating account..."
-              disabled={loading}
+              disabled={loading || !eulaAccepted}
               size="lg"
               w="100%"
               h="56px"
@@ -204,8 +215,8 @@ const Register = () => {
               borderRadius="12px"
               boxShadow="0 4px 20px rgba(102, 126, 234, 0.3)"
               _hover={{
-                transform: "translateY(-2px)",
-                boxShadow: "0 8px 30px rgba(102, 126, 234, 0.4)",
+                transform: !eulaAccepted ? "none" : "translateY(-2px)",
+                boxShadow: !eulaAccepted ? "0 4px 20px rgba(102, 126, 234, 0.3)" : "0 8px 30px rgba(102, 126, 234, 0.4)",
                 _disabled: { transform: "none" }
               }}
               _active={{

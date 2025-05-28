@@ -111,7 +111,7 @@ eventSchema.methods.reject = function(rejectionReason) {
 eventSchema.statics.getUpcomingEvents = function(limit = 10) {
     return this.find({
         status: 'approved',
-        startDate: { $gte: new Date() }
+        endDate: { $gte: new Date() }
     })
     .populate('createdBy', 'firstName lastName email')
     .sort({ startDate: 1 })
