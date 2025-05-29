@@ -28,7 +28,7 @@ const createGroup = asyncHandler(async (req, res) => {
     }
 
     // Validate badges if provided
-    const validBadges = ['outdoors', 'sports', 'academic', 'social', 'other'];
+    const validBadges = ['outdoors', 'sports', 'academic', 'social', 'faith', 'other'];
     if (badges && badges.length > 0) {
         const invalidBadges = badges.filter(badge => !validBadges.includes(badge));
         if (invalidBadges.length > 0) {
@@ -87,7 +87,7 @@ const updateGroup = asyncHandler(async (req, res) => {
     }
 
     // Validate badges if provided
-    const validBadges = ['outdoors', 'sports', 'academic', 'social', 'other'];
+    const validBadges = ['outdoors', 'sports', 'academic', 'social', 'faith', 'other'];
     if (badges && badges.length > 0) {
         const invalidBadges = badges.filter(badge => !validBadges.includes(badge));
         if (invalidBadges.length > 0) {

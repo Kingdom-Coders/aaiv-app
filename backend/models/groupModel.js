@@ -20,7 +20,7 @@ const groupSchema = mongoose.Schema({
     },
     badges: [{
         type: String,
-        enum: ['outdoors', 'sports', 'academic', 'social', 'other'],
+        enum: ['outdoors', 'sports', 'academic', 'social', 'faith', 'other'],
     }],
     description: {
         type: String,

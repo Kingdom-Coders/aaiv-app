@@ -21,12 +21,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { LuSearch, LuPencil, LuTrash } from "react-icons/lu";
 import { listGroups, createGroupAction, updateGroupAction, deleteGroupAction } from "../../actions/groupActions";
 
-const categories = ["outdoors", "sports", "academic", "social", "other"];
+const categories = ["outdoors", "sports", "academic", "social", "faith", "other"];
 const categoryDisplayNames = {
   "outdoors": "Outdoors",
   "sports": "Sports", 
   "academic": "Academic",
   "social": "Social",
+  "faith": "Faith",
   "other": "Other"
 };
 
