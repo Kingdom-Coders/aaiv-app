@@ -1,4 +1,5 @@
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Authentication screens
 import Welcome from './screens/Auth/Welcome/Welcome';
