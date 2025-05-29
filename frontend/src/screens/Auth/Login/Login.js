@@ -6,6 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../../actions/userActions";
 import { Box, Button, Input, VStack, Text, Heading } from "@chakra-ui/react";
 import EULA from "../../../components/EULA/EULA";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import Loading from "../../../components/Loading";
 
 const Login = () => {
   const [email, setEmail] = useState("");
