@@ -93,6 +93,7 @@ function App() {
           }
         />
       </Routes>
+      <Footer />
       
       {/* Show navigation bar only when user is authenticated */}
       {userInfo && <NavBar />}
