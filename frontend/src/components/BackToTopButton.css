@@ -1,0 +1,29 @@
+.ToTop {
+    position: fixed;
+    bottom: 7.5rem;
+    right: 45%;
+    width: 2rem;
+    height: 2rem;
+    background-color: #82b6ed;
+    color: white;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.ToTop.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.ToTop:hover{
+    background-color: #547fae;
+}
