@@ -14,6 +14,7 @@ import Thread from "./screens/DiscussionBoard/Thread/Thread";
 import Events from "./screens/Events/Events";
 import ChatLink from "./screens/ChatLink/ChatLink";
 import Admin from "./screens/Admin/Admin";
+import Footer from './components/Footer';
 
 // Components
 import NavBar from "./components/NavBar/NavBar";
@@ -93,9 +94,10 @@ function App() {
           }
         />
       </Routes>
-      
+
       {/* Show navigation bar only when user is authenticated */}
       {userInfo && <NavBar />}
+      <Footer/>
     </BrowserRouter>
   );
 }
