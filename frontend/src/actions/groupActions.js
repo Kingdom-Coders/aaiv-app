@@ -45,7 +45,7 @@ export const listGroups = () => async (dispatch, getState) => {
 };
 
 // Action to create a new group
-export const createGroupAction = (name, description) => async (dispatch, getState) => {
+export const createGroupAction = (name, link, badges, description) => async (dispatch, getState) => {
     try {
         dispatch({
             type: GROUP_CREATE_REQUEST,
@@ -64,7 +64,7 @@ export const createGroupAction = (name, description) => async (dispatch, getStat
 
         const { data } = await axios.post(
             getApiUrl(`/api/groups/create`),
-            { name, description },
+            { name, link, badges, description },
             config
         );
 
@@ -110,7 +110,7 @@ export const getGroupDetails = (id) => async (dispatch, getState) => {
 };
 
 // Action to update a group
-export const updateGroupAction = (id, name, description) => async (dispatch, getState) => {
+export const updateGroupAction = (id, name, link, badges, description) => async (dispatch, getState) => {
     try {
         dispatch({
             type: GROUP_UPDATE_REQUEST,
@@ -129,7 +129,7 @@ export const updateGroupAction = (id, name, description) => async (dispatch, get
 
         const { data } = await axios.put(
             getApiUrl(`/api/groups/${id}`),
-            { name, description },
+            { name, link, badges, description },
             config
         );
 
