@@ -2,16 +2,16 @@
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 60px;
+  height: 40px;
   background-color: #f8f9fa;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   color: #333;
-  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.05);
+  padding-bottom: env(safe-area-inset-bottom);
   z-index: 100;
-  padding: 0 16px;
 }
 
 .footer a {
