@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
   VStack,
@@ -12,15 +12,17 @@ import {
   Spinner,
   useToast,
   IconButton,
-} from '@chakra-ui/react';
-import { MdAdd, MdFlag } from 'react-icons/md';
-import { BiMessageSquareDetail } from 'react-icons/bi';
-import { listPosts } from '../../../actions/postActions';
-import { resetDeletePost } from '../../../actions/postActions';
-import { resetReportCreate } from '../../../actions/reportActions';
-import ReportModal from '../../../components/ReportModal';
-import usePullToRefresh from '../../../hooks/usePullToRefresh';
-import PullToRefreshIndicator from '../../../components/PullToRefreshIndicator';
+  TriggerButton,
+} from "@chakra-ui/react";
+import { MdAdd, MdFlag } from "react-icons/md";
+import { BiMessageSquareDetail } from "react-icons/bi";
+import { listPosts } from "../../../actions/postActions";
+import { resetDeletePost } from "../../../actions/postActions";
+import { resetReportCreate } from "../../../actions/reportActions";
+import ReportModal from "../../../components/ReportModal";
+import usePullToRefresh from "../../../hooks/usePullToRefresh";
+import PullToRefreshIndicator from "../../../components/PullToRefreshIndicator";
+import ConfirmationModal from "../../../components/ConfirmationModal";
 
 const Discussion = () => {
   const navigate = useNavigate();
@@ -47,16 +49,12 @@ const Discussion = () => {
   const { userInfo } = userLogin;
 
   // Pull-to-refresh functionality
-  const {
-    isPulling,
-    isRefreshing,
-    pullDistance,
-    refreshProgress
-  } = usePullToRefresh(() => {
-    if (userInfo) {
-      dispatch(listPosts());
-    }
-  });
+  const { isPulling, isRefreshing, pullDistance, refreshProgress } =
+    usePullToRefresh(() => {
+      if (userInfo) {
+        dispatch(listPosts());
+      }
+    });
 
   // Fetch posts when component mounts or after successful deletion
   useEffect(() => {
@@ -74,7 +72,7 @@ const Discussion = () => {
   useEffect(() => {
     return () => {
       // Only reset report state if there's no active submission
-      const reportCreate = postDelete; // Use existing selector pattern  
+      const reportCreate = postDelete; // Use existing selector pattern
       if (!reportCreate?.loading) {
         dispatch(resetReportCreate());
       }
@@ -83,16 +81,16 @@ const Discussion = () => {
 
   // Format date for display
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'short', 
-      day: 'numeric' 
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
     });
   };
 
   // Get author name from post
   const getAuthorName = (post) => {
-    if (post.user && typeof post.user === 'object') {
+    if (post.user && typeof post.user === "object") {
       if (post.user.firstName && post.user.lastName) {
         return `${post.user.firstName} ${post.user.lastName}`;
       } else if (post.user.firstName) {
@@ -101,43 +99,43 @@ const Discussion = () => {
         return post.user.lastName;
       }
     }
-    return 'Unknown User';
+    return "Unknown User";
   };
 
   // Get truncated post body for preview
   const getTruncatedBody = (body) => {
-    if (!body) return 'No content provided';
+    if (!body) return "No content provided";
     if (body.length <= CHARACTER_LIMIT) return body;
-    return body.substring(0, CHARACTER_LIMIT) + '...';
+    return body.substring(0, CHARACTER_LIMIT) + "...";
   };
 
   // Get truncated title for display (or full title if expanded)
   const getTruncatedTitle = (title, index) => {
-    if (!title) return 'Untitled';
+    if (!title) return "Untitled";
     const TITLE_LIMIT = 40; // Character limit for titles
-    
+
     const isExpanded = expandedPosts.has(index.toString());
-    
+
     // Show full title if post is expanded, truncated if not expanded
     if (isExpanded) {
       return title;
     }
-    
+
     // Post is not expanded, so truncate if needed
     if (title.length <= TITLE_LIMIT) return title;
-    return title.substring(0, TITLE_LIMIT) + '...';
+    return title.substring(0, TITLE_LIMIT) + "...";
   };
 
   // Handle accordion item click to toggle expanded state
   const handleAccordionItemClick = (postId, index) => {
     const newExpandedPosts = new Set(expandedPosts);
-    
+
     if (newExpandedPosts.has(index.toString())) {
       newExpandedPosts.delete(index.toString());
     } else {
       newExpandedPosts.add(index.toString());
     }
-    
+
     setExpandedPosts(newExpandedPosts);
   };
 
@@ -148,16 +146,21 @@ const Discussion = () => {
     // Don't reset here - let the ReportModal handle its own state management
   };
 
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
+
   return (
     <>
       {/* Pull-to-refresh indicator */}
-      <PullToRefreshIndicator 
+      <PullToRefreshIndicator
         isPulling={isPulling}
         isRefreshing={isRefreshing}
         pullDistance={pullDistance}
         refreshProgress={refreshProgress}
       />
-      
+
       <Box
         minH="100vh"
         bg="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
@@ -198,6 +201,17 @@ const Discussion = () => {
           >
             ✍️ Create Post
           </Button>
+
+          <Button onClick={openModal}></Button>
+          <ConfirmationModal
+            isOpen={isOpen}
+            onCancel={closeModal}
+            onConfirm={closeModal}
+            type={"warning"}
+            message={
+              "From the earliest cave paintings and smoke signals to the modern marvel of real-time video conferencing, the evolution of communication technologies has profoundly shaped human civilization. For millennia, humans relied on rudimentary methods to convey messages, from oral storytelling to carvings etched into stone, each carrying invaluable cultural and historical significance. The invention of writing systems allowed for more permanent records, giving rise to ancient scripts like cuneiform in Mesopotamia and hieroglyphs in Egypt, both revolutionizing administration and storytelling. As societies grew more complex, so did their means of communication, culminating in the development of the printing press by Johannes Gutenberg in the 15th century, which democratized knowledge and accelerated scientific and philosophical progress during the Renaissance. Fast forward to the 19th century, innovations such as the telegraph and telephone collapsed the barriers of distance, allowing for instant communication across continents for the first time in human history. The 20th century ushered in a new era with the advent of radio, television, and eventually, the internet, creating a global web of information and connectivity. In the 21st century, smartphones and social media platforms have turned nearly every individual into both a consumer and a creator of content, transforming how societies interact, conduct business, form relationships, and even protest injustice. Today, artificial intelligence and quantum communication promise to redefine the boundaries of speed, security, and personalization in how we exchange information, but this rapid advancement also raises profound questions about privacy, mental health, misinformation, and the very nature of truth in an increasingly digital and hyperconnected world."
+            }
+          ></ConfirmationModal>
 
           {/* Loading State */}
           {loading && (
@@ -321,24 +335,24 @@ const Discussion = () => {
                             top={4}
                             right={4}
                             zIndex={2}
-                            _hover={{ 
+                            _hover={{
                               transform: "translateY(-1px)",
-                              boxShadow: "0 4px 15px rgba(102, 126, 234, 0.3)"
+                              boxShadow: "0 4px 15px rgba(102, 126, 234, 0.3)",
                             }}
                             transition="all 0.2s ease"
                             onClick={(e) => {
                               e.stopPropagation();
-                              navigate('/thread', { 
-                                state: { 
+                              navigate("/thread", {
+                                state: {
                                   post: {
                                     _id: post._id,
                                     title: post.title,
                                     body: post.body,
                                     createdAt: post.createdAt,
                                     user: post.user,
-                                    bibleVerse: post.bibleVerse
-                                  }
-                                }
+                                    bibleVerse: post.bibleVerse,
+                                  },
+                                },
                               });
                             }}
                           >
@@ -355,10 +369,10 @@ const Discussion = () => {
                             top={4}
                             right={14}
                             zIndex={2}
-                            _hover={{ 
-                              color: "#d69e2e", 
+                            _hover={{
+                              color: "#d69e2e",
                               bg: "rgba(214, 158, 46, 0.1)",
-                              transform: "translateY(-1px)"
+                              transform: "translateY(-1px)",
                             }}
                             transition="all 0.2s ease"
                             onClick={(e) => {
@@ -376,7 +390,9 @@ const Discussion = () => {
                             bg="transparent"
                             _hover={{ bg: "rgba(102, 126, 234, 0.05)" }}
                             transition="all 0.3s ease"
-                            onClick={() => handleAccordionItemClick(post._id, index)}
+                            onClick={() =>
+                              handleAccordionItemClick(post._id, index)
+                            }
                           >
                             <VStack w="100%" spacing={4} align="stretch">
                               {/* Main Header - Title */}
@@ -390,26 +406,27 @@ const Discussion = () => {
                                 >
                                   {getTruncatedTitle(post.title, index)}
                                 </Text>
-                                
+
                                 {/* Bible Verse Reference - Integrated with title */}
-                                {post.bibleVerse && post.bibleVerse.reference && (
-                                  <HStack spacing={2} align="center">
-                                    <Box
-                                      w="3px"
-                                      h="16px"
-                                      bg="#8B4513"
-                                      borderRadius="full"
-                                    />
-                                    <Text
-                                      color="#8B4513"
-                                      fontSize="sm"
-                                      fontWeight="600"
-                                      letterSpacing="0.025em"
-                                    >
-                                      {post.bibleVerse.reference}
-                                    </Text>
-                                  </HStack>
-                                )}
+                                {post.bibleVerse &&
+                                  post.bibleVerse.reference && (
+                                    <HStack spacing={2} align="center">
+                                      <Box
+                                        w="3px"
+                                        h="16px"
+                                        bg="#8B4513"
+                                        borderRadius="full"
+                                      />
+                                      <Text
+                                        color="#8B4513"
+                                        fontSize="sm"
+                                        fontWeight="600"
+                                        letterSpacing="0.025em"
+                                      >
+                                        {post.bibleVerse.reference}
+                                      </Text>
+                                    </HStack>
+                                  )}
                               </VStack>
 
                               {/* Author & Date Section */}
@@ -423,17 +440,22 @@ const Discussion = () => {
                                     {getAuthorName(post).charAt(0).toUpperCase()}
                                   </Avatar.Fallback>
                                 </Avatar.Root> */}
-                                <HStack spacing={0} align="start" flex="1" alignItems="center">
-                                  <Text 
-                                    color="gray.700" 
-                                    fontSize="sm" 
+                                <HStack
+                                  spacing={0}
+                                  align="start"
+                                  flex="1"
+                                  alignItems="center"
+                                >
+                                  <Text
+                                    color="gray.700"
+                                    fontSize="sm"
                                     fontWeight="600"
                                     lineHeight="1.2"
                                   >
                                     {getAuthorName(post)} •
                                   </Text>
-                                  <Text 
-                                    color="gray.500" 
+                                  <Text
+                                    color="gray.500"
                                     fontSize="xs"
                                     lineHeight="1.2"
                                   >
@@ -441,11 +463,11 @@ const Discussion = () => {
                                   </Text>
                                 </HStack>
                               </HStack>
-                              
+
                               {/* Preview Text (only when collapsed) */}
                               {!expandedPosts.has(index.toString()) && (
-                                <Box 
-                                  pl={2} 
+                                <Box
+                                  pl={2}
                                   borderLeft="2px solid rgba(102, 126, 234, 0.1)"
                                 >
                                   <Text
@@ -476,13 +498,13 @@ const Discussion = () => {
                                   p={4}
                                   border="1px solid rgba(102, 126, 234, 0.1)"
                                 >
-                                  <Text 
-                                    color="gray.700" 
-                                    fontSize="sm" 
+                                  <Text
+                                    color="gray.700"
+                                    fontSize="sm"
                                     lineHeight="1.6"
                                     whiteSpace="pre-wrap"
                                   >
-                                    {post.body || 'No content provided'}
+                                    {post.body || "No content provided"}
                                   </Text>
                                 </Box>
                               </VStack>
@@ -512,14 +534,15 @@ const Discussion = () => {
                 textAlign="center"
                 opacity={0.9}
               >
-                Share your thoughts, ask questions, and engage in meaningful discussions with the community.
+                Share your thoughts, ask questions, and engage in meaningful
+                discussions with the community.
               </Text>
             </Box>
           )}
         </VStack>
 
         {/* Report Modal */}
-        <ReportModal  
+        <ReportModal
           isOpen={isReportModalOpen}
           onClose={handleCloseReportModal}
           contentType="post"
