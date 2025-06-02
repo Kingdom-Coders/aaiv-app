@@ -203,6 +203,8 @@ const Discussion = () => {
           </Button>
 
           <Button onClick={openModal}>Test ConfirmationModal</Button>
+
+          {/* Only pass in functions and type if you want defaults */}
           <ConfirmationModal
             isOpen={isOpen}
             onCancel={closeModal}
