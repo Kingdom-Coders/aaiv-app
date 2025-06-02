@@ -6,8 +6,10 @@ import {
   Button,
   VStack,
   Spinner,
+  Icon,
 } from "@chakra-ui/react";
-import { MdClose, MdFlag } from "react-icons/md";
+import { AiOutlineDelete } from "react-icons/ai";
+import { IoWarningOutline, IoInformationCircleOutline } from "react-icons/io5";
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -21,6 +23,7 @@ const ConfirmationModal = ({
   confirmText,
   cancelText,
 }) => {
+  // Left these here in case it's needed in the future
   const dispatch = useDispatch();
   const [reportReason, setReportReason] = useState("");
   const [customReason, setCustomReason] = useState("");
@@ -55,6 +58,7 @@ const ConfirmationModal = ({
       title: "Delete",
       confirmText: "I understand, delete",
       cancelText: "Cancel",
+      icon: <AiOutlineDelete size={23} />,
     },
     warning: {
       color: "yellow.600",
@@ -63,6 +67,7 @@ const ConfirmationModal = ({
       title: "Warning",
       confirmText: "Yes, Continue",
       cancelText: "Cancel",
+      icon: <IoWarningOutline size={23} />,
     },
     info: {
       color: "blue.500",
@@ -71,14 +76,17 @@ const ConfirmationModal = ({
       title: "Info",
       confirmText: "Okay",
       cancelText: "Cancel",
+      icon: <IoInformationCircleOutline size={23} />,
     },
   };
 
+  // If the type is not one of the 3 in defaults
   if (defaults[type] === undefined) {
     alert("No such type of modal");
     onCancel();
   }
 
+  // Handles closing of modal, possibly put shifting focus back to trigger element here
   const handleClose = (confirmed) => {
     confirmed ? onConfirm() : onCancel();
   };
@@ -127,6 +135,7 @@ const ConfirmationModal = ({
         >
           <HStack justify="space-between" align="center">
             <HStack spacing={3}>
+              <Icon>{defaults[type]["icon"]}</Icon>
               <Box>
                 <Heading size="md" color="white">
                   {title ? title : defaults[type]["title"]}
@@ -161,9 +170,7 @@ const ConfirmationModal = ({
                 _hover={{ bg: defaults[type]["hover"] }}
                 onClick={() => handleClose(true)}
                 disabled={loading}
-                leftIcon={
-                  loading ? <Spinner size="sm" /> : <MdFlag size={16} />
-                }
+                leftIcon={loading ? <Spinner size="sm" /> : <></>}
               >
                 {loading
                   ? "Submitting..."

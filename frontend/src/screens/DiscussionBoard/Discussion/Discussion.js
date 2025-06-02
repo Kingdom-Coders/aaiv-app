@@ -202,12 +202,12 @@ const Discussion = () => {
             ✍️ Create Post
           </Button>
 
-          <Button onClick={openModal}></Button>
+          <Button onClick={openModal}>Test ConfirmationModal</Button>
           <ConfirmationModal
             isOpen={isOpen}
             onCancel={closeModal}
             onConfirm={closeModal}
-            type={"warning"}
+            type={"info"}
             message={
               "From the earliest cave paintings and smoke signals to the modern marvel of real-time video conferencing, the evolution of communication technologies has profoundly shaped human civilization. For millennia, humans relied on rudimentary methods to convey messages, from oral storytelling to carvings etched into stone, each carrying invaluable cultural and historical significance. The invention of writing systems allowed for more permanent records, giving rise to ancient scripts like cuneiform in Mesopotamia and hieroglyphs in Egypt, both revolutionizing administration and storytelling. As societies grew more complex, so did their means of communication, culminating in the development of the printing press by Johannes Gutenberg in the 15th century, which democratized knowledge and accelerated scientific and philosophical progress during the Renaissance. Fast forward to the 19th century, innovations such as the telegraph and telephone collapsed the barriers of distance, allowing for instant communication across continents for the first time in human history. The 20th century ushered in a new era with the advent of radio, television, and eventually, the internet, creating a global web of information and connectivity. In the 21st century, smartphones and social media platforms have turned nearly every individual into both a consumer and a creator of content, transforming how societies interact, conduct business, form relationships, and even protest injustice. Today, artificial intelligence and quantum communication promise to redefine the boundaries of speed, security, and personalization in how we exchange information, but this rapid advancement also raises profound questions about privacy, mental health, misinformation, and the very nature of truth in an increasingly digital and hyperconnected world."
             }
