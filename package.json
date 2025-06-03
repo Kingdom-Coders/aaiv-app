@@ -1,5 +1,5 @@
 {
-  "name": "aaivapp",
+  "name": "HelloShip",
   "version": "1.0.0",
   "description": "Kingdom Coders AAIV App - A full-stack application with discussion board, announcements, and calendar integration",
   "main": "backend/server.js",
