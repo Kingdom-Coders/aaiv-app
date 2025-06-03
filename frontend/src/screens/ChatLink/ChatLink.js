@@ -21,14 +21,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { LuSearch, LuPencil, LuTrash } from "react-icons/lu";
 import { listGroups, createGroupAction, updateGroupAction, deleteGroupAction } from "../../actions/groupActions";
 
-const categories = ["outdoors", "sports", "academic", "social", "faith", "other"];
+const categories = ['outdoors', 'sports', 'academic', 'social', 'faith', 'links', 'chats', 'other'];
 const categoryDisplayNames = {
   "outdoors": "Outdoors",
   "sports": "Sports", 
   "academic": "Academic",
   "social": "Social",
   "faith": "Faith",
-  "other": "Other"
+  "other": "Other",
+  "links": "Links",
+  "chats": "Chats"
 };
 
 const ChatLink = () => {
@@ -51,7 +53,8 @@ const ChatLink = () => {
   const isAdmin = userInfo && userInfo.isAdmin;
 
   const [inputValue, setInputValue] = useState("");
-  const [checkedItems, setCheckedItems] = useState([true, true, true, true, true]);
+  const [showAll, setShowAll] = useState(true); // "All" is selected by default
+  const [checkedItems, setCheckedItems] = useState([false, false, false, false, false, false, false, false]); // All categories deselected by default (8 categories)
   const [newGroupName, setNewGroupName] = useState("");
   const [newGroupLink, setNewGroupLink] = useState("");
   const [newGroupDescription, setNewGroupDescription] = useState("");
@@ -107,6 +110,31 @@ const ChatLink = () => {
     setInputValue(e.target.value);
   };
 
+  const handleAllToggle = () => {
+    const newShowAll = !showAll;
+    setShowAll(newShowAll);
+    if (newShowAll) {
+      // If "All" is selected, deselect all individual categories
+      setCheckedItems([false, false, false, false, false, false, false, false]);
+    }
+  };
+
+  const handleCategoryToggle = (index) => {
+    const updatedItems = [...checkedItems];
+    updatedItems[index] = !updatedItems[index];
+    setCheckedItems(updatedItems);
+    
+    // If any category is selected, deselect "All"
+    if (updatedItems[index]) {
+      setShowAll(false);
+    }
+    
+    // If all categories are deselected, select "All"
+    if (updatedItems.every(item => !item)) {
+      setShowAll(true);
+    }
+  };
+
   const handleBadgeToggle = (badge) => {
     setSelectedBadges(prev => 
       prev.includes(badge) 
@@ -123,9 +151,21 @@ const ChatLink = () => {
     );
   };
 
-  const checkBoxes = (groupBadges, checkedItems) => {
+  const checkBoxes = (groupBadges, checkedItems, showAll) => {
+    // If "All" is selected, show all groups
+    if (showAll) {
+      return true;
+    }
+    
+    // If no categories are selected and "All" is not selected, show nothing
+    if (checkedItems.every(item => !item)) {
+      return false;
+    }
+    
+    // Check if any of the group's badges match the selected categories
     for (let i = 0; i < groupBadges.length; i++) {
-      if (checkedItems[categories.indexOf(groupBadges[i])]) {
+      const badgeIndex = categories.indexOf(groupBadges[i]);
+      if (badgeIndex !== -1 && checkedItems[badgeIndex]) {
         return true;
       }
     }
@@ -166,11 +206,31 @@ const ChatLink = () => {
     window.open(link, '_blank');
   };
 
-  const filteredGroups = groups?.filter(
-    (group) =>
-      group.name.toLowerCase().includes(inputValue.toLowerCase()) &&
-      (group.badges.length === 0 || checkBoxes(group.badges, checkedItems))
-  ) || [];
+  const filteredGroups = groups?.filter((group) => {
+    // First check if the group name matches the search
+    const matchesSearch = group.name.toLowerCase().includes(inputValue.toLowerCase());
+    if (!matchesSearch) return false;
+
+    // If "All" is selected, show all groups
+    if (showAll) return true;
+
+    // If no specific categories are selected, show nothing
+    const hasSelectedCategories = checkedItems.some(item => item);
+    if (!hasSelectedCategories) return false;
+
+    // If group has no badges, don't show when specific filters are selected
+    if (!group.badges || group.badges.length === 0) return false;
+
+    // Get the selected categories
+    const selectedCategories = categories.filter((cat, index) => checkedItems[index]);
+
+    // Check if the group has ALL selected categories
+    const hasAllSelectedCategories = selectedCategories.every(selectedCategory => 
+      group.badges.includes(selectedCategory)
+    );
+    
+    return hasAllSelectedCategories;
+  }) || [];
 
   return (
     <Box
@@ -189,7 +249,7 @@ const ChatLink = () => {
             fontWeight="600"
             textShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
           >
-            💬 Chats
+            💬 Chats & Links
           </Heading>
           <Box w="200px" h="2px" bg="white" mx="auto" mt={2} opacity={0.8} />
         </Box>
@@ -229,16 +289,53 @@ const ChatLink = () => {
 
             {/* Category Filters */}
             <HStack spacing={6} justify="center" wrap="wrap" w="100%">
+              <HStack
+                spacing={2}
+                cursor="pointer"
+                onClick={handleAllToggle}
+                p={2}
+                borderRadius="md"
+                _hover={{ bg: "rgba(102, 126, 234, 0.1)" }}
+                transition="all 0.2s ease"
+              >
+                <Box
+                  w="20px"
+                  h="20px"
+                  borderRadius="4px"
+                  border="2px solid"
+                  borderColor={showAll ? "#667eea" : "gray.300"}
+                  bg={showAll ? "#667eea" : "transparent"}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  transition="all 0.2s ease"
+                >
+                  {showAll && (
+                    <Box
+                      w="12px"
+                      h="8px"
+                      borderLeft="2px solid white"
+                      borderBottom="2px solid white"
+                      transform="rotate(-45deg)"
+                      mt="-2px"
+                    />
+                  )}
+                </Box>
+                <Text
+                  color="gray.700"
+                  fontWeight="500"
+                  fontSize="sm"
+                  userSelect="none"
+                >
+                  All
+                </Text>
+              </HStack>
               {categories.map((category, index) => (
                 <HStack
                   key={category}
                   spacing={2}
                   cursor="pointer"
-                  onClick={() => {
-                    const updatedItems = [...checkedItems];
-                    updatedItems[index] = !updatedItems[index];
-                    setCheckedItems(updatedItems);
-                  }}
+                  onClick={() => handleCategoryToggle(index)}
                   p={2}
                   borderRadius="md"
                   _hover={{ bg: "rgba(102, 126, 234, 0.1)" }}
@@ -299,7 +396,7 @@ const ChatLink = () => {
                 w="200px"
                 border="2px solid rgba(255, 255, 255, 0.3)"
               >
-                Add Group
+                Add New
               </Button>
             </Dialog.Trigger>
             <Portal>
@@ -320,7 +417,7 @@ const ChatLink = () => {
                       fontWeight="600"
                       color="gray.800"
                     >
-                      Add Group
+                      Add New
                     </Dialog.Title>
                   </Dialog.Header>
                   <Dialog.Body>
@@ -338,10 +435,10 @@ const ChatLink = () => {
                         </Box>
                       )}
                       <Text color="gray.600" fontSize="sm">
-                        Please provide all group details
+                          Please provide all link details
                       </Text>
                       <Input
-                        placeholder="Group Name"
+                        placeholder="Name"
                         value={newGroupName}
                         onChange={(e) => setNewGroupName(e.target.value)}
                         borderRadius="8px"
@@ -354,7 +451,7 @@ const ChatLink = () => {
                         }}
                       />
                       <Input
-                        placeholder="Group Link (Discord, WhatsApp, etc.)"
+                        placeholder="Link (Discord, WhatsApp, etc.)"
                         value={newGroupLink}
                         onChange={(e) => setNewGroupLink(e.target.value)}
                         borderRadius="8px"
@@ -455,7 +552,7 @@ const ChatLink = () => {
                           isLoading={createLoading}
                           loadingText="Creating..."
                         >
-                          Create Group
+                          Create
                         </Button>
                       </Dialog.ActionTrigger>
                     </HStack>

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getApiUrl } from "../config/api";
-import { POST_CREATE_FAIL, POST_CREATE_REQUEST, POST_CREATE_SUCCESS, POST_DELETE_FAIL, POST_DELETE_REQUEST, POST_DELETE_SUCCESS, POST_DELETE_RESET, POST_LIST_FAIL, POST_LIST_REQUEST, POST_LIST_SUCCESS } from "../constants/postsConstants";
+import { POST_CREATE_FAIL, POST_CREATE_REQUEST, POST_CREATE_SUCCESS, POST_CREATE_RESET, POST_DELETE_FAIL, POST_DELETE_REQUEST, POST_DELETE_SUCCESS, POST_DELETE_RESET, POST_LIST_FAIL, POST_LIST_REQUEST, POST_LIST_SUCCESS } from "../constants/postsConstants";
 import { use } from "react";
 
 export const listPosts = () => async(dispatch, getState) => {
@@ -118,5 +118,11 @@ export const deletePostAction = (id) => async(dispatch, getState) => {
 export const resetDeletePost = () => (dispatch) => {
     dispatch({
         type: POST_DELETE_RESET,
+    });
+};
+
+export const resetCreatePost = () => (dispatch) => {
+    dispatch({
+        type: POST_CREATE_RESET,
     });
 };

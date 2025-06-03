@@ -125,38 +125,4 @@
         align-self: stretch;
         text-align: center;
     }
-}
-
-/* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
-    .google-calendar-btn {
-        background: #2d2d2d;
-        border-color: #5f6368;
-        color: #e8eaed;
-    }
-    
-    .google-calendar-btn:hover:not(:disabled) {
-        background: #3c4043;
-        border-color: #80868b;
-    }
-    
-    .google-calendar-connected {
-        background: #1e3a1e;
-        border-color: #34a853;
-    }
-    
-    .status-text {
-        color: #81c995;
-    }
-    
-    .disconnect-btn {
-        background: #2d2d2d;
-        border-color: #5f6368;
-        color: #e8eaed;
-    }
-    
-    .disconnect-btn:hover:not(:disabled) {
-        background: #3c4043;
-        border-color: #80868b;
-    }
 } 

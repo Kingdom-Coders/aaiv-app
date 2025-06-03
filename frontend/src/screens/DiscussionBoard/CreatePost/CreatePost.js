@@ -11,7 +11,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { createPostAction, listPosts } from "../../../actions/postActions";
+import { createPostAction, listPosts, resetCreatePost } from "../../../actions/postActions";
 import { MdArrowBack, MdSend } from "react-icons/md";
 
 const CreatePost = () => {
@@ -24,6 +24,11 @@ const CreatePost = () => {
 
   const postCreate = useSelector((state) => state.postCreate);
   const { loading, error, success } = postCreate;
+
+  // Reset post creation state when component mounts
+  useEffect(() => {
+    dispatch(resetCreatePost());
+  }, [dispatch]);
 
   const resetHandler = () => {
     setTitle("");

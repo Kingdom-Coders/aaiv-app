@@ -200,33 +200,3 @@
     display: none;
   }
 }
-
-/* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
-  .announcement-card {
-    background: rgba(45, 45, 45, 0.95);
-    color: #e1e1e1;
-    border-color: rgba(255, 255, 255, 0.1);
-  }
-  
-  .announcement-card:hover {
-    background: rgba(45, 45, 45, 1);
-  }
-  
-  .announcement-card h4 {
-    color: #ffffff;
-  }
-  
-  .announcement-body {
-    color: #b0b0b0;
-  }
-  
-  .announcement-author {
-    color: #888;
-  }
-  
-  .announcement-date {
-    background: rgba(0, 122, 255, 0.2);
-    color: #5ac8fa;
-  }
-}
