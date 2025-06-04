@@ -12,8 +12,7 @@ import {
   Alert,
   AlertIndicator,
   AlertTitle,
-  AlertDescription,
-  useDisclosure
+  AlertDescription
 } from '@chakra-ui/react';
 import { FiUser, FiMail, FiLogOut, FiTrash2 } from 'react-icons/fi';
 import { logout, deleteSelfAccount } from '../../actions/userActions';
@@ -22,7 +21,7 @@ import './Profile.css';
 const Profile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
   // Get user info from Redux store
@@ -38,11 +37,24 @@ const Profile = () => {
     navigate('/');
   };
 
+  // Handle opening the delete confirmation modal
+  const handleOpenDeleteModal = () => {
+    console.log('Opening delete modal');
+    setIsModalOpen(true);
+  };
+
+  // Handle closing the delete confirmation modal
+  const handleCloseDeleteModal = () => {
+    console.log('Closing delete modal');
+    setIsModalOpen(false);
+  };
+
   // Handle account deletion
   const handleDeleteAccount = async () => {
+    console.log('Starting account deletion process');
     setIsDeleting(true);
     dispatch(deleteSelfAccount());
-    onClose();
+    handleCloseDeleteModal();
     
     // Navigate to login after deletion
     setTimeout(() => {
@@ -196,7 +208,7 @@ const Profile = () => {
               boxShadow: "0 8px 25px rgba(220, 38, 38, 0.3)"
             }}
             transition="all 0.3s ease"
-            onClick={onOpen}
+            onClick={handleOpenDeleteModal}
             isLoading={deleteLoading || isDeleting}
             loadingText="Deleting Account..."
           >
@@ -205,7 +217,7 @@ const Profile = () => {
         </VStack>
 
         {/* Account Deletion Confirmation Modal */}
-        {isOpen && (
+        {isModalOpen && (
           <Box
             position="fixed"
             top="0"
@@ -220,7 +232,7 @@ const Profile = () => {
             p={4}
             onClick={(e) => {
               if (e.target === e.currentTarget) {
-                onClose();
+                handleCloseDeleteModal();
               }
             }}
           >
@@ -258,7 +270,7 @@ const Profile = () => {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={onClose}
+                    onClick={handleCloseDeleteModal}
                     color="gray.500"
                     _hover={{ color: "gray.700", bg: "gray.100" }}
                   >
@@ -293,7 +305,7 @@ const Profile = () => {
                 borderColor="gray.200"
               >
                 <HStack spacing={3} justify="flex-end">
-                  <Button variant="ghost" onClick={onClose}>
+                  <Button variant="ghost" onClick={handleCloseDeleteModal}>
                     Cancel
                   </Button>
                   <Button
