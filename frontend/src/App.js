@@ -14,6 +14,7 @@ import Thread from "./screens/DiscussionBoard/Thread/Thread";
 import Events from "./screens/Events/Events";
 import ChatLink from "./screens/ChatLink/ChatLink";
 import Admin from "./screens/Admin/Admin";
+import Profile from "./screens/Profile/Profile";
 
 // Components
 import NavBar from "./components/NavBar/NavBar";
@@ -89,6 +90,14 @@ function App() {
           element={
             <PrivateRoute>
               <ChatLink />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <PrivateRoute>
+              <Profile />
             </PrivateRoute>
           }
         />

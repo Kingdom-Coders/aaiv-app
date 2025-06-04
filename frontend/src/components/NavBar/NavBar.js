@@ -4,6 +4,7 @@ import { GoHome, GoCommentDiscussion, GoCalendar } from 'react-icons/go';
 import { GoLink } from 'react-icons/go';
 import { MdEvent } from 'react-icons/md';
 import { RiAdminLine } from "react-icons/ri";
+import { FiUser } from 'react-icons/fi';
 import { useSelector } from 'react-redux';
 import './NavBar.css';
 
@@ -54,6 +55,12 @@ const NavBar = () => {
           onClick={() => handleNavigation('/discussion')}
         >
           <GoCommentDiscussion className="navbar-icon" />
+        </li>
+        <li
+          className={`navbar-item ${active === '/profile' ? 'active' : ''}`}
+          onClick={() => handleNavigation('/profile')}
+        >
+          <FiUser className="navbar-icon" />
         </li>
         {showAdmin && (
           <li

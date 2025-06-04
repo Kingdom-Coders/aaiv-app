@@ -1,0 +1,215 @@
+/* Profile Screen Styles */
+.profile-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+    padding-top: max(40px, env(safe-area-inset-top) + 20px);
+    padding-bottom: 120px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.profile-header {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.profile-title {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
+.profile-subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    margin-top: 10px;
+}
+
+.profile-divider {
+    width: 200px;
+    height: 2px;
+    background: white;
+    margin: 10px auto;
+    opacity: 0.8;
+}
+
+/* User Info Card */
+.user-info-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    margin-bottom: 24px;
+}
+
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0 auto 24px;
+}
+
+.user-detail-item {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    background: #f7fafc;
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+.user-detail-icon {
+    margin-right: 12px;
+    color: #667eea;
+}
+
+.user-detail-content {
+    flex: 1;
+}
+
+.user-detail-label {
+    font-size: 0.875rem;
+    color: #718096;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.user-detail-value {
+    font-size: 1.125rem;
+    color: #2d3748;
+    font-weight: 600;
+}
+
+.admin-badge {
+    background: #ebf8ff;
+    color: #3182ce;
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Action Buttons */
+.profile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.profile-button {
+    padding: 16px 24px;
+    border-radius: 12px;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.sign-out-button {
+    background: rgba(255, 255, 255, 0.9);
+    color: #4a5568;
+}
+
+.sign-out-button:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.delete-button {
+    background: rgba(220, 38, 38, 0.9);
+    color: white;
+}
+
+.delete-button:hover {
+    background: rgba(220, 38, 38, 1);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(220, 38, 38, 0.3);
+}
+
+.delete-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .profile-container {
+        padding: 16px;
+        padding-bottom: 100px;
+    }
+
+    .profile-title {
+        font-size: 2rem;
+    }
+
+    .profile-divider {
+        width: 150px;
+    }
+
+    .user-info-card {
+        padding: 24px;
+    }
+
+    .profile-avatar {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+
+    .user-detail-item {
+        padding: 12px;
+    }
+
+    .profile-actions {
+        width: 100%;
+    }
+
+    .profile-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-container {
+        padding: 12px;
+    }
+
+    .profile-title {
+        font-size: 1.75rem;
+    }
+
+    .user-info-card {
+        padding: 20px;
+    }
+
+    .user-detail-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .user-detail-icon {
+        margin-right: 0;
+    }
+} 

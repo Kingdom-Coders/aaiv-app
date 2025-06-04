@@ -144,4 +144,21 @@ const updateUserAdminStatus = asyncHandler(async (req, res) => {
     });
 });
 
-module.exports = { registerUser, authUser, deleteUser, getUsers, updateUserAdminStatus };
+/**
+ * Delete own account (self-deletion)
+ * @route DELETE /api/users/me
+ * @access Private
+ */
+const deleteSelfAccount = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id);
+
+    if (user) {
+        await user.deleteOne();
+        res.json({ message: "Account deleted successfully" });
+    } else {
+        res.status(404);
+        throw new Error("User not found");
+    }
+});
+
+module.exports = { registerUser, authUser, deleteUser, getUsers, updateUserAdminStatus, deleteSelfAccount };

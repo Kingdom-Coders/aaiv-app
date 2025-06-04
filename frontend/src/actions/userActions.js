@@ -205,3 +205,36 @@ export const updateUserAdminStatus = (id, isAdmin) => async (dispatch, getState)
         });
     }
 };
+
+/**
+ * Delete own account action (Self-deletion)
+ */
+export const deleteSelfAccount = () => async (dispatch, getState) => {
+    try {
+        dispatch({ type: USER_DELETE_REQUEST });
+
+        const { userLogin: { userInfo } } = getState();
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`
+            },
+        };
+
+        await axios.delete(getApiUrl('/api/users/me'), config);
+
+        dispatch({ type: USER_DELETE_SUCCESS });
+        
+        // Log out user after successful account deletion
+        localStorage.removeItem("userInfo");
+        dispatch({ type: USER_LOGOUT });
+    } catch (error) {
+        dispatch({ 
+            type: USER_DELETE_FAIL,
+            payload:
+                error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message,
+        });
+    }
+};
