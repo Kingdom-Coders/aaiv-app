@@ -178,6 +178,21 @@ const Login = () => {
                 Create one here
               </Text>
             </Text>
+
+            <Text fontSize="sm" color="gray.600">
+              Want to explore first?{" "}
+              <Text
+                as="span"
+                color="#667eea"
+                fontWeight="600"
+                cursor="pointer"
+                _hover={{ color: "#764ba2", textDecoration: "underline" }}
+                onClick={() => navigate("/")}
+                transition="all 0.3s ease"
+              >
+                Browse as Guest
+              </Text>
+            </Text>
             
             {error && (
               <Box

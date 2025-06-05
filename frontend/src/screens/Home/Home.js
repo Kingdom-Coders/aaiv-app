@@ -25,6 +25,10 @@ const Home = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
+  // Get user authentication state
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   // Get announcements state from Redux
   const announcementList = useSelector((state) => state.announcementList);
   const { loading: announcementsLoading, error: announcementsError, announcements } = announcementList;
@@ -79,6 +83,10 @@ const Home = () => {
   const logoutHandler = () => {
     dispatch(logout());
     navigate('/');
+  };
+
+  const handleSignIn = () => {
+    navigate('/login');
   };
 
   // Handle event card click
@@ -286,16 +294,18 @@ const Home = () => {
       />
       
       <div className="home-screen">
-        {/* Header with title and logout icon */}
+        {/* Header with title and conditional logout icon */}
         <div className="home-header">
           <h1>🙏 Welcome to AAIV 🙏</h1>
-          <button className="logout-icon" onClick={logoutHandler} title="Sign Out">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M16 17L21 12L16 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M21 12H9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
+          {userInfo && (
+            <button className="logout-icon" onClick={logoutHandler} title="Sign Out">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M16 17L21 12L16 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M21 12H9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          )}
         </div>
 
         {/* Bible Verse Section */}
@@ -385,6 +395,18 @@ const Home = () => {
           </div>
           <i id="right" className="arrow right">→</i>
         </div>
+
+        {/* Sign In Section - Only show when not authenticated */}
+        {!userInfo && (
+          <div className="sign-in-section">
+            <button className="sign-in-button" onClick={handleSignIn}>
+              Sign In to Access More Features
+            </button>
+            <p className="sign-in-text">
+              Sign in to access discussions, create events, and more!
+            </p>
+          </div>
+        )}
 
         {/* Event Modal */}
         {showModal && selectedEvent && (
